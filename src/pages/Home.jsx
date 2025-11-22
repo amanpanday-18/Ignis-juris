@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Scale, FileText, Users, BookOpen, Search, X, Calendar, User, Plus } from 'lucide-react';
 import NewsCard from '../components/NewsCard';
 import { newsCategories } from '../data/news-data';
@@ -48,10 +49,10 @@ const Home = () => {
     };
 
     const features = [
-        { icon: Scale, title: 'Legal Judgements', description: 'Access comprehensive database of court judgements' },
-        { icon: FileText, title: 'AI Drafting', description: 'Generate legal documents with AI assistance' },
-        { icon: Users, title: 'Find Advocates', description: 'Connect with experienced legal professionals' },
-        { icon: BookOpen, title: 'Legal Resources', description: 'Educational materials and legal guides' },
+        { icon: Scale, title: 'Legal Judgements', description: 'Access comprehensive database of court judgements', link: '/judgements' },
+        { icon: FileText, title: 'AI Drafting', description: 'Generate legal documents with AI assistance', link: '/ai-drafting' },
+        { icon: Users, title: 'Find Advocates', description: 'Connect with experienced legal professionals', link: '/advocates' },
+        { icon: BookOpen, title: 'Legal Resources', description: 'Educational materials and legal guides', link: '/store' },
     ];
 
     // Filter articles based on category and search
@@ -102,20 +103,21 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {features.map((feature, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                whileHover={{ scale: 1.05 }}
-                                className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center"
-                            >
-                                <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mb-4">
-                                    <feature.icon className="h-8 w-8 text-accent" />
-                                </div>
-                                <h3 className="text-lg font-bold text-primary mb-2">{feature.title}</h3>
-                                <p className="text-gray-600 text-sm">{feature.description}</p>
-                            </motion.div>
+                            <Link key={index} to={feature.link}>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    whileHover={{ scale: 1.05 }}
+                                    className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center cursor-pointer hover:border-accent transition-all"
+                                >
+                                    <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mb-4">
+                                        <feature.icon className="h-8 w-8 text-accent" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-primary mb-2">{feature.title}</h3>
+                                    <p className="text-gray-600 text-sm">{feature.description}</p>
+                                </motion.div>
+                            </Link>
                         ))}
                     </div>
                 </div>
