@@ -71,12 +71,10 @@ const Navbar = () => {
                                 {user ? (
                                     <div className="flex items-center space-x-4 ml-2">
                                         <Link to="/profile" className="flex items-center space-x-2 hover:text-accent transition-colors">
-                                            <img
-                                                src={user.avatar}
-                                                alt={user.name}
-                                                className="h-8 w-8 rounded-full border-2 border-accent"
-                                            />
-                                            <span className="text-sm font-medium">{user.name}</span>
+                                            <div className="h-8 w-8 rounded-full border-2 border-accent bg-accent flex items-center justify-center text-white font-bold">
+                                                {user.user_metadata?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                                            </div>
+                                            <span className="text-sm font-medium">{user.user_metadata?.name || user.email}</span>
                                         </Link>
                                         <button
                                             onClick={handleLogout}
@@ -151,7 +149,7 @@ const Navbar = () => {
                                             onClick={() => setIsOpen(false)}
                                         >
                                             <User className="h-5 w-5 mr-2" />
-                                            Profile ({user.name})
+                                            Profile ({user.user_metadata?.name || user.email})
                                         </Link>
                                         <button
                                             onClick={() => {

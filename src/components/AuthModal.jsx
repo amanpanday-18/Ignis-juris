@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowRight, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
@@ -8,20 +8,33 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const { login } = useAuth();
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { signUp, signIn } = useAuth();
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate user data
-        const userData = {
-            name: isSignIn ? 'Test User' : name,
-            email: email,
-            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-        };
-        login(userData);
-        onClose();
+        setError('');
+        setLoading(true);
+
+        try {
+            if (isSignIn) {
+                await signIn(email, password);
+            } else {
+                await signUp(email, password, name);
+            }
+            onClose();
+            // Reset form
+            setEmail('');
+            setPassword('');
+            setName('');
+        } catch (err) {
+            setError(err.message || 'An error occurred');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -51,6 +64,13 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                     : 'Join Legal Remedies today for full access'}
                             </p>
                         </div>
+
+                        {error && (
+                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start">
+                                <AlertCircle className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
+                                <p className="text-sm text-red-700">{error}</p>
+                            </div>
+                        )}
 
                         <form className="space-y-4" onSubmit={handleSubmit}>
                             {!isSignIn && (
@@ -98,20 +118,37 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                     <input
                                         type="password"
                                         required
+                                        minLength={6}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm"
                                         placeholder="••••••••"
                                     />
                                 </div>
+                                {!isSignIn && (
+                                    <p className="mt-1 text-xs text-gray-500">Password must be at least 6 characters</p>
+                                )}
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
+                                disabled={loading}
+                                className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isSignIn ? 'Sign In' : 'Sign Up'}
-                                <ArrowRight className="ml-2 h-4 w-4" />
+                                {loading ? (
+                                    <span className="flex items-center">
+                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        {isSignIn ? 'Signing In...' : 'Creating Account...'}
+                                    </span>
+                                ) : (
+                                    <>
+                                        {isSignIn ? 'Sign In' : 'Sign Up'}
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </>
+                                )}
                             </button>
                         </form>
 
@@ -120,7 +157,10 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                 {isSignIn ? "Don't have an account? " : "Already have an account? "}
                                 <button
                                     type="button"
-                                    onClick={() => setIsSignIn(!isSignIn)}
+                                    onClick={() => {
+                                        setIsSignIn(!isSignIn);
+                                        setError('');
+                                    }}
                                     className="font-medium text-accent hover:text-accent-hover"
                                 >
                                     {isSignIn ? 'Sign up' : 'Sign in'}

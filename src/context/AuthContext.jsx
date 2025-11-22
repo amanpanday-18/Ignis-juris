@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext(null);
 
@@ -7,27 +8,51 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check for saved user in local storage on mount
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
-        }
-        setLoading(false);
+        // Check active session
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUser(session?.user ?? null);
+            setLoading(false);
+        });
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
     }, []);
 
-    const login = (userData) => {
-        // Simulate API call
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+    const signUp = async (email, password, name) => {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    name: name,
+                }
+            }
+        });
+        if (error) throw error;
+        return data;
     };
 
-    const logout = () => {
+    const signIn = async (email, password) => {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+        if (error) throw error;
+        return data;
+    };
+
+    const logout = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
         setUser(null);
-        localStorage.removeItem('user');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, signUp, signIn, logout, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );

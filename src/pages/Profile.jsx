@@ -10,6 +10,9 @@ const Profile = () => {
     if (loading) return null;
     if (!user) return <Navigate to="/" />;
 
+    const displayName = user.user_metadata?.name || user.email?.split('@')[0] || 'User';
+    const userInitial = displayName[0]?.toUpperCase() || 'U';
+
     const recentActivity = [
         { id: 1, type: 'Draft', title: 'Legal Notice - Recovery', date: '2 hours ago', icon: FileText },
         { id: 2, type: 'Judgement', title: 'Kesavananda Bharati v. State of Kerala', date: '1 day ago', icon: Scale },
@@ -29,14 +32,12 @@ const Profile = () => {
                         <div className="h-32 bg-primary"></div>
                         <div className="px-6 pb-6">
                             <div className="relative flex justify-center -mt-16 mb-4">
-                                <img
-                                    src={user.avatar}
-                                    alt={user.name}
-                                    className="h-32 w-32 rounded-full border-4 border-white shadow-md bg-white"
-                                />
+                                <div className="h-32 w-32 rounded-full border-4 border-white shadow-md bg-accent flex items-center justify-center text-white text-4xl font-bold">
+                                    {userInitial}
+                                </div>
                             </div>
                             <div className="text-center mb-6">
-                                <h2 className="text-2xl font-bold text-primary">{user.name}</h2>
+                                <h2 className="text-2xl font-bold text-primary">{displayName}</h2>
                                 <p className="text-gray-500 flex items-center justify-center mt-1">
                                     <Mail className="h-4 w-4 mr-1" /> {user.email}
                                 </p>
@@ -48,7 +49,9 @@ const Profile = () => {
                                 </div>
                                 <div className="flex justify-between items-center py-2">
                                     <span className="text-gray-600">Member Since</span>
-                                    <span className="font-semibold text-primary">Nov 2025</span>
+                                    <span className="font-semibold text-primary">
+                                        {new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                    </span>
                                 </div>
                             </div>
                         </div>
