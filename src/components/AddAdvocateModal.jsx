@@ -44,7 +44,8 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
             setImageFile(null);
         } catch (error) {
             console.error('Error adding advocate:', error);
-            alert('Failed to add advocate. Please try again.');
+            // Show detailed error message
+            alert(`Failed to add advocate: ${error.message || error.error_description || JSON.stringify(error)}`);
         } finally {
             setLoading(false);
         }
