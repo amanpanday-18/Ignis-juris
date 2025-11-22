@@ -1,0 +1,29 @@
+
+> legal-remedies@0.0.0 build
+> vite build
+
+[36mvite v7.2.4 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 2186 modules transformed.
+[31m✗[39m Build failed in 12.51s
+[31merror during build:
+[31msrc/pages/AIDrafting.jsx (5:9): "generateDocument" is not exported by "src/services/ai-service.js", imported by "src/pages/AIDrafting.jsx".[31m
+file: [36mC:/Users/sp935/OneDrive/me/Legal Remedies/src/pages/AIDrafting.jsx:5:9[31m
+[33m
+3: import { FileText, Home, Briefcase, Shield, UserCheck, AlertCircle, Download, Copy, Check, ArrowLeft, Sparkles } from...
+4: import { documentTemplates, getTemplateById } from '../data/templates';
+5: import { generateDocument } from '../services/ai-service';
+            ^
+6: 
+7: const iconMap = {
+[31m
+    at getRollupError (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at Module.error (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:16956:16)
+    at Module.traceVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:17412:29)
+    at ModuleScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:15076:39)
+    at ReturnValueScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at FunctionBodyScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at ReturnValueScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at FunctionBodyScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at BlockScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)[39m

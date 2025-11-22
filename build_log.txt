@@ -1,0 +1,28 @@
+
+> legal-remedies@0.0.0 build
+> vite build
+
+[36mvite v7.2.4 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 2186 modules transformed.
+[31m✗[39m Build failed in 10.07s
+[31merror during build:
+[31msrc/services/ai-service.js (2:9): "templates" is not exported by "src/data/templates.js", imported by "src/services/ai-service.js".[31m
+file: [36mC:/Users/sp935/OneDrive/me/Legal Remedies/src/services/ai-service.js:2:9[31m
+[33m
+1: import { GoogleGenerativeAI } from "@google/generative-ai";
+2: import { templates } from '../data/templates';
+            ^
+3: 
+4: // Initialize Gemini API
+[31m
+    at getRollupError (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at Module.error (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:16956:16)
+    at Module.traceVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:17412:29)
+    at ModuleScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:15076:39)
+    at ChildScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at FunctionScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at FunctionBodyScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at BlockScope.findVariable (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:5649:38)
+    at MemberExpression.bind (file:///C:/Users/sp935/OneDrive/me/Legal%20Remedies/node_modules/rollup/dist/es/shared/node-entry.js:7363:49)[39m

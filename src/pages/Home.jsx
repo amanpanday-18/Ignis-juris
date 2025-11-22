@@ -1,13 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scale, FileText, Users, BookOpen, Search, X, Calendar, User } from 'lucide-react';
+import { Scale, FileText, Users, BookOpen, Search, X, Calendar, User, Plus } from 'lucide-react';
 import NewsCard from '../components/NewsCard';
-import { newsArticles, newsCategories, getArticlesByCategory, searchArticles } from '../data/news-data';
+import { newsCategories } from '../data/news-data';
+import { NewsService } from '../services/news-service';
+import { useAdmin } from '../hooks/useAdmin';
+import AddNewsModal from '../components/AddNewsModal';
 
 const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedArticle, setSelectedArticle] = useState(null);
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const { isAdmin } = useAdmin();
+
+    useEffect(() => {
+        loadNews();
+    }, []);
+
+    const loadNews = async () => {
+        try {
+            const data = await NewsService.getAll();
+            setArticles(data);
+        } catch (error) {
+            console.error('Error loading news:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleAddNews = (newArticle) => {
+        setArticles([newArticle, ...articles]);
+    };
+
+    const handleDeleteNews = async (id) => {
+        if (window.confirm('Are you sure you want to delete this article?')) {
+            try {
+                await NewsService.delete(id);
+                setArticles(articles.filter(art => art.id !== id));
+            } catch (error) {
+                console.error('Error deleting news:', error);
+                alert('Failed to delete article.');
+            }
+        }
+    };
 
     const features = [
         { icon: Scale, title: 'Legal Judgements', description: 'Access comprehensive database of court judgements' },
@@ -18,9 +56,11 @@ const Home = () => {
 
     // Filter articles based on category and search
     const getFilteredArticles = () => {
-        let filtered = selectedCategory === 'all'
-            ? newsArticles
-            : getArticlesByCategory(selectedCategory);
+        let filtered = articles;
+
+        if (selectedCategory !== 'all') {
+            filtered = filtered.filter(article => article.category === selectedCategory);
+        }
 
         if (searchQuery.trim()) {
             filtered = filtered.filter(article =>
@@ -84,9 +124,20 @@ const Home = () => {
             {/* Legal News Section */}
             <section id="news-section" className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
+                    <div className="text-center mb-12 relative">
                         <h2 className="text-4xl font-bold text-primary mb-4">Latest Legal News</h2>
                         <p className="text-lg text-gray-600">Stay updated with the latest developments in Indian legal landscape</p>
+
+                        {/* Admin Add Button */}
+                        {isAdmin && (
+                            <button
+                                onClick={() => setIsAddModalOpen(true)}
+                                className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
+                            >
+                                <Plus className="h-5 w-5 mr-2" />
+                                Add News
+                            </button>
+                        )}
                     </div>
 
                     {/* Search Bar */}
@@ -120,13 +171,18 @@ const Home = () => {
                     </div>
 
                     {/* News Grid */}
-                    {filteredArticles.length > 0 ? (
+                    {loading ? (
+                        <div className="flex justify-center py-12">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+                        </div>
+                    ) : filteredArticles.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredArticles.map((article) => (
                                 <NewsCard
                                     key={article.id}
                                     article={article}
                                     onClick={() => setSelectedArticle(article)}
+                                    onDelete={handleDeleteNews}
                                 />
                             ))}
                         </div>
@@ -158,7 +214,7 @@ const Home = () => {
                             {/* Header Image */}
                             <div className="relative h-64 md:h-96">
                                 <img
-                                    src={selectedArticle.image}
+                                    src={selectedArticle.image_url}
                                     alt={selectedArticle.title}
                                     className="w-full h-full object-cover"
                                 />
@@ -173,8 +229,8 @@ const Home = () => {
                             {/* Content */}
                             <div className="p-8">
                                 <div className="mb-4">
-                                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${newsCategories.find(c => c.id === selectedArticle.category)?.color}`}>
-                                        {newsCategories.find(c => c.id === selectedArticle.category)?.name}
+                                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${newsCategories.find(c => c.id === selectedArticle.category)?.color || 'bg-gray-100 text-gray-800'}`}>
+                                        {newsCategories.find(c => c.id === selectedArticle.category)?.name || selectedArticle.category}
                                     </span>
                                 </div>
 
@@ -209,6 +265,12 @@ const Home = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <AddNewsModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onAdd={handleAddNews}
+            />
         </div>
     );
 };

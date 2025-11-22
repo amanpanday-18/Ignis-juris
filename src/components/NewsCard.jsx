@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight } from 'lucide-react';
-import { getCategoryById } from '../data/news-data';
+import { Calendar, User, ArrowRight, Trash2 } from 'lucide-react';
+import { newsCategories } from '../data/news-data';
+import { useAdmin } from '../hooks/useAdmin';
 
-const NewsCard = ({ article, onClick }) => {
-    const category = getCategoryById(article.category);
+const NewsCard = ({ article, onClick, onDelete }) => {
+    const category = newsCategories.find(c => c.id === article.category) || { name: article.category, color: 'bg-gray-100 text-gray-800' };
+    const { isAdmin } = useAdmin();
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -19,12 +21,26 @@ const NewsCard = ({ article, onClick }) => {
         <motion.article
             whileHover={{ y: -4 }}
             onClick={onClick}
-            className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden cursor-pointer transition-all hover:shadow-xl"
+            className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden cursor-pointer transition-all hover:shadow-xl group relative"
         >
+            {/* Admin Delete Button */}
+            {isAdmin && onDelete && (
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(article.id);
+                    }}
+                    className="absolute top-2 right-2 z-10 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                    title="Delete Article"
+                >
+                    <Trash2 className="h-4 w-4" />
+                </button>
+            )}
+
             {/* Image */}
             <div className="relative h-48 overflow-hidden bg-gray-200">
                 <img
-                    src={article.image}
+                    src={article.image_url}
                     alt={article.title}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
