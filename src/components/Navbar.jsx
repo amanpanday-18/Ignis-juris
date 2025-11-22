@@ -13,13 +13,26 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const navLinks = [
-        { name: 'News', path: '/' },
+        { name: 'News', path: '/', scrollTo: 'news-section' },
         { name: 'Advocates', path: '/advocates' },
         { name: 'Judgements', path: '/judgements' },
         { name: 'Drafting', path: '/drafting' },
         { name: 'AI Drafting', path: '/ai-drafting' },
         { name: 'Store', path: '/store' },
     ];
+
+    const handleNavClick = (link, e) => {
+        if (link.scrollTo) {
+            e.preventDefault();
+            navigate('/');
+            setTimeout(() => {
+                const element = document.getElementById(link.scrollTo);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+    };
 
     const handleLogout = () => {
         logout();
@@ -59,6 +72,7 @@ const Navbar = () => {
                                     <Link
                                         key={link.name}
                                         to={link.path}
+                                        onClick={(e) => handleNavClick(link, e)}
                                         className="px-3 py-2 rounded-md text-sm font-medium hover:text-accent transition-colors"
                                     >
                                         {link.name}
@@ -135,7 +149,10 @@ const Navbar = () => {
                                         key={link.name}
                                         to={link.path}
                                         className="block px-3 py-2 rounded-md text-base font-medium hover:text-accent hover:bg-primary transition-colors"
-                                        onClick={() => setIsOpen(false)}
+                                        onClick={(e) => {
+                                            handleNavClick(link, e);
+                                            setIsOpen(false);
+                                        }}
                                     >
                                         {link.name}
                                     </Link>

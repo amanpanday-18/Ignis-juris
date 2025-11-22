@@ -82,7 +82,7 @@ const Home = () => {
             </section>
 
             {/* Legal News Section */}
-            <section className="py-16 bg-white">
+            <section id="news-section" className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-4xl font-bold text-primary mb-4">Latest Legal News</h2>
@@ -110,8 +110,8 @@ const Home = () => {
                                 key={category.id}
                                 onClick={() => setSelectedCategory(category.id)}
                                 className={`px-6 py-2 rounded-full font-medium transition-all ${selectedCategory === category.id
-                                        ? 'bg-accent text-white shadow-lg'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-accent text-white shadow-lg'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                             >
                                 {category.name}
