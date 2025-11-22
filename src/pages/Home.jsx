@@ -1,106 +1,214 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Scale, BookOpen, FileText, Users } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Scale, FileText, Users, BookOpen, Search, X, Calendar, User } from 'lucide-react';
+import NewsCard from '../components/NewsCard';
+import { newsArticles, newsCategories, getArticlesByCategory, searchArticles } from '../data/news-data';
 
 const Home = () => {
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedArticle, setSelectedArticle] = useState(null);
+
     const features = [
-        { icon: Users, title: 'Advocates', desc: 'Connect with top legal minds' },
-        { icon: Scale, title: 'Judgements', desc: 'Searchable case database' },
-        { icon: BookOpen, title: 'Bare Acts', desc: 'Comprehensive legal codes' },
-        { icon: FileText, title: 'AI Drafting', desc: 'Automated legal drafts' },
+        { icon: Scale, title: 'Legal Judgements', description: 'Access comprehensive database of court judgements' },
+        { icon: FileText, title: 'AI Drafting', description: 'Generate legal documents with AI assistance' },
+        { icon: Users, title: 'Find Advocates', description: 'Connect with experienced legal professionals' },
+        { icon: BookOpen, title: 'Legal Resources', description: 'Educational materials and legal guides' },
     ];
 
-    const news = [
-        { id: 1, title: 'Supreme Court rules on Right to Privacy', date: '2 hours ago', category: 'Constitutional Law' },
-        { id: 2, title: 'New amendments to the IT Act proposed', date: '5 hours ago', category: 'Cyber Law' },
-        { id: 3, title: 'Bar Council announces new guidelines for internships', date: '1 day ago', category: 'Education' },
-    ];
+    // Filter articles based on category and search
+    const getFilteredArticles = () => {
+        let filtered = selectedCategory === 'all'
+            ? newsArticles
+            : getArticlesByCategory(selectedCategory);
+
+        if (searchQuery.trim()) {
+            filtered = filtered.filter(article =>
+                article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                article.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
+        return filtered;
+    };
+
+    const filteredArticles = getFilteredArticles();
 
     return (
-        <div className="space-y-16 pb-16">
+        <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative bg-primary text-white py-20 overflow-hidden">
-                <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"></div>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.div
+            <section className="bg-gradient-to-br from-primary via-primary-light to-primary text-white py-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="text-center max-w-3xl mx-auto"
+                        className="text-5xl md:text-6xl font-bold mb-6"
                     >
-                        <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-                            Justice, <span className="text-accent">Simplified.</span>
-                        </h1>
-                        <p className="text-xl text-gray-300 mb-8">
-                            Your comprehensive platform for legal resources, expert connections, and AI-powered assistance.
-                        </p>
-                        <div className="flex justify-center gap-4">
-                            <button className="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105">
-                                Get Started
-                            </button>
-                            <button className="bg-transparent border-2 border-white hover:bg-white hover:text-primary text-white px-8 py-3 rounded-lg font-semibold transition-all">
-                                Learn More
-                            </button>
-                        </div>
-                    </motion.div>
+                        Justice, <span className="text-accent">Simplified</span>
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto"
+                    >
+                        Your comprehensive legal platform for news, resources, and AI-powered document drafting
+                    </motion.p>
                 </div>
             </section>
 
             {/* Features Grid */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {features.map((feature, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-100"
-                        >
-                            <feature.icon className="h-10 w-10 text-accent mb-4" />
-                            <h3 className="text-xl font-bold text-primary mb-2">{feature.title}</h3>
-                            <p className="text-gray-600">{feature.desc}</p>
-                        </motion.div>
-                    ))}
+            <section className="py-16 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {features.map((feature, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.05 }}
+                                className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center"
+                            >
+                                <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mb-4">
+                                    <feature.icon className="h-8 w-8 text-accent" />
+                                </div>
+                                <h3 className="text-lg font-bold text-primary mb-2">{feature.title}</h3>
+                                <p className="text-gray-600 text-sm">{feature.description}</p>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* Legal News Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-end mb-8">
-                    <div>
-                        <h2 className="text-3xl font-bold text-primary">Legal News</h2>
-                        <p className="text-gray-600 mt-2">Latest updates from the legal world</p>
+            <section className="py-16 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold text-primary mb-4">Latest Legal News</h2>
+                        <p className="text-lg text-gray-600">Stay updated with the latest developments in Indian legal landscape</p>
                     </div>
-                    <button className="text-accent font-semibold flex items-center hover:underline">
-                        View All <ArrowRight className="ml-2 h-4 w-4" />
-                    </button>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {news.map((item) => (
-                        <motion.div
-                            key={item.id}
-                            whileHover={{ y: -5 }}
-                            className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
-                        >
-                            <div className="h-48 bg-gray-200 bg-[url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center"></div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-center mb-3">
-                                    <span className="text-xs font-bold text-accent uppercase tracking-wider">{item.category}</span>
-                                    <span className="text-xs text-gray-500">{item.date}</span>
-                                </div>
-                                <h3 className="text-lg font-bold text-primary mb-3 hover:text-accent cursor-pointer transition-colors">
-                                    {item.title}
-                                </h3>
-                                <p className="text-gray-600 text-sm line-clamp-3">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
+                    {/* Search Bar */}
+                    <div className="mb-8 max-w-2xl mx-auto">
+                        <div className="relative">
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search legal news..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Category Tabs */}
+                    <div className="flex flex-wrap justify-center gap-3 mb-12">
+                        {newsCategories.map((category) => (
+                            <button
+                                key={category.id}
+                                onClick={() => setSelectedCategory(category.id)}
+                                className={`px-6 py-2 rounded-full font-medium transition-all ${selectedCategory === category.id
+                                        ? 'bg-accent text-white shadow-lg'
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    }`}
+                            >
+                                {category.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* News Grid */}
+                    {filteredArticles.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {filteredArticles.map((article) => (
+                                <NewsCard
+                                    key={article.id}
+                                    article={article}
+                                    onClick={() => setSelectedArticle(article)}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12">
+                            <p className="text-gray-500 text-lg">No articles found matching your criteria.</p>
+                        </div>
+                    )}
                 </div>
             </section>
+
+            {/* Article Detail Modal */}
+            <AnimatePresence>
+                {selectedArticle && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"
+                        onClick={() => setSelectedArticle(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-white rounded-xl shadow-2xl max-w-4xl w-full my-8 overflow-hidden"
+                        >
+                            {/* Header Image */}
+                            <div className="relative h-64 md:h-96">
+                                <img
+                                    src={selectedArticle.image}
+                                    alt={selectedArticle.title}
+                                    className="w-full h-full object-cover"
+                                />
+                                <button
+                                    onClick={() => setSelectedArticle(null)}
+                                    className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                                >
+                                    <X className="h-6 w-6 text-gray-700" />
+                                </button>
+                            </div>
+
+                            {/* Content */}
+                            <div className="p-8">
+                                <div className="mb-4">
+                                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${newsCategories.find(c => c.id === selectedArticle.category)?.color}`}>
+                                        {newsCategories.find(c => c.id === selectedArticle.category)?.name}
+                                    </span>
+                                </div>
+
+                                <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+                                    {selectedArticle.title}
+                                </h1>
+
+                                <div className="flex items-center space-x-6 text-gray-600 mb-6 pb-6 border-b border-gray-200">
+                                    <div className="flex items-center">
+                                        <Calendar className="h-5 w-5 mr-2" />
+                                        {new Date(selectedArticle.date).toLocaleDateString('en-US', {
+                                            month: 'long',
+                                            day: 'numeric',
+                                            year: 'numeric'
+                                        })}
+                                    </div>
+                                    <div className="flex items-center">
+                                        <User className="h-5 w-5 mr-2" />
+                                        {selectedArticle.author}
+                                    </div>
+                                </div>
+
+                                <div className="prose prose-lg max-w-none">
+                                    {selectedArticle.content.split('\n\n').map((paragraph, index) => (
+                                        <p key={index} className="text-gray-700 mb-4 leading-relaxed">
+                                            {paragraph}
+                                        </p>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
