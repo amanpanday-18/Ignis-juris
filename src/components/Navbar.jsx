@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Menu, X, User, ShoppingBag } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, Menu, X, User, ShoppingBag, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AuthModal from './AuthModal';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const navLinks = [
         { name: 'News', path: '/' },
@@ -17,6 +20,11 @@ const Navbar = () => {
         { name: 'AI Drafting', path: '/ai-drafting' },
         { name: 'Store', path: '/store' },
     ];
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <>
@@ -59,13 +67,34 @@ const Navbar = () => {
                                 <Link to="/store" className="p-2 rounded-full hover:bg-primary-light transition-colors">
                                     <ShoppingBag className="h-5 w-5" />
                                 </Link>
-                                <button
-                                    onClick={() => setIsAuthModalOpen(true)}
-                                    className="flex items-center space-x-2 bg-accent hover:bg-accent-hover px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                                >
-                                    <User className="h-4 w-4" />
-                                    <span>Sign In</span>
-                                </button>
+
+                                {user ? (
+                                    <div className="flex items-center space-x-4 ml-2">
+                                        <Link to="/profile" className="flex items-center space-x-2 hover:text-accent transition-colors">
+                                            <img
+                                                src={user.avatar}
+                                                alt={user.name}
+                                                className="h-8 w-8 rounded-full border-2 border-accent"
+                                            />
+                                            <span className="text-sm font-medium">{user.name}</span>
+                                        </Link>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="p-2 rounded-full hover:bg-primary-light text-gray-400 hover:text-white transition-colors"
+                                            title="Logout"
+                                        >
+                                            <LogOut className="h-5 w-5" />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={() => setIsAuthModalOpen(true)}
+                                        className="flex items-center space-x-2 bg-accent hover:bg-accent-hover px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                                    >
+                                        <User className="h-4 w-4" />
+                                        <span>Sign In</span>
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -113,15 +142,39 @@ const Navbar = () => {
                                         {link.name}
                                     </Link>
                                 ))}
-                                <button
-                                    onClick={() => {
-                                        setIsOpen(false);
-                                        setIsAuthModalOpen(true);
-                                    }}
-                                    className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-accent hover:bg-primary transition-colors"
-                                >
-                                    Sign In
-                                </button>
+
+                                {user ? (
+                                    <>
+                                        <Link
+                                            to="/profile"
+                                            className="flex items-center px-3 py-2 rounded-md text-base font-medium hover:text-accent hover:bg-primary transition-colors"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            <User className="h-5 w-5 mr-2" />
+                                            Profile ({user.name})
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                handleLogout();
+                                                setIsOpen(false);
+                                            }}
+                                            className="w-full text-left flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-primary transition-colors"
+                                        >
+                                            <LogOut className="h-5 w-5 mr-2" />
+                                            Logout
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                            setIsAuthModalOpen(true);
+                                        }}
+                                        className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-accent hover:bg-primary transition-colors"
+                                    >
+                                        Sign In
+                                    </button>
+                                )}
                             </div>
                         </motion.div>
                     )}
