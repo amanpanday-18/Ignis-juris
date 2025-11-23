@@ -12,6 +12,18 @@ export const AdvocateService = {
         return data;
     },
 
+    // Search advocates by name, specialization, or location
+    async search(query) {
+        const { data, error } = await supabase
+            .from('advocates')
+            .select('*')
+            .or(`name.ilike.%${query}%,specialization.ilike.%${query}%,location.ilike.%${query}%`)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data;
+    },
+
     // Add a new advocate with image upload
     async add(advocateData, imageFile) {
         let imageUrl = null;

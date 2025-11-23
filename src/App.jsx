@@ -21,6 +21,7 @@ import MootCourts from './pages/MootCourts';
 import Internships from './pages/Internships';
 import Jobs from './pages/Jobs';
 import Scholarships from './pages/Scholarships';
+import SearchResults from './pages/SearchResults';
 
 // Placeholder components for other routes
 const Placeholder = ({ title }) => (
@@ -55,6 +56,7 @@ function App() {
               <Route path="quizzes/:id/results" element={<QuizResults />} />
               <Route path="store" element={<Store />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="search" element={<SearchResults />} />
             </Route>
           </Routes>
         </Router>

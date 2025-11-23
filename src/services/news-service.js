@@ -12,6 +12,18 @@ export const NewsService = {
         return data;
     },
 
+    // Search news by title, excerpt, or content
+    async search(query) {
+        const { data, error } = await supabase
+            .from('news')
+            .select('*')
+            .or(`title.ilike.%${query}%,excerpt.ilike.%${query}%,content.ilike.%${query}%`)
+            .order('date', { ascending: false });
+
+        if (error) throw error;
+        return data;
+    },
+
     // Add a new news article with image upload
     async add(newsData, imageFile) {
         let imageUrl = null;

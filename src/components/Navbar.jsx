@@ -40,6 +40,14 @@ const Navbar = () => {
         navigate('/');
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+            setSearchQuery('');
+        }
+    };
+
     return (
         <>
             <nav className="bg-primary text-white sticky top-0 z-50 shadow-lg">
@@ -52,18 +60,20 @@ const Navbar = () => {
 
                         {/* Desktop Search */}
                         <div className="hidden md:flex flex-1 max-w-lg mx-8">
-                            <div className="relative w-full">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-400" />
+                            <form onSubmit={handleSearch} className="w-full">
+                                <div className="relative w-full">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Search className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
+                                        placeholder="Universal AI Search..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
                                 </div>
-                                <input
-                                    type="text"
-                                    className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
-                                    placeholder="Universal AI Search..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                            </div>
+                            </form>
                         </div>
 
                         {/* Desktop Menu */}
@@ -134,16 +144,20 @@ const Navbar = () => {
                         >
                             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 <div className="mb-4 px-2">
-                                    <div className="relative w-full">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <Search className="h-5 w-5 text-gray-400" />
+                                    <form onSubmit={(e) => { handleSearch(e); setIsOpen(false); }} className="w-full">
+                                        <div className="relative w-full">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <Search className="h-5 w-5 text-gray-400" />
+                                            </div>
+                                            <input
+                                                type="text"
+                                                className="block w-full pl-10 pr-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
+                                                placeholder="Search..."
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
                                         </div>
-                                        <input
-                                            type="text"
-                                            className="block w-full pl-10 pr-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
-                                            placeholder="Search..."
-                                        />
-                                    </div>
+                                    </form>
                                 </div>
                                 {navLinks.map((link) => (
                                     <Link
