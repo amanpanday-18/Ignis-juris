@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, User, ShoppingBag, LogOut } from 'lucide-react';
+import { Menu, X, User, ShoppingBag, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AuthModal from './AuthModal';
 import { useAuth } from '../context/AuthContext';
