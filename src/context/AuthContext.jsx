@@ -51,8 +51,31 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    const signUpWithOTP = async (email, name) => {
+        const { data, error } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+                data: {
+                    name: name,
+                }
+            }
+        });
+        if (error) throw error;
+        return data;
+    };
+
+    const verifyOTP = async (email, otp) => {
+        const { data, error } = await supabase.auth.verifyOtp({
+            email,
+            token: otp,
+            type: 'email'
+        });
+        if (error) throw error;
+        return data;
+    };
+
     return (
-        <AuthContext.Provider value={{ user, signUp, signIn, logout, loading }}>
+        <AuthContext.Provider value={{ user, signUp, signIn, logout, signUpWithOTP, verifyOTP, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );
