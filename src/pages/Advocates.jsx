@@ -1,19 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mic, Star, MapPin, Phone, Mail, Plus, Trash2 } from 'lucide-react';
+import { Mic, Star, MapPin, Phone, Mail, Plus, Trash2, Search } from 'lucide-react';
 import { AdvocateService } from '../services/advocate-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddAdvocateModal from '../components/AddAdvocateModal';
 
 const Advocates = () => {
     const [advocates, setAdvocates] = useState([]);
+    const [filteredAdvocates, setFilteredAdvocates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [specializationFilter, setSpecializationFilter] = useState('');
+    const [locationFilter, setLocationFilter] = useState('');
     const { isAdmin } = useAdmin();
 
     useEffect(() => {
         loadAdvocates();
     }, []);
+
+    // Derived state for unique filters
+    const uniqueSpecializations = [...new Set(advocates.map(a => a.specialization).filter(Boolean))];
+    const uniqueLocations = [...new Set(advocates.map(a => a.location).filter(Boolean))];
+
+    useEffect(() => {
+        // Client-side filtering for dropdowns + search result
+        let result = advocates;
+
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            result = result.filter(adv =>
+                adv.name?.toLowerCase().includes(q) ||
+                adv.specialization?.toLowerCase().includes(q) ||
+                adv.location?.toLowerCase().includes(q)
+            );
+        }
+
+        if (specializationFilter) {
+            result = result.filter(adv => adv.specialization === specializationFilter);
+        }
+
+        if (locationFilter) {
+            result = result.filter(adv => adv.location === locationFilter);
+        }
+
+        setFilteredAdvocates(result);
+    }, [advocates, searchQuery, specializationFilter, locationFilter]);
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        // The useEffect handles the filtering based on searchQuery state.
+        // If we wanted server-side search, we would call AdvocateService.search(searchQuery) here.
+        // But since we have filters, hybrid approach or client-side is smoother for small datasets.
+        // Let's stick to client-side filtering of the loaded 'advocates' for now as it's faster and supports the dropdowns easily.
+        // If the user explicitly hits search, we can also trigger a server fetch if needed, but client-side is fine.
+    };
 
     const loadAdvocates = async () => {
         try {
@@ -66,6 +107,58 @@ const Advocates = () => {
                     </a>
                 </div>
 
+                {/* Search Section */}
+                <div className="mt-10 bg-white p-4 rounded-lg shadow-md border border-gray-100 max-w-4xl mx-auto">
+                    <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
+                        <div className="flex-grow relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search by name or specialization (work)..."
+                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-lg font-bold transition-colors shadow-sm"
+                        >
+                            Search
+                        </button>
+                    </form>
+
+                    {/* Filters */}
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Specialization</label>
+                            <select
+                                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                                value={specializationFilter}
+                                onChange={(e) => setSpecializationFilter(e.target.value)}
+                            >
+                                <option value="">All Specializations</option>
+                                {uniqueSpecializations.map(spec => (
+                                    <option key={spec} value={spec}>{spec}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Location</label>
+                            <select
+                                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                                value={locationFilter}
+                                onChange={(e) => setLocationFilter(e.target.value)}
+                            >
+                                <option value="">All Locations</option>
+                                {uniqueLocations.map(loc => (
+                                    <option key={loc} value={loc}>{loc}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Admin Add Button */}
                 {isAdmin && (
                     <button
@@ -84,7 +177,7 @@ const Advocates = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {advocates.map((advocate, index) => (
+                    {filteredAdvocates.map((advocate, index) => (
                         <motion.div
                             key={advocate.id}
                             initial={{ opacity: 0, y: 20 }}
