@@ -1,0 +1,49 @@
+
+> legal-remedies@0.0.0 build
+> vite build
+
+[36mvite v7.2.4 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 14 modules transformed.
+[31m✗[39m Build failed in 2.07s
+[31merror during build:
+[31m[vite:esbuild] Transform failed with 3 errors:
+C:/Users/sp935/OneDrive/me/Legal Remedies/src/pages/Advocates.jsx:54:14: ERROR: Unexpected closing "p" tag does not match opening "motion.div" tag
+C:/Users/sp935/OneDrive/me/Legal Remedies/src/pages/Advocates.jsx:78:10: ERROR: Unexpected closing "motion.div" tag does not match opening "div" tag
+C:/Users/sp935/OneDrive/me/Legal Remedies/src/pages/Advocates.jsx:80:12: ERROR: Expected ")" but found "{"[31m
+file: [36mC:/Users/sp935/OneDrive/me/Legal Remedies/src/pages/Advocates.jsx:54:14[31m
+[33m
+[33mUnexpected closing "p" tag does not match opening "motion.div" tag[33m
+52 |                  <h1 className="text-4xl font-bold text-primary mb-4">Top Advocates</h1>
+53 |                  Connect with India's leading legal experts. Listen to their insights and book consultations directly.
+54 |              </p>
+   |                ^
+55 |  
+56 |              <div className="mt-6 flex justify-center">
+
+[33mUnexpected closing "motion.div" tag does not match opening "div" tag[33m
+76 |                  </button>
+77 |              )}
+78 |          </motion.div>
+   |            ^
+79 |  
+80 |              {
+
+[33mExpected ")" but found "{"[33m
+78 |          </motion.div>
+79 |  
+80 |              {
+   |              ^
+81 |          loading ? (
+82 |              <div className="flex justify-center py-20">
+[31m
+    at failureErrorWithLog (C:\Users\sp935\OneDrive\me\Legal Remedies\node_modules\esbuild\lib\main.js:1467:15)
+    at C:\Users\sp935\OneDrive\me\Legal Remedies\node_modules\esbuild\lib\main.js:736:50
+    at responseCallbacks.<computed> (C:\Users\sp935\OneDrive\me\Legal Remedies\node_modules\esbuild\lib\main.js:603:9)
+    at handleIncomingPacket (C:\Users\sp935\OneDrive\me\Legal Remedies\node_modules\esbuild\lib\main.js:658:12)
+    at Socket.readFromStdout (C:\Users\sp935\OneDrive\me\Legal Remedies\node_modules\esbuild\lib\main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)[39m
