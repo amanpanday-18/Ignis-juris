@@ -62,8 +62,11 @@ const Navbar = () => {
                         <div className="hidden md:flex flex-1 max-w-2xl mx-8">
                             <form onSubmit={handleSearch} className="w-full">
                                 <div className="relative w-full">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Search className="h-5 w-5 text-gray-400" />
+                                    <div
+                                        className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-white transition-colors"
+                                        onClick={handleSearch}
+                                    >
+                                        <Search className="h-5 w-5 text-gray-400 hover:text-white" />
                                     </div>
                                     <input
                                         type="text"
@@ -146,8 +149,11 @@ const Navbar = () => {
                                 <div className="mb-4 px-2">
                                     <form onSubmit={(e) => { handleSearch(e); setIsOpen(false); }} className="w-full">
                                         <div className="relative w-full">
-                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <Search className="h-5 w-5 text-gray-400" />
+                                            <div
+                                                className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-white transition-colors"
+                                                onClick={(e) => { handleSearch(e); setIsOpen(false); }}
+                                            >
+                                                <Search className="h-5 w-5 text-gray-400 hover:text-white" />
                                             </div>
                                             <input
                                                 type="text"
