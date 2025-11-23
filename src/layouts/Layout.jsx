@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { Instagram, Mail } from 'lucide-react';
 
 const Layout = () => {
     return (
@@ -19,21 +20,24 @@ const Layout = () => {
                             </p>
                         </div>
                         <div>
-                            <h3 className="text-white text-lg font-bold mb-4">Quick Links</h3>
-                            <ul className="space-y-2 text-sm">
-                                <li><a href="#" className="hover:text-accent">About Us</a></li>
-                                <li><a href="#" className="hover:text-accent">Contact</a></li>
-                                <li><a href="#" className="hover:text-accent">Privacy Policy</a></li>
-                                <li><a href="#" className="hover:text-accent">Terms of Service</a></li>
-                            </ul>
-                        </div>
-                        <div>
                             <h3 className="text-white text-lg font-bold mb-4">Connect</h3>
                             <div className="flex space-x-4">
-                                {/* Social Icons placeholders */}
-                                <div className="w-8 h-8 bg-gray-700 rounded-full hover:bg-accent transition-colors"></div>
-                                <div className="w-8 h-8 bg-gray-700 rounded-full hover:bg-accent transition-colors"></div>
-                                <div className="w-8 h-8 bg-gray-700 rounded-full hover:bg-accent transition-colors"></div>
+                                <a
+                                    href="https://www.instagram.com/the_legalremedies.in?igsh=OWZzYTZ1ZGlleW5x"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors text-white"
+                                    title="Instagram"
+                                >
+                                    <Instagram className="h-5 w-5" />
+                                </a>
+                                <a
+                                    href="mailto:thelegalremedies@gmail.com"
+                                    className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-white"
+                                    title="Email Us"
+                                >
+                                    <Mail className="h-5 w-5" />
+                                </a>
                             </div>
                         </div>
                     </div>
