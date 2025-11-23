@@ -13,12 +13,13 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const navLinks = [
+        { name: 'Home', path: '/' },
         { name: 'News', path: '/', scrollTo: 'news-section' },
         { name: 'Advocates', path: '/advocates' },
         { name: 'Judgements', path: '/judgements' },
         { name: 'Drafting', path: '/drafting' },
         { name: 'AI Drafting', path: '/ai-drafting' },
-        { name: 'Store', path: '/store' },
+        { name: 'More', path: '/more' },
     ];
 
     const handleNavClick = (link, e) => {
@@ -46,7 +47,7 @@ const Navbar = () => {
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
                         <Link to="/" className="flex-shrink-0 font-bold text-2xl text-accent tracking-wider">
-                            LEGAL REMEDIES
+                            THE LEGAL REMEDIES
                         </Link>
 
                         {/* Desktop Search */}

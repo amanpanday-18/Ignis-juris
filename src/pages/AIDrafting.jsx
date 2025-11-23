@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { FileText, Home, Briefcase, Shield, UserCheck, AlertCircle, Download, Copy, Check, ArrowLeft, Sparkles } from 'lucide-react';
 import { documentTemplates, getTemplateById } from '../data/templates';
 import { generateDocument } from '../services/ai-service';
@@ -57,7 +58,14 @@ const AIDrafting = () => {
         <div className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="text-center mb-12">
+                <div className="text-center mb-12 relative">
+                    <Link
+                        to="/"
+                        className="absolute left-0 top-0 flex items-center px-4 py-2 text-primary hover:text-accent transition-colors font-medium"
+                    >
+                        <Home className="h-5 w-5 mr-2" />
+                        Home
+                    </Link>
                     <div className="flex items-center justify-center mb-4">
                         <Sparkles className="h-10 w-10 text-accent mr-3" />
                         <h1 className="text-4xl font-bold text-primary">AI Legal Drafting</h1>

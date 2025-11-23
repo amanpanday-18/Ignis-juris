@@ -1,0 +1,200 @@
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Search, Filter, Plus, Trash2, Clock, Award, BookOpen, PlayCircle, Loader } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { QuizService } from '../services/quiz-service';
+import { quizCategories, difficultyLevels } from '../data/quiz-data';
+import { useAdmin } from '../hooks/useAdmin';
+import AddQuizModal from '../components/AddQuizModal';
+
+const Quizzes = () => {
+    const [quizzes, setQuizzes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const { isAdmin } = useAdmin();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        loadQuizzes();
+    }, [selectedCategory, selectedDifficulty]);
+
+    const loadQuizzes = async () => {
+        setLoading(true);
+        try {
+            const filters = {
+                category: selectedCategory,
+                difficulty: selectedDifficulty,
+                isAdmin
+            };
+            const data = await QuizService.getAll(filters);
+            setQuizzes(data);
+        } catch (error) {
+            console.error('Error loading quizzes:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleAddQuiz = (newQuiz) => {
+        setQuizzes([newQuiz, ...quizzes]);
+    };
+
+    const handleDeleteQuiz = async (id) => {
+        if (window.confirm('Are you sure you want to delete this quiz?')) {
+            try {
+                await QuizService.delete(id);
+                setQuizzes(quizzes.filter(q => q.id !== id));
+            } catch (error) {
+                console.error('Error deleting quiz:', error);
+                alert('Failed to delete quiz.');
+            }
+        }
+    };
+
+    const getDifficultyColor = (difficulty) => {
+        switch (difficulty) {
+            case 'easy': return 'bg-green-100 text-green-800';
+            case 'medium': return 'bg-yellow-100 text-yellow-800';
+            case 'hard': return 'bg-red-100 text-red-800';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-50 py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header */}
+                <div className="text-center mb-12 relative">
+                    <div className="flex items-center justify-center mb-4">
+                        <Award className="h-10 w-10 text-accent mr-3" />
+                        <h1 className="text-4xl font-bold text-primary">Legal Quizzes & Tests</h1>
+                    </div>
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Test your legal knowledge with our comprehensive quizzes on various law subjects
+                    </p>
+
+                    {/* Admin Add Button */}
+                    {isAdmin && (
+                        <button
+                            onClick={() => setIsAddModalOpen(true)}
+                            className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
+                        >
+                            <Plus className="h-5 w-5 mr-2" />
+                            Create Quiz
+                        </button>
+                    )}
+                </div>
+
+                {/* Filters */}
+                <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
+                            <select
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            >
+                                {quizCategories.map(cat => (
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Difficulty</label>
+                            <select
+                                value={selectedDifficulty}
+                                onChange={(e) => setSelectedDifficulty(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            >
+                                {difficultyLevels.map(diff => (
+                                    <option key={diff.id} value={diff.id}>{diff.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Quiz Grid */}
+                {loading ? (
+                    <div className="flex justify-center py-12">
+                        <Loader className="animate-spin h-12 w-12 text-accent" />
+                    </div>
+                ) : quizzes.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {quizzes.map((quiz, index) => (
+                            <motion.div
+                                key={quiz.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow relative group"
+                            >
+                                {/* Admin Delete Button */}
+                                {isAdmin && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDeleteQuiz(quiz.id);
+                                        }}
+                                        className="absolute top-4 right-4 z-10 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                                        title="Delete Quiz"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </button>
+                                )}
+
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${getDifficultyColor(quiz.difficulty)}`}>
+                                            {quiz.difficulty}
+                                        </span>
+                                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                            {quizCategories.find(c => c.id === quiz.category)?.name || quiz.category}
+                                        </span>
+                                    </div>
+
+                                    <h3 className="text-xl font-bold text-primary mb-2">{quiz.title}</h3>
+                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{quiz.description}</p>
+
+                                    <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
+                                        <div className="flex items-center">
+                                            <Clock className="h-4 w-4 mr-1" />
+                                            {quiz.time_limit} mins
+                                        </div>
+                                        <div className="flex items-center">
+                                            <BookOpen className="h-4 w-4 mr-1" />
+                                            Pass: {quiz.passing_score}%
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => navigate(`/quizzes/${quiz.id}`)}
+                                        className="w-full flex items-center justify-center py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-light transition-colors"
+                                    >
+                                        <PlayCircle className="h-5 w-5 mr-2" />
+                                        Start Quiz
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12">
+                        <p className="text-gray-500 text-lg">No quizzes found matching your criteria.</p>
+                    </div>
+                )}
+            </div>
+
+            <AddQuizModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onAdd={handleAddQuiz}
+            />
+        </div>
+    );
+};
+
+export default Quizzes;
