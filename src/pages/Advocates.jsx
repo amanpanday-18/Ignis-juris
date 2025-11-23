@@ -95,17 +95,7 @@ const Advocates = () => {
                     Connect with India's leading legal experts. Listen to their insights and book consultations directly.
                 </p>
 
-                <div className="mt-6 flex justify-center">
-                    <a
-                        href="https://open.spotify.com/genre/podcasts-web"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center px-6 py-3 bg-white border-2 border-accent text-accent font-bold rounded-full hover:bg-accent hover:text-white transition-all shadow-md"
-                    >
-                        <Mic className="h-5 w-5 mr-2" />
-                        Listen to Our Podcast
-                    </a>
-                </div>
+
 
                 {/* Search Section */}
                 <div className="mt-10 bg-white p-4 rounded-lg shadow-md border border-gray-100 max-w-4xl mx-auto">
@@ -202,10 +192,6 @@ const Advocates = () => {
                                     alt={advocate.name}
                                     className="w-full h-full object-cover"
                                 />
-                                <div className="absolute top-4 right-4 bg-white px-2 py-1 rounded-full flex items-center shadow-sm">
-                                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                                    <span className="ml-1 text-sm font-bold text-gray-700">{advocate.rating}</span>
-                                </div>
                             </div>
                             <div className="p-6">
                                 <h3 className="text-xl font-bold text-primary mb-1">{advocate.name}</h3>
