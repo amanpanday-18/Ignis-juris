@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, FileText, Scale, Clock } from 'lucide-react';
+import { User, Mail, FileText, Scale, Clock, Calendar, Briefcase, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import { DiaryService } from '../services/diary-service';
 
 const Profile = () => {
     const { user, loading } = useAuth();
+    const [events, setEvents] = useState([]);
+    const [isLoadingData, setIsLoadingData] = useState(true);
+
+    useEffect(() => {
+        if (user) {
+            fetchDiaryEvents();
+        }
+    }, [user]);
+
+    const fetchDiaryEvents = async () => {
+        try {
+            const data = await DiaryService.getMyEvents();
+            // Sort by date descending for recent activity
+            const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+            setEvents(sortedData);
+        } catch (error) {
+            console.error("Error fetching diary events:", error);
+        } finally {
+            setIsLoadingData(false);
+        }
+    };
 
     if (loading) return null;
     if (!user) return <Navigate to="/" />;
@@ -13,11 +35,28 @@ const Profile = () => {
     const displayName = user.user_metadata?.name || user.email?.split('@')[0] || 'User';
     const userInitial = displayName[0]?.toUpperCase() || 'U';
 
-    const recentActivity = [
-        { id: 1, type: 'Draft', title: 'Legal Notice - Recovery', date: '2 hours ago', icon: FileText },
-        { id: 2, type: 'Judgement', title: 'Kesavananda Bharati v. State of Kerala', date: '1 day ago', icon: Scale },
-        { id: 3, type: 'Draft', title: 'Rental Agreement', date: '3 days ago', icon: FileText },
-    ];
+    // Calculate Stats
+    const now = new Date();
+    const pendingConsultations = events.filter(e => new Date(e.date) >= now).length;
+
+    // Helper to get icon based on event type
+    const getEventIcon = (type) => {
+        switch (type) {
+            case 'hearing': return Scale;
+            case 'meeting': return Briefcase;
+            case 'deadline': return AlertCircle;
+            default: return Calendar;
+        }
+    };
+
+    const getEventColor = (type) => {
+        switch (type) {
+            case 'hearing': return 'text-red-500 bg-red-50';
+            case 'meeting': return 'text-blue-500 bg-blue-50';
+            case 'deadline': return 'text-yellow-500 bg-yellow-50';
+            default: return 'text-green-500 bg-green-50';
+        }
+    };
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -66,36 +105,50 @@ const Profile = () => {
                             Recent Activity
                         </h3>
                         <div className="space-y-4">
-                            {recentActivity.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200"
-                                >
-                                    <div className="flex items-center space-x-4">
-                                        <div className="p-2 bg-white rounded-full shadow-sm">
-                                            <item.icon className="h-5 w-5 text-accent" />
+                            {isLoadingData ? (
+                                <div className="text-center py-4 text-gray-500">Loading activity...</div>
+                            ) : events.length > 0 ? (
+                                events.slice(0, 5).map((item) => {
+                                    const Icon = getEventIcon(item.event_type);
+                                    const colorClass = getEventColor(item.event_type);
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className="flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200"
+                                        >
+                                            <div className="flex items-center space-x-4">
+                                                <div className={`p-2 rounded-full shadow-sm ${colorClass}`}>
+                                                    <Icon className="h-5 w-5" />
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-semibold text-primary">{item.title}</h4>
+                                                    <p className="text-xs text-gray-500 capitalize">{item.event_type}</p>
+                                                </div>
+                                            </div>
+                                            <span className="text-sm text-gray-400">
+                                                {new Date(item.date).toLocaleDateString()}
+                                            </span>
                                         </div>
-                                        <div>
-                                            <h4 className="font-semibold text-primary">{item.title}</h4>
-                                            <p className="text-xs text-gray-500">{item.type}</p>
-                                        </div>
-                                    </div>
-                                    <span className="text-sm text-gray-400">{item.date}</span>
+                                    );
+                                })
+                            ) : (
+                                <div className="text-center py-8 text-gray-500">
+                                    <p>No recent activity found.</p>
                                 </div>
-                            ))}
+                            )}
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-primary text-white rounded-xl p-6 shadow-lg">
                             <h3 className="text-lg font-bold mb-2">Saved Drafts</h3>
-                            <p className="text-3xl font-bold text-accent">12</p>
+                            <p className="text-3xl font-bold text-accent">0</p>
                             <p className="text-sm text-gray-400 mt-1">Access your legal documents</p>
                         </div>
                         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
-                            <h3 className="text-lg font-bold text-primary mb-2">Pending Consultations</h3>
-                            <p className="text-3xl font-bold text-accent">0</p>
-                            <p className="text-sm text-gray-500 mt-1">No upcoming appointments</p>
+                            <h3 className="text-lg font-bold text-primary mb-2">Upcoming Events</h3>
+                            <p className="text-3xl font-bold text-accent">{pendingConsultations}</p>
+                            <p className="text-sm text-gray-500 mt-1">Hearings & Meetings</p>
                         </div>
                     </div>
                 </div>
