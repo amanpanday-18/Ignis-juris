@@ -5,15 +5,57 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AuthModal from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
+import { SearchService } from '../services/search-service';
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState({ advocates: [], judgements: [], bareActs: [], news: [] });
+    const [showSuggestions, setShowSuggestions] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const { user, logout } = useAuth();
 
     const navigate = useNavigate();
     const searchInputRef = React.useRef(null);
     const mobileSearchInputRef = React.useRef(null);
+
+    // Debounce search suggestions
+    React.useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (searchQuery.trim().length >= 2) {
+                try {
+                    const results = await SearchService.searchAll(searchQuery);
+                    setSuggestions(results);
+                    setShowSuggestions(true);
+                } catch (error) {
+                    console.error('Error fetching suggestions:', error);
+                }
+            } else {
+                setSuggestions({ advocates: [], judgements: [], bareActs: [], news: [] });
+                setShowSuggestions(false);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    // Close suggestions when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
+                setShowSuggestions(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleSuggestionClick = (path) => {
+        navigate(path);
+        setShowSuggestions(false);
+        setSearchQuery('');
+    };
 
     const navLinks = [
         { name: 'Home', path: '/' },
@@ -69,25 +111,93 @@ const Navbar = () => {
                         </Link>
 
                         {/* Desktop Search */}
-                        <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+                        <div className="hidden md:flex flex-1 max-w-2xl mx-8 relative">
                             <form onSubmit={(e) => handleSearch(e, false)} className="w-full">
                                 <div className="relative w-full">
                                     <div
-                                        className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-white transition-colors"
+                                        className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-accent transition-colors"
                                         onClick={(e) => handleSearch(e, false)}
                                     >
-                                        <Search className="h-5 w-5 text-gray-400 hover:text-white" />
+                                        <Search className="h-5 w-5 text-gray-500 hover:text-accent" />
                                     </div>
                                     <input
                                         ref={searchInputRef}
                                         type="text"
-                                        className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
-                                        placeholder="Universal AI Search..."
+                                        className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent sm:text-sm transition duration-150 ease-in-out shadow-sm"
+                                        placeholder="Search for advocates, judgements, bare acts..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
+                                        onFocus={() => setShowSuggestions(true)}
                                     />
                                 </div>
                             </form>
+
+                            {/* Search Suggestions Dropdown */}
+                            <AnimatePresence>
+                                {showSuggestions && searchQuery.trim() && (suggestions.advocates?.length > 0 || suggestions.judgements?.length > 0 || suggestions.bareActs?.length > 0 || suggestions.news?.length > 0) && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50 max-h-96 overflow-y-auto"
+                                    >
+                                        {suggestions.advocates?.length > 0 && (
+                                            <div className="p-2">
+                                                <div className="text-xs font-semibold text-gray-500 uppercase px-2 mb-1">Advocates</div>
+                                                {suggestions.advocates.slice(0, 3).map(item => (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => handleSuggestionClick(`/advocates`)}
+                                                        className="flex items-center px-2 py-2 hover:bg-gray-50 cursor-pointer rounded-md group"
+                                                    >
+                                                        <Search className="h-4 w-4 text-gray-400 mr-2 group-hover:text-accent" />
+                                                        <span className="text-sm text-gray-700 group-hover:text-primary">{item.name}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {suggestions.judgements?.length > 0 && (
+                                            <div className="p-2 border-t border-gray-100">
+                                                <div className="text-xs font-semibold text-gray-500 uppercase px-2 mb-1">Judgements</div>
+                                                {suggestions.judgements.slice(0, 3).map(item => (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => handleSuggestionClick(`/judgements`)}
+                                                        className="flex items-center px-2 py-2 hover:bg-gray-50 cursor-pointer rounded-md group"
+                                                    >
+                                                        <Search className="h-4 w-4 text-gray-400 mr-2 group-hover:text-accent" />
+                                                        <span className="text-sm text-gray-700 group-hover:text-primary">{item.title || item.case_title}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {suggestions.bareActs?.length > 0 && (
+                                            <div className="p-2 border-t border-gray-100">
+                                                <div className="text-xs font-semibold text-gray-500 uppercase px-2 mb-1">Bare Acts</div>
+                                                {suggestions.bareActs.slice(0, 3).map(item => (
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => handleSuggestionClick(`/bare-acts`)}
+                                                        className="flex items-center px-2 py-2 hover:bg-gray-50 cursor-pointer rounded-md group"
+                                                    >
+                                                        <Search className="h-4 w-4 text-gray-400 mr-2 group-hover:text-accent" />
+                                                        <span className="text-sm text-gray-700 group-hover:text-primary">{item.title}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        <div
+                                            onClick={(e) => handleSearch(e, false)}
+                                            className="p-3 bg-gray-50 text-center cursor-pointer hover:bg-gray-100 border-t border-gray-100"
+                                        >
+                                            <span className="text-sm font-medium text-accent">View all results for "{searchQuery}"</span>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
 
                         {/* Desktop Menu */}
