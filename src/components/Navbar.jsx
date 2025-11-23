@@ -111,7 +111,7 @@ const Navbar = () => {
                         </Link>
 
                         {/* Desktop Search */}
-                        <div className="hidden md:flex flex-1 max-w-2xl mx-8 relative">
+                        <div className="hidden md:flex flex-1 max-w-4xl mx-4 relative min-w-[400px]">
                             <form onSubmit={(e) => handleSearch(e, false)} className="w-full">
                                 <div className="relative w-full">
                                     <div
