@@ -103,7 +103,7 @@ const Navbar = () => {
     return (
         <>
             <nav className="bg-primary text-white sticky top-0 z-50 shadow-lg">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
                         <Link to="/" className="flex-shrink-0 font-bold text-2xl text-accent tracking-wider">
@@ -111,14 +111,14 @@ const Navbar = () => {
                         </Link>
 
                         {/* Desktop Search */}
-                        <div className="hidden md:flex flex-1 max-w-4xl mx-4 relative">
+                        <div className="hidden md:flex flex-1 max-w-4xl mx-2 relative min-w-[300px]">
                             <form onSubmit={(e) => handleSearch(e, false)} className="w-full">
                                 <div className="relative w-full">
                                     <div
                                         className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-accent transition-colors"
                                         onClick={(e) => handleSearch(e, false)}
                                     >
-                                        <Search className="h-5 w-5 text-gray-500 hover:text-accent" />
+                                        <Search className="h-6 w-6 text-gray-500 hover:text-accent" />
                                     </div>
                                     <input
                                         ref={searchInputRef}
@@ -202,7 +202,7 @@ const Navbar = () => {
 
                         {/* Desktop Menu */}
                         <div className="hidden md:block">
-                            <div className="ml-4 flex items-center space-x-4">
+                            <div className="ml-2 flex items-center space-x-2">
                                 {navLinks.map((link) => (
                                     <Link
                                         key={link.name}
