@@ -236,9 +236,9 @@ const Navbar = () => {
                                 ) : (
                                     <button
                                         onClick={() => setIsAuthModalOpen(true)}
-                                        className="flex items-center space-x-2 bg-accent hover:bg-accent-hover px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                                        className="flex items-center space-x-2 bg-accent hover:bg-accent-hover px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap"
                                     >
-                                        <User className="h-4 w-4" />
+                                        <User className="h-5 w-5" />
                                         <span>Sign In</span>
                                     </button>
                                 )}
