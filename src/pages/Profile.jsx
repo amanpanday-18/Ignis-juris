@@ -82,10 +82,7 @@ const Profile = () => {
                                 </p>
                             </div>
                             <div className="border-t border-gray-100 pt-4">
-                                <div className="flex justify-between items-center py-2">
-                                    <span className="text-gray-600">Account Type</span>
-                                    <span className="font-semibold text-accent">Premium</span>
-                                </div>
+
                                 <div className="flex justify-between items-center py-2">
                                     <span className="text-gray-600">Member Since</span>
                                     <span className="font-semibold text-primary">
