@@ -10,7 +10,10 @@ const Navbar = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const { user, logout } = useAuth();
+
     const navigate = useNavigate();
+    const searchInputRef = React.useRef(null);
+    const mobileSearchInputRef = React.useRef(null);
 
     const navLinks = [
         { name: 'Home', path: '/' },
@@ -40,11 +43,18 @@ const Navbar = () => {
         navigate('/');
     };
 
-    const handleSearch = (e) => {
+    const handleSearch = (e, isMobile = false) => {
         e.preventDefault();
         if (searchQuery.trim()) {
             navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
             setSearchQuery('');
+        } else {
+            // Focus input if query is empty
+            if (isMobile && mobileSearchInputRef.current) {
+                mobileSearchInputRef.current.focus();
+            } else if (!isMobile && searchInputRef.current) {
+                searchInputRef.current.focus();
+            }
         }
     };
 
@@ -60,15 +70,16 @@ const Navbar = () => {
 
                         {/* Desktop Search */}
                         <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-                            <form onSubmit={handleSearch} className="w-full">
+                            <form onSubmit={(e) => handleSearch(e, false)} className="w-full">
                                 <div className="relative w-full">
                                     <div
                                         className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-white transition-colors"
-                                        onClick={handleSearch}
+                                        onClick={(e) => handleSearch(e, false)}
                                     >
                                         <Search className="h-5 w-5 text-gray-400 hover:text-white" />
                                     </div>
                                     <input
+                                        ref={searchInputRef}
                                         type="text"
                                         className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
                                         placeholder="Universal AI Search..."
@@ -147,15 +158,16 @@ const Navbar = () => {
                         >
                             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 <div className="mb-4 px-2">
-                                    <form onSubmit={(e) => { handleSearch(e); setIsOpen(false); }} className="w-full">
+                                    <form onSubmit={(e) => { handleSearch(e, true); setIsOpen(false); }} className="w-full">
                                         <div className="relative w-full">
                                             <div
                                                 className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer hover:text-white transition-colors"
-                                                onClick={(e) => { handleSearch(e); setIsOpen(false); }}
+                                                onClick={(e) => { handleSearch(e, true); }}
                                             >
                                                 <Search className="h-5 w-5 text-gray-400 hover:text-white" />
                                             </div>
                                             <input
+                                                ref={mobileSearchInputRef}
                                                 type="text"
                                                 className="block w-full pl-10 pr-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
                                                 placeholder="Search..."
