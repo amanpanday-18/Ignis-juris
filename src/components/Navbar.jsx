@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -40,13 +40,7 @@ const Navbar = () => {
         navigate('/');
     };
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-            setSearchQuery('');
-        }
-    };
+
 
     return (
         <>
@@ -58,20 +52,7 @@ const Navbar = () => {
                             THE LEGAL REMEDIES
                         </Link>
 
-                        {/* Desktop Search */}
-                        <div className="hidden md:flex flex-1 max-w-lg mx-8">
-                            <form onSubmit={handleSearch} className="w-full">
-                                <div className="relative w-full">
-                                    <input
-                                        type="text"
-                                        className="block w-full px-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
-                                        placeholder="Universal AI Search..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                </div>
-                            </form>
-                        </div>
+
 
                         {/* Desktop Menu */}
                         <div className="hidden md:block">
@@ -141,17 +122,6 @@ const Navbar = () => {
                         >
                             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 <div className="mb-4 px-2">
-                                    <form onSubmit={(e) => { handleSearch(e); setIsOpen(false); }} className="w-full">
-                                        <div className="relative w-full">
-                                            <input
-                                                type="text"
-                                                className="block w-full px-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
-                                                placeholder="Search..."
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                            />
-                                        </div>
-                                    </form>
                                 </div>
                                 {navLinks.map((link) => (
                                     <Link
