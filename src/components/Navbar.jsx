@@ -62,12 +62,9 @@ const Navbar = () => {
                         <div className="hidden md:flex flex-1 max-w-lg mx-8">
                             <form onSubmit={handleSearch} className="w-full">
                                 <div className="relative w-full">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Search className="h-5 w-5 text-gray-400" />
-                                    </div>
                                     <input
                                         type="text"
-                                        className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
+                                        className="block w-full px-3 py-2 border border-transparent rounded-md leading-5 bg-primary-light text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
                                         placeholder="Universal AI Search..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -146,12 +143,9 @@ const Navbar = () => {
                                 <div className="mb-4 px-2">
                                     <form onSubmit={(e) => { handleSearch(e); setIsOpen(false); }} className="w-full">
                                         <div className="relative w-full">
-                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <Search className="h-5 w-5 text-gray-400" />
-                                            </div>
                                             <input
                                                 type="text"
-                                                className="block w-full pl-10 pr-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
+                                                className="block w-full px-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
                                                 placeholder="Search..."
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
