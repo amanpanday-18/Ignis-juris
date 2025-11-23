@@ -77,6 +77,8 @@ const Navbar = () => {
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }, 100);
+        } else if (link.path === '/') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
