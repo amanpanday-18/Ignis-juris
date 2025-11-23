@@ -72,7 +72,7 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden"
+                    className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
                 >
                     <div className="flex justify-between items-center p-6 border-b border-gray-100">
                         <h2 className="text-xl font-bold text-primary">Add New Advocate</h2>
@@ -140,19 +140,6 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                                     placeholder="e.g. New Delhi"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
-                                <input
-                                    type="number"
-                                    name="rating"
-                                    step="0.1"
-                                    min="0"
-                                    max="5"
-                                    value={formData.rating}
-                                    onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                                 />
                             </div>
                         </div>
