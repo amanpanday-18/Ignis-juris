@@ -26,7 +26,7 @@ const SearchResults = () => {
         }
     };
 
-    const ResultSection = ({ title, items, icon: Icon, linkPrefix, emptyMessage }) => {
+    const ResultSection = ({ title, items, icon: Icon }) => {
         if (!items || items.length === 0) return null;
 
         return (
@@ -42,19 +42,23 @@ const SearchResults = () => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
-                            className="bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:border-accent transition-colors"
+                            className="bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:border-accent transition-colors cursor-pointer"
                         >
-                            <Link to={`${linkPrefix}${item.id}`} className="block">
-                                <h3 className="text-lg font-semibold text-primary mb-2 hover:text-accent transition-colors">
-                                    {item.name || item.case_title || item.title}
-                                </h3>
-                                <p className="text-gray-600 text-sm line-clamp-2">
-                                    {item.specialization || item.summary || item.description || item.excerpt}
-                                </p>
-                                {item.location && (
-                                    <p className="text-gray-500 text-xs mt-2">{item.location}</p>
-                                )}
-                            </Link>
+                            <h3 className="text-lg font-semibold text-primary mb-2">
+                                {item.name || item.case_title || item.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm line-clamp-2">
+                                {item.specialization || item.summary || item.description || item.excerpt}
+                            </p>
+                            {item.location && (
+                                <p className="text-gray-500 text-xs mt-2">{item.location}</p>
+                            )}
+                            {item.case_number && (
+                                <p className="text-gray-500 text-xs mt-2">Case No: {item.case_number}</p>
+                            )}
+                            {item.court && (
+                                <p className="text-gray-500 text-xs mt-1">Court: {item.court}</p>
+                            )}
                         </motion.div>
                     ))}
                 </div>
@@ -94,28 +98,24 @@ const SearchResults = () => {
                         title="Advocates"
                         items={results.advocates}
                         icon={User}
-                        linkPrefix="/advocates#"
                     />
 
                     <ResultSection
                         title="Judgements"
                         items={results.judgements}
                         icon={Scale}
-                        linkPrefix="/judgements#"
                     />
 
                     <ResultSection
                         title="Bare Acts"
                         items={results.bareActs}
                         icon={FileText}
-                        linkPrefix="/bare-acts#"
                     />
 
                     <ResultSection
                         title="News"
                         items={results.news}
                         icon={Newspaper}
-                        linkPrefix="/#news-"
                     />
                 </>
             ) : (
