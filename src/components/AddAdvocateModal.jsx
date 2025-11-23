@@ -12,7 +12,8 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
         location: '',
         rating: '5.0',
         podcastTitle: '',
-        podcastDuration: ''
+        podcastDuration: '',
+        podcastUrl: ''
     });
 
     const handleChange = (e) => {
@@ -39,7 +40,8 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
                 location: '',
                 rating: '5.0',
                 podcastTitle: '',
-                podcastDuration: ''
+                podcastDuration: '',
+                podcastUrl: ''
             });
             setImageFile(null);
         } catch (error) {
@@ -168,6 +170,17 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
                                         onChange={handleChange}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                                         placeholder="e.g. 15 min"
+                                    />
+                                </div>
+                                <div className="col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Podcast URL</label>
+                                    <input
+                                        type="url"
+                                        name="podcastUrl"
+                                        value={formData.podcastUrl}
+                                        onChange={handleChange}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        placeholder="https://spotify.com/..."
                                     />
                                 </div>
                             </div>

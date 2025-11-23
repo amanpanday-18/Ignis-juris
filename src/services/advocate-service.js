@@ -47,6 +47,7 @@ export const AdvocateService = {
                     rating: advocateData.rating || 5.0,
                     podcast_title: advocateData.podcastTitle,
                     podcast_duration: advocateData.podcastDuration,
+                    podcast_url: advocateData.podcastUrl,
                     image_url: imageUrl || 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=400&q=80' // Default image
                 }
             ])
