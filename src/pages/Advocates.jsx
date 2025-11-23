@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Mic, Star, MapPin, Phone, Mail, Plus, Trash2, Search } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mic, Star, MapPin, Phone, Mail, Plus, Trash2, Search, X, Globe, Linkedin, Instagram } from 'lucide-react';
 import { AdvocateService } from '../services/advocate-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddAdvocateModal from '../components/AddAdvocateModal';
@@ -8,6 +8,7 @@ import AddAdvocateModal from '../components/AddAdvocateModal';
 const Advocates = () => {
     const [advocates, setAdvocates] = useState([]);
     const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+    const [selectedAdvocate, setSelectedAdvocate] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -229,14 +230,12 @@ const Advocates = () => {
                                     )
                                 )}
 
-                                <div className="grid grid-cols-2 gap-3">
-                                    <button className="flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors text-sm font-medium">
-                                        <Mail className="h-4 w-4 mr-2" />
-                                        Message
-                                    </button>
-                                    <button className="flex items-center justify-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-light transition-colors text-sm font-medium">
-                                        <Phone className="h-4 w-4 mr-2" />
-                                        Book
+                                <div className="mt-4">
+                                    <button
+                                        onClick={() => setSelectedAdvocate(advocate)}
+                                        className="w-full flex items-center justify-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-light transition-colors text-sm font-medium"
+                                    >
+                                        More Information
                                     </button>
                                 </div>
                             </div>
@@ -244,6 +243,100 @@ const Advocates = () => {
                     ))}
                 </div>
             )}
+
+            {/* Contact Details Modal */}
+            <AnimatePresence>
+                {selectedAdvocate && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden relative"
+                        >
+                            <button
+                                onClick={() => setSelectedAdvocate(null)}
+                                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+
+                            <div className="p-6 text-center border-b border-gray-100">
+                                <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-4 border-gray-100">
+                                    <img
+                                        src={selectedAdvocate.image_url}
+                                        alt={selectedAdvocate.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <h2 className="text-2xl font-bold text-primary">{selectedAdvocate.name}</h2>
+                                <p className="text-accent font-medium">{selectedAdvocate.specialization}</p>
+                            </div>
+
+                            <div className="p-6 space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Contact Information</h3>
+
+                                {selectedAdvocate.phone_number && (
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <Phone className="h-5 w-5 text-accent mr-3" />
+                                        <span className="text-gray-700 font-medium">{selectedAdvocate.phone_number}</span>
+                                    </div>
+                                )}
+
+                                {selectedAdvocate.email && (
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <Mail className="h-5 w-5 text-accent mr-3" />
+                                        <span className="text-gray-700 font-medium">{selectedAdvocate.email}</span>
+                                    </div>
+                                )}
+
+                                {selectedAdvocate.website_url && (
+                                    <a
+                                        href={selectedAdvocate.website_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                                    >
+                                        <Globe className="h-5 w-5 text-accent mr-3" />
+                                        <span className="text-gray-700 font-medium">Visit Website</span>
+                                    </a>
+                                )}
+
+                                <div className="flex justify-center space-x-4 pt-2">
+                                    {selectedAdvocate.linkedin_url && (
+                                        <a
+                                            href={selectedAdvocate.linkedin_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-2 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors"
+                                            title="LinkedIn"
+                                        >
+                                            <Linkedin className="h-6 w-6" />
+                                        </a>
+                                    )}
+                                    {selectedAdvocate.instagram_url && (
+                                        <a
+                                            href={selectedAdvocate.instagram_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-2 bg-pink-50 text-pink-600 rounded-full hover:bg-pink-100 transition-colors"
+                                            title="Instagram"
+                                        >
+                                            <Instagram className="h-6 w-6" />
+                                        </a>
+                                    )}
+                                </div>
+
+                                {(!selectedAdvocate.phone_number && !selectedAdvocate.email && !selectedAdvocate.linkedin_url && !selectedAdvocate.instagram_url && !selectedAdvocate.website_url) && (
+                                    <div className="text-center text-gray-500 py-4">
+                                        No contact details available.
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
 
             <AddAdvocateModal
                 isOpen={isAddModalOpen}

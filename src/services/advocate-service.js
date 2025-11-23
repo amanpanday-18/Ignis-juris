@@ -60,6 +60,11 @@ export const AdvocateService = {
                     podcast_title: advocateData.podcastTitle,
                     podcast_duration: advocateData.podcastDuration,
                     podcast_url: advocateData.podcastUrl,
+                    phone_number: advocateData.phoneNumber,
+                    email: advocateData.email,
+                    linkedin_url: advocateData.linkedinUrl,
+                    instagram_url: advocateData.instagramUrl,
+                    website_url: advocateData.websiteUrl,
                     image_url: imageUrl || 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=400&q=80' // Default image
                 }
             ])
