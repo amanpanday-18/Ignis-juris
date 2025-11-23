@@ -105,6 +105,35 @@ const Navbar = () => {
             <nav className="bg-primary text-white sticky top-0 z-50 shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
+                        {/* Profile/Login Section (Left Side) */}
+                        <div className="hidden md:flex items-center mr-4">
+                            {user ? (
+                                <div className="flex items-center space-x-4">
+                                    <Link to="/profile" className="flex items-center space-x-2 hover:text-accent transition-colors">
+                                        <div className="h-8 w-8 rounded-full border-2 border-accent bg-accent flex items-center justify-center text-white font-bold">
+                                            {user.user_metadata?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                                        </div>
+                                        <span className="text-sm font-medium">{user.user_metadata?.name || user.email}</span>
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="p-2 rounded-full hover:bg-primary-light text-gray-400 hover:text-white transition-colors"
+                                        title="Logout"
+                                    >
+                                        <LogOut className="h-5 w-5" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => setIsAuthModalOpen(true)}
+                                    className="flex items-center space-x-2 bg-accent hover:bg-accent-hover px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                                >
+                                    <User className="h-4 w-4" />
+                                    <span>Sign In</span>
+                                </button>
+                            )}
+                        </div>
+
                         {/* Logo */}
                         <Link to="/" className="flex-shrink-0 font-bold text-2xl text-accent tracking-wider">
                             THE LEGAL REMEDIES
@@ -216,32 +245,6 @@ const Navbar = () => {
                                 <Link to="/store" className="p-2 rounded-full hover:bg-primary-light transition-colors">
                                     <ShoppingBag className="h-5 w-5" />
                                 </Link>
-
-                                {user ? (
-                                    <div className="flex items-center space-x-4 ml-2">
-                                        <Link to="/profile" className="flex items-center space-x-2 hover:text-accent transition-colors">
-                                            <div className="h-8 w-8 rounded-full border-2 border-accent bg-accent flex items-center justify-center text-white font-bold">
-                                                {user.user_metadata?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
-                                            </div>
-                                            <span className="text-sm font-medium">{user.user_metadata?.name || user.email}</span>
-                                        </Link>
-                                        <button
-                                            onClick={handleLogout}
-                                            className="p-2 rounded-full hover:bg-primary-light text-gray-400 hover:text-white transition-colors"
-                                            title="Logout"
-                                        >
-                                            <LogOut className="h-5 w-5" />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <button
-                                        onClick={() => setIsAuthModalOpen(true)}
-                                        className="flex items-center space-x-2 bg-accent hover:bg-accent-hover px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                                    >
-                                        <User className="h-4 w-4" />
-                                        <span>Sign In</span>
-                                    </button>
-                                )}
                             </div>
                         </div>
 
