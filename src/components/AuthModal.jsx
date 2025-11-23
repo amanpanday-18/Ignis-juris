@@ -86,7 +86,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm"
-                                            placeholder="John Doe"
+                                            placeholder="Name"
                                         />
                                     </div>
                                 </div>
