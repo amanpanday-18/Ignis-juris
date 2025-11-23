@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { Instagram, Mail } from 'lucide-react';
+import logoFooter from '../assets/logo-footer.jpg';
 
 const Layout = () => {
     return (
@@ -18,6 +19,13 @@ const Layout = () => {
                             <p className="text-sm">
                                 Your one-stop solution for all legal needs. From news to drafting, we have it all.
                             </p>
+                        </div>
+                        <div className="flex items-center justify-center">
+                            <img
+                                src={logoFooter}
+                                alt="The Legal Remedies Logo"
+                                className="w-32 h-32 rounded-full object-cover shadow-lg"
+                            />
                         </div>
                         <div>
                             <h3 className="text-white text-lg font-bold mb-4">Connect</h3>
