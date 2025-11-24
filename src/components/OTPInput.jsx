@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-const OTPInput = ({ length = 6, onComplete }) => {
+const OTPInput = ({ length = 6, onComplete, onChange }) => {
     const [otp, setOtp] = useState(new Array(length).fill(''));
     const inputRefs = useRef([]);
 
@@ -18,10 +18,16 @@ const OTPInput = ({ length = 6, onComplete }) => {
             inputRefs.current[index + 1]?.focus();
         }
 
-        // Call onComplete when all digits are filled
+        // Call onChange to update parent component
         const otpString = newOtp.join('');
+        if (onChange) {
+            onChange(otpString);
+        }
+
+        // Call onComplete when all digits are filled
         if (otpString.length === length && !otpString.includes('')) {
-            onComplete(otpString);
+            // Small delay to ensure state is updated
+            setTimeout(() => onComplete(otpString), 100);
         }
     };
 
@@ -54,7 +60,7 @@ const OTPInput = ({ length = 6, onComplete }) => {
         // Call onComplete if all digits are filled
         const otpString = newOtp.join('');
         if (otpString.length === length && !otpString.includes('')) {
-            onComplete(otpString);
+            setTimeout(() => onComplete(otpString), 100);
         }
     };
 

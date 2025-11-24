@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Layout from './layouts/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Advocates from './pages/Advocates';
 import Judgements from './pages/Judgements';
@@ -37,26 +38,29 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
+              {/* Public Routes */}
               <Route index element={<Home />} />
-              <Route path="advocates" element={<Advocates />} />
-              <Route path="judgements" element={<Judgements />} />
-              <Route path="bare-acts" element={<BareActs />} />
-              <Route path="drafting" element={<DraftingTemplates />} />
-              <Route path="ai-drafting" element={<AIDrafting />} />
-              <Route path="opportunities" element={<Placeholder title="Opportunities" />} />
-              <Route path="education" element={<Education />} />
-              <Route path="internships" element={<Internships />} />
-              <Route path="jobs" element={<Jobs />} />
-              <Route path="scholarships" element={<Scholarships />} />
-              <Route path="diary" element={<AdvocateDiary />} />
-              <Route path="more" element={<More />} />
-              <Route path="competitions" element={<MootCourts />} />
-              <Route path="quizzes" element={<Quizzes />} />
-              <Route path="quizzes/:id" element={<TakeQuiz />} />
-              <Route path="quizzes/:id/results" element={<QuizResults />} />
-              <Route path="store" element={<Store />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="search" element={<SearchResults />} />
+
+              {/* Protected Routes */}
+              <Route path="advocates" element={<ProtectedRoute><Advocates /></ProtectedRoute>} />
+              <Route path="judgements" element={<ProtectedRoute><Judgements /></ProtectedRoute>} />
+              <Route path="bare-acts" element={<ProtectedRoute><BareActs /></ProtectedRoute>} />
+              <Route path="drafting" element={<ProtectedRoute><DraftingTemplates /></ProtectedRoute>} />
+              <Route path="ai-drafting" element={<ProtectedRoute><AIDrafting /></ProtectedRoute>} />
+              <Route path="opportunities" element={<ProtectedRoute><Placeholder title="Opportunities" /></ProtectedRoute>} />
+              <Route path="education" element={<ProtectedRoute><Education /></ProtectedRoute>} />
+              <Route path="internships" element={<ProtectedRoute><Internships /></ProtectedRoute>} />
+              <Route path="jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
+              <Route path="scholarships" element={<ProtectedRoute><Scholarships /></ProtectedRoute>} />
+              <Route path="diary" element={<ProtectedRoute><AdvocateDiary /></ProtectedRoute>} />
+              <Route path="more" element={<ProtectedRoute><More /></ProtectedRoute>} />
+              <Route path="competitions" element={<ProtectedRoute><MootCourts /></ProtectedRoute>} />
+              <Route path="quizzes" element={<ProtectedRoute><Quizzes /></ProtectedRoute>} />
+              <Route path="quizzes/:id" element={<ProtectedRoute><TakeQuiz /></ProtectedRoute>} />
+              <Route path="quizzes/:id/results" element={<ProtectedRoute><QuizResults /></ProtectedRoute>} />
+              <Route path="store" element={<ProtectedRoute><Store /></ProtectedRoute>} />
+              <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
             </Route>
           </Routes>
         </Router>
