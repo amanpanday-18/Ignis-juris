@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Layout from './layouts/Layout';
-import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Advocates from './pages/Advocates';
 import Judgements from './pages/Judgements';
@@ -23,6 +22,7 @@ import Internships from './pages/Internships';
 import Jobs from './pages/Jobs';
 import Scholarships from './pages/Scholarships';
 import SearchResults from './pages/SearchResults';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Placeholder components for other routes
 const Placeholder = ({ title }) => (
@@ -38,10 +38,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
-              {/* Public Routes */}
               <Route index element={<Home />} />
-
-              {/* Protected Routes */}
               <Route path="advocates" element={<ProtectedRoute><Advocates /></ProtectedRoute>} />
               <Route path="judgements" element={<ProtectedRoute><Judgements /></ProtectedRoute>} />
               <Route path="bare-acts" element={<ProtectedRoute><BareActs /></ProtectedRoute>} />

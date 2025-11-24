@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, Menu, X, User, ShoppingBag, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AuthModal from './AuthModal';
@@ -16,8 +16,18 @@ const Navbar = () => {
     const { user, logout } = useAuth();
 
     const navigate = useNavigate();
+    const location = useLocation(); // Add useLocation
     const searchInputRef = React.useRef(null);
     const mobileSearchInputRef = React.useRef(null);
+
+    // Check for openLogin state from redirect
+    React.useEffect(() => {
+        if (location.state?.openLogin) {
+            setIsAuthModalOpen(true);
+            // Optional: Clear state so it doesn't reopen on refresh (though refresh clears state anyway usually)
+            // But we want to keep 'from' state if we want to redirect back
+        }
+    }, [location.state]);
 
     // Debounce search suggestions
     React.useEffect(() => {
