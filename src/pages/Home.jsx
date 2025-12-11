@@ -8,6 +8,8 @@ import { NewsService } from '../services/news-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddNewsModal from '../components/AddNewsModal';
 
+import { Helmet } from 'react-helmet-async';
+
 const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
@@ -77,6 +79,10 @@ const Home = () => {
 
     return (
         <div className="min-h-screen">
+            <Helmet>
+                <title>Legal Remedies - Home</title>
+                <meta name="description" content="Your comprehensive legal platform for news, resources, and AI-powered document drafting." />
+            </Helmet>
             {/* Hero Section */}
             <section className="bg-gradient-to-br from-primary via-primary-light to-primary text-white py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
