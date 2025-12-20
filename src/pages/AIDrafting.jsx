@@ -24,8 +24,7 @@ const AIDrafting = () => {
 
     const handleTemplateSelect = (template) => {
         setSelectedTemplate(template);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setStep('form');
     };
 
     const handleDownload = () => {
@@ -45,6 +44,32 @@ const AIDrafting = () => {
         setSelectedTemplate(null);
         setFormData({});
         setGeneratedDocument('');
+    };
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(generatedDocument);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    const handleInputChange = (name, value) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleGenerate = async () => {
+        setIsGenerating(true);
+        try {
+            const response = await generateDocument(selectedTemplate.id, formData);
+            setGeneratedDocument(response.document);
+            setStep('preview');
+        } catch (error) {
+            console.error('Error generating document:', error);
+        } finally {
+            setIsGenerating(false);
+        }
     };
 
     const isFormValid = () => {
