@@ -31,7 +31,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                 setPassword('');
             } else {
                 // Send OTP for sign up
-                await signUpWithOTP(email, name);
+                await signUp(email, password, name);
                 setOtpSent(true);
             }
         } catch (err) {
@@ -47,7 +47,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
         setOtpCode(otp);
 
         try {
-            await verifyOTP(email, otp);
+            await verifyOTP(email, otp, 'signup');
             onClose();
             // Reset form
             setEmail('');
@@ -65,7 +65,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
         setError('');
         setLoading(true);
         try {
-            await signUpWithOTP(email, name);
+            await signUp(email, password, name);
             setError('');
             // Show success message briefly
             setTimeout(() => setError(''), 3000);

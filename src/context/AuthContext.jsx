@@ -64,11 +64,11 @@ export const AuthProvider = ({ children }) => {
         return data;
     };
 
-    const verifyOTP = async (email, otp) => {
+    const verifyOTP = async (email, otp, type = 'email') => {
         const { data, error } = await supabase.auth.verifyOtp({
             email,
             token: otp,
-            type: 'email'
+            type
         });
         if (error) throw error;
         return data;
