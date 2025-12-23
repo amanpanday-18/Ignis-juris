@@ -7,6 +7,7 @@ import { useAdmin } from '../hooks/useAdmin';
 import AddJudgementModal from '../components/AddJudgementModal';
 import JudgementDetailModal from '../components/JudgementDetailModal';
 import { Helmet } from 'react-helmet-async';
+import webLogo from '../assets/web-logo.png';
 
 const Judgements = () => {
     const [judgements, setJudgements] = useState([]);
@@ -99,9 +100,9 @@ const Judgements = () => {
             </Helmet>
 
             {/* Hero Header with Search */}
-            <div className="bg-primary pt-16 pb-24 text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-primary to-slate-900 opacity-90"></div>
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
+            {/* Hero Header with Search */}
+            <div className="bg-gradient-to-r from-indigo-900 to-slate-900 text-white py-16 relative overflow-hidden">
+                <img src={webLogo} alt="Background Logo" className="absolute inset-0 w-full h-full object-contain opacity-5 pointer-events-none transform scale-90" />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <motion.div
@@ -110,16 +111,15 @@ const Judgements = () => {
                         transition={{ duration: 0.6 }}
                     >
                         <Scale className="h-16 w-16 text-accent mx-auto mb-6" />
-                        <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                             Legal Judgements Database
                         </h1>
-                        <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-light">
+                        <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 font-light">
                             Access a comprehensive repository of case laws, legal precedents, and court orders.
                         </p>
 
-                        {/* Glassmorphic Search Bar */}
+                        {/* Search Bar */}
                         <div className="max-w-2xl mx-auto relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-accent via-purple-500 to-indigo-500 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
                             <div className="relative flex items-center bg-slate-800 border border-white/10 rounded-xl shadow-2xl p-2">
                                 <Search className="h-6 w-6 text-slate-400 ml-3" />
                                 <input
@@ -128,11 +128,11 @@ const Judgements = () => {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                                    className="w-full px-4 py-3 bg-transparent border-none text-white placeholder-slate-500 focus:ring-0 text-lg"
+                                    className="w-full px-4 py-3 bg-transparent border-none text-white placeholder-slate-500 focus:ring-0 text-lg focus:outline-none"
                                 />
                                 <button
                                     onClick={handleSearch}
-                                    className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md"
+                                    className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors font-medium shadow-md"
                                 >
                                     Search
                                 </button>
