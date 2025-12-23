@@ -113,7 +113,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="bg-primary text-white sticky top-0 z-50 shadow-lg">
+            <nav className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg border-b border-white/5">
                 <div className="w-full px-2 sm:px-4 lg:px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
@@ -293,7 +293,7 @@ const Navbar = () => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="md:hidden bg-primary-light"
+                            className="md:hidden bg-slate-900 border-b border-white/5"
                         >
                             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 <div className="mb-4 px-2">
