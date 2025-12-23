@@ -166,7 +166,7 @@ const Jobs = () => {
                                             href={job.apply_link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+                                            className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-accent text-white font-bold rounded-lg hover:bg-accent-hover transition-colors shadow-md hover:shadow-lg"
                                         >
                                             Apply Now
                                             <ExternalLink className="h-4 w-4 ml-2" />

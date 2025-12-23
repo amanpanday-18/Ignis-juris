@@ -279,7 +279,7 @@ const Advocates = () => {
                                         <div className="mt-auto">
                                             <button
                                                 onClick={() => setSelectedAdvocate(advocate)}
-                                                className="w-full px-4 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm flex items-center justify-center"
+                                                className="w-full px-4 py-2.5 bg-accent text-white font-medium rounded-lg hover:bg-accent-hover transition-colors shadow-sm flex items-center justify-center"
                                             >
                                                 Book Consultation
                                             </button>

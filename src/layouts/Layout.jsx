@@ -11,7 +11,7 @@ const Layout = () => {
             <main className="flex-grow">
                 <Outlet />
             </main>
-            <footer className="bg-primary text-gray-400 py-8">
+            <footer className="bg-slate-900 text-gray-400 py-8 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
