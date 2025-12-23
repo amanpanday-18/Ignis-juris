@@ -13,8 +13,8 @@ export default {
           dark: '#4338ca', // Indigo 700
         },
         accent: {
-          DEFAULT: '#fbbf24', // Amber 400 - Brighter Gold for Dark Mode
-          hover: '#d97706', // Amber 600
+          DEFAULT: '#f59e0b', // Amber 500 - Richer Gold for Dark Mode
+          hover: '#b45309', // Amber 700
         },
         background: '#0f172a', // Slate 900 - Deep Navy Background
         surface: '#1e293b', // Slate 800 - Lighter for cards
