@@ -53,42 +53,42 @@ const AddEventModal = ({ isOpen, onClose, onAdd, selectedDate }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden my-8"
+                className="bg-slate-900 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden my-8 border border-white/10"
             >
-                <div className="flex justify-between items-center p-6 border-b border-gray-100">
-                    <h2 className="text-xl font-bold text-primary">Add Diary Event</h2>
-                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                <div className="flex justify-between items-center p-6 border-b border-white/10">
+                    <h2 className="text-xl font-bold text-white">Add Diary Event</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Event Title *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Event Title *</label>
                         <input
                             type="text"
                             name="title"
                             required
                             value={formData.title}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             placeholder="e.g., Hearing: Sharma vs State"
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Type *</label>
                             <select
                                 name="eventType"
                                 value={formData.eventType}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
                             >
                                 {eventTypes.map(type => (
                                     <option key={type.id} value={type.id}>{type.name}</option>
@@ -96,59 +96,66 @@ const AddEventModal = ({ isOpen, onClose, onAdd, selectedDate }) => {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Date *</label>
                             <input
                                 type="date"
                                 name="date"
                                 required
                                 value={formData.date}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Time</label>
                             <input
                                 type="time"
                                 name="time"
                                 value={formData.time}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Court / Location</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Court / Location</label>
                             <input
                                 type="text"
                                 name="court"
                                 value={formData.court}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                 placeholder="e.g., High Court, Delhi"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Notes</label>
                         <textarea
                             name="notes"
                             rows="3"
                             value={formData.notes}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             placeholder="Case details, client contact, etc."
                         />
                     </div>
 
-                    <div className="pt-4">
+                    <div className="pt-4 flex space-x-4">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg transition-colors border border-white/10"
+                        >
+                            Cancel
+                        </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                            className="flex-1 flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
                         >
                             {loading ? (
                                 <>

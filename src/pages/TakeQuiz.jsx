@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Loader } from 'lucide-react';
 import { QuizService } from '../services/quiz-service';
 import { useAuth } from '../context/AuthContext';
+import { Helmet } from 'react-helmet-async';
 
 const TakeQuiz = () => {
     const { id } = useParams();
@@ -118,7 +119,7 @@ const TakeQuiz = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-slate-900">
                 <Loader className="animate-spin h-12 w-12 text-accent" />
             </div>
         );
@@ -126,9 +127,9 @@ const TakeQuiz = () => {
 
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-slate-900">
                 <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Quiz Not Found</h2>
+                    <h2 className="text-2xl font-bold text-white mb-2">Quiz Not Found</h2>
                     <button
                         onClick={() => navigate('/quizzes')}
                         className="text-accent hover:underline"
@@ -145,17 +146,20 @@ const TakeQuiz = () => {
     const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen bg-slate-900 py-8 text-slate-100">
+            <Helmet>
+                <title>{quiz.title} - Legal Remedies</title>
+            </Helmet>
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="bg-white rounded-xl shadow-sm p-4 mb-6 flex justify-between items-center sticky top-4 z-10">
+                <div className="bg-slate-800 rounded-xl shadow-lg border border-white/5 p-4 mb-6 flex justify-between items-center sticky top-4 z-10">
                     <div>
-                        <h1 className="text-lg font-bold text-primary">{quiz.title}</h1>
-                        <p className="text-sm text-gray-500">
+                        <h1 className="text-lg font-bold text-white">{quiz.title}</h1>
+                        <p className="text-sm text-slate-400">
                             Question {currentQuestionIndex + 1} of {quiz.questions.length}
                         </p>
                     </div>
-                    <div className={`flex items-center px-4 py-2 rounded-lg font-mono font-bold ${timeLeft < 60 ? 'bg-red-100 text-red-600' : 'bg-blue-50 text-blue-600'
+                    <div className={`flex items-center px-4 py-2 rounded-lg font-mono font-bold ${timeLeft < 60 ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'
                         }`}>
                         <Clock className="h-5 w-5 mr-2" />
                         {formatTime(timeLeft)}
@@ -163,9 +167,9 @@ const TakeQuiz = () => {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+                <div className="w-full bg-slate-800 rounded-full h-2.5 mb-6 overflow-hidden">
                     <div
-                        className="bg-accent h-2.5 rounded-full transition-all duration-300"
+                        className="bg-accent h-2.5 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(251,191,36,0.5)]"
                         style={{ width: `${progress}%` }}
                     ></div>
                 </div>
@@ -176,9 +180,9 @@ const TakeQuiz = () => {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="bg-white rounded-xl shadow-lg p-8 mb-8"
+                    className="bg-slate-800 rounded-xl shadow-xl border border-white/5 p-8 mb-8"
                 >
-                    <h2 className="text-xl font-bold text-gray-800 mb-6 leading-relaxed">
+                    <h2 className="text-xl font-bold text-white mb-6 leading-relaxed">
                         {currentQuestion.question_text}
                     </h2>
 
@@ -189,14 +193,14 @@ const TakeQuiz = () => {
                                     key={idx}
                                     onClick={() => handleAnswerSelect(option)}
                                     className={`w-full text-left p-4 rounded-lg border-2 transition-all ${answers[currentQuestion.id] === option
-                                            ? 'border-accent bg-accent/5 text-primary font-medium'
-                                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                        ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
+                                        : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
                                         }`}
                                 >
                                     <div className="flex items-center">
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold ${answers[currentQuestion.id] === option
-                                                ? 'bg-accent text-white'
-                                                : 'bg-gray-100 text-gray-500'
+                                            ? 'bg-accent text-white'
+                                            : 'bg-white/10 text-slate-400'
                                             }`}>
                                             {String.fromCharCode(65 + idx)}
                                         </div>
@@ -210,8 +214,8 @@ const TakeQuiz = () => {
                                     key={option}
                                     onClick={() => handleAnswerSelect(option)}
                                     className={`w-full text-left p-4 rounded-lg border-2 transition-all ${answers[currentQuestion.id] === option
-                                            ? 'border-accent bg-accent/5 text-primary font-medium'
-                                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                        ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
+                                        : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
                                         }`}
                                 >
                                     {option}
@@ -226,7 +230,7 @@ const TakeQuiz = () => {
                     <button
                         onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
                         disabled={currentQuestionIndex === 0}
-                        className="flex items-center px-6 py-3 text-gray-600 font-medium disabled:opacity-50 hover:text-primary transition-colors"
+                        className="flex items-center px-6 py-3 text-slate-400 font-medium disabled:opacity-50 hover:text-white transition-colors"
                     >
                         <ChevronLeft className="h-5 w-5 mr-2" />
                         Previous
@@ -253,7 +257,7 @@ const TakeQuiz = () => {
                     ) : (
                         <button
                             onClick={() => setCurrentQuestionIndex(prev => Math.min(quiz.questions.length - 1, prev + 1))}
-                            className="flex items-center px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-light transition-colors shadow-lg"
+                            className="flex items-center px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg"
                         >
                             Next
                             <ChevronRight className="h-5 w-5 ml-2" />

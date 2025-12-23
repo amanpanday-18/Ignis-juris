@@ -67,16 +67,16 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                    className="bg-slate-900 rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto border border-white/10"
                 >
-                    <div className="flex justify-between items-center p-6 border-b border-gray-100">
-                        <h2 className="text-xl font-bold text-primary">Add New Advocate</h2>
-                        <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                    <div className="flex justify-between items-center p-6 border-b border-white/10">
+                        <h2 className="text-xl font-bold text-white">Add New Advocate</h2>
+                        <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
                             <X className="h-6 w-6" />
                         </button>
                     </div>
@@ -84,12 +84,12 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
                     <form onSubmit={handleSubmit} className="p-6 space-y-4">
                         {/* Image Upload */}
                         <div className="flex justify-center mb-6">
-                            <div className="relative w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300 hover:border-accent transition-colors">
+                            <div className="relative w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center overflow-hidden border-2 border-dashed border-white/10 hover:border-accent transition-colors">
                                 {imageFile ? (
                                     <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="text-center text-gray-400">
-                                        <Upload className="h-8 w-8 mx-auto mb-1" />
+                                    <div className="text-center text-gray-500">
+                                        <Upload className="h-8 w-8 mx-auto mb-1 text-gray-400" />
                                         <span className="text-xs">Upload Photo</span>
                                     </div>
                                 )}
@@ -104,26 +104,26 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Name</label>
                                 <input
                                     type="text"
                                     name="name"
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                     placeholder="e.g. Adv. John Doe"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Specialization</label>
                                 <input
                                     type="text"
                                     name="specialization"
                                     required
                                     value={formData.specialization}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                     placeholder="e.g. Criminal Law"
                                 />
                             </div>
@@ -131,129 +131,136 @@ const AddAdvocateModal = ({ isOpen, onClose, onAdd }) => {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Location</label>
                                 <input
                                     type="text"
                                     name="location"
                                     required
                                     value={formData.location}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                     placeholder="e.g. New Delhi"
                                 />
                             </div>
                         </div>
 
-                        <div className="border-t border-gray-100 pt-4">
-                            <h3 className="text-sm font-semibold text-gray-500 mb-3 uppercase">Contact Details</h3>
+                        <div className="border-t border-white/10 pt-4">
+                            <h3 className="text-sm font-semibold text-gray-400 mb-3 uppercase">Contact Details</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
                                     <input
                                         type="tel"
                                         name="phoneNumber"
                                         value={formData.phoneNumber}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="+91 98765 43210"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
                                     <input
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="advocate@example.com"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">LinkedIn URL</label>
                                     <input
                                         type="url"
                                         name="linkedinUrl"
                                         value={formData.linkedinUrl}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="https://linkedin.com/in/..."
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Instagram URL</label>
                                     <input
                                         type="url"
                                         name="instagramUrl"
                                         value={formData.instagramUrl}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="https://instagram.com/..."
                                     />
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Website URL</label>
                                     <input
                                         type="url"
                                         name="websiteUrl"
                                         value={formData.websiteUrl}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="https://www.advocatewebsite.com"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="border-t border-gray-100 pt-4">
-                            <h3 className="text-sm font-semibold text-gray-500 mb-3 uppercase">Podcast Details (Optional)</h3>
+                        <div className="border-t border-white/10 pt-4">
+                            <h3 className="text-sm font-semibold text-gray-400 mb-3 uppercase">Podcast Details (Optional)</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
                                     <input
                                         type="text"
                                         name="podcastTitle"
                                         value={formData.podcastTitle}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="Episode Title"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Duration</label>
                                     <input
                                         type="text"
                                         name="podcastDuration"
                                         value={formData.podcastDuration}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="e.g. 15 min"
                                     />
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Podcast URL</label>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Podcast URL</label>
                                     <input
                                         type="url"
                                         name="podcastUrl"
                                         value={formData.podcastUrl}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                         placeholder="https://spotify.com/..."
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="pt-4">
+                        <div className="pt-4 flex space-x-4">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg transition-colors border border-white/10"
+                            >
+                                Cancel
+                            </button>
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                                className="flex-1 flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
                             >
                                 {loading ? (
                                     <>
                                         <Loader className="animate-spin h-5 w-5 mr-2" />
-                                        Adding Advocate...
+                                        Adding...
                                     </>
                                 ) : (
                                     'Add Advocate'

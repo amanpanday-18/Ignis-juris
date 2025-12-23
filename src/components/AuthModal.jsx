@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import OTPInput from './OTPInput';
+import { useNavigate } from 'react-router-dom';
 
 const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
     const [isSignIn, setIsSignIn] = useState(type === 'signin');
@@ -14,6 +15,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
     const [otpSent, setOtpSent] = useState(false);
     const [otpCode, setOtpCode] = useState('');
     const { signUp, signIn, signUpWithOTP, verifyOTP } = useAuth();
+    const navigate = useNavigate();
 
     if (!isOpen) return null;
 
@@ -26,6 +28,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
             if (isSignIn) {
                 await signIn(email, password);
                 onClose();
+                navigate('/dashboard');
                 // Reset form
                 setEmail('');
                 setPassword('');
@@ -49,6 +52,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
         try {
             await verifyOTP(email, otp, 'signup');
             onClose();
+            navigate('/dashboard');
             // Reset form
             setEmail('');
             setName('');

@@ -6,6 +6,7 @@ import { QuizService } from '../services/quiz-service';
 import { quizCategories, difficultyLevels } from '../data/quiz-data';
 import { useAdmin } from '../hooks/useAdmin';
 import AddQuizModal from '../components/AddQuizModal';
+import { Helmet } from 'react-helmet-async';
 
 const Quizzes = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -55,23 +56,26 @@ const Quizzes = () => {
 
     const getDifficultyColor = (difficulty) => {
         switch (difficulty) {
-            case 'easy': return 'bg-green-100 text-green-800';
-            case 'medium': return 'bg-yellow-100 text-yellow-800';
-            case 'hard': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'easy': return 'bg-green-500/20 text-green-400';
+            case 'medium': return 'bg-yellow-500/20 text-yellow-400';
+            case 'hard': return 'bg-red-500/20 text-red-400';
+            default: return 'bg-slate-100/10 text-slate-300';
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
+        <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
+            <Helmet>
+                <title>Legal Quizzes - Legal Remedies</title>
+            </Helmet>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12 relative">
                     <div className="flex items-center justify-center mb-4">
                         <Award className="h-10 w-10 text-accent mr-3" />
-                        <h1 className="text-4xl font-bold text-primary">Legal Quizzes & Tests</h1>
+                        <h1 className="text-4xl font-bold text-white">Legal Quizzes & Tests</h1>
                     </div>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                         Test your legal knowledge with our comprehensive quizzes on various law subjects
                     </p>
 
@@ -88,14 +92,14 @@ const Quizzes = () => {
                 </div>
 
                 {/* Filters */}
-                <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div className="bg-slate-800 rounded-xl shadow-lg p-6 mb-8 border border-white/5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">Filter by Category</label>
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white"
                             >
                                 {quizCategories.map(cat => (
                                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -103,11 +107,11 @@ const Quizzes = () => {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Difficulty</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-2">Filter by Difficulty</label>
                             <select
                                 value={selectedDifficulty}
                                 onChange={(e) => setSelectedDifficulty(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white"
                             >
                                 {difficultyLevels.map(diff => (
                                     <option key={diff.id} value={diff.id}>{diff.name}</option>
@@ -130,7 +134,7 @@ const Quizzes = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow relative group"
+                                className="bg-slate-800 rounded-xl shadow-lg border border-white/5 overflow-hidden hover:shadow-xl transition-all relative group hover:border-accent/30"
                             >
                                 {/* Admin Delete Button */}
                                 {isAdmin && (
@@ -139,7 +143,7 @@ const Quizzes = () => {
                                             e.stopPropagation();
                                             handleDeleteQuiz(quiz.id);
                                         }}
-                                        className="absolute top-4 right-4 z-10 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                                        className="absolute top-4 right-4 z-10 p-2 bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
                                         title="Delete Quiz"
                                     >
                                         <Trash2 className="h-4 w-4" />
@@ -151,15 +155,15 @@ const Quizzes = () => {
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${getDifficultyColor(quiz.difficulty)}`}>
                                             {quiz.difficulty}
                                         </span>
-                                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                                             {quizCategories.find(c => c.id === quiz.category)?.name || quiz.category}
                                         </span>
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-primary mb-2">{quiz.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{quiz.description}</p>
+                                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{quiz.title}</h3>
+                                    <p className="text-slate-400 text-sm mb-4 line-clamp-2">{quiz.description}</p>
 
-                                    <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
+                                    <div className="flex items-center justify-between text-sm text-slate-500 mb-6">
                                         <div className="flex items-center">
                                             <Clock className="h-4 w-4 mr-1" />
                                             {quiz.time_limit} mins
@@ -172,7 +176,7 @@ const Quizzes = () => {
 
                                     <button
                                         onClick={() => navigate(`/quizzes/${quiz.id}`)}
-                                        className="w-full flex items-center justify-center py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-light transition-colors"
+                                        className="w-full flex items-center justify-center py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg"
                                     >
                                         <PlayCircle className="h-5 w-5 mr-2" />
                                         Start Quiz
@@ -182,8 +186,8 @@ const Quizzes = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No quizzes found matching your criteria.</p>
+                    <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
+                        <p className="text-slate-500 text-lg">No quizzes found matching your criteria.</p>
                     </div>
                 )}
             </div>

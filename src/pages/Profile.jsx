@@ -1,155 +1,198 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, FileText, Scale, Clock, Calendar, Briefcase, AlertCircle, CheckCircle } from 'lucide-react';
+import { User, Mail, Camera, Save, LogOut, Loader, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { DiaryService } from '../services/diary-service';
+import { supabase } from '../lib/supabase';
+import { Helmet } from 'react-helmet-async';
 
 const Profile = () => {
-    const { user, loading } = useAuth();
-    const [events, setEvents] = useState([]);
-    const [isLoadingData, setIsLoadingData] = useState(true);
-
-    useEffect(() => {
-        if (user) {
-            fetchDiaryEvents();
-        }
-    }, [user]);
-
-    const fetchDiaryEvents = async () => {
-        try {
-            const data = await DiaryService.getMyEvents();
-            // Sort by date descending for recent activity
-            const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
-            setEvents(sortedData);
-        } catch (error) {
-            console.error("Error fetching diary events:", error);
-        } finally {
-            setIsLoadingData(false);
-        }
-    };
+    const { user, loading, logout } = useAuth();
+    const [name, setName] = useState(user?.user_metadata?.name || '');
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [message, setMessage] = useState(null);
 
     if (loading) return null;
     if (!user) return <Navigate to="/" />;
 
-    const displayName = user.user_metadata?.name || user.email?.split('@')[0] || 'User';
-    const userInitial = displayName[0]?.toUpperCase() || 'U';
+    const userInitial = name[0]?.toUpperCase() || user.email[0]?.toUpperCase() || 'U';
+    const [avatarUrl, setAvatarUrl] = useState(user.user_metadata?.avatar_url);
+    const [uploading, setUploading] = useState(false);
 
-    // Calculate Stats
-    const now = new Date();
-    const pendingConsultations = events.filter(e => new Date(e.date) >= now).length;
+    const handleUpdateProfile = async (e) => {
+        e.preventDefault();
+        setIsUpdating(true);
+        setMessage(null);
 
-    // Helper to get icon based on event type
-    const getEventIcon = (type) => {
-        switch (type) {
-            case 'hearing': return Scale;
-            case 'meeting': return Briefcase;
-            case 'deadline': return AlertCircle;
-            default: return Calendar;
+        try {
+            const { error } = await supabase.auth.updateUser({
+                data: { name: name }
+            });
+
+            if (error) throw error;
+            setMessage({ type: 'success', text: 'Profile updated successfully!' });
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            setMessage({ type: 'error', text: 'Failed to update profile.' });
+        } finally {
+            setIsUpdating(false);
         }
     };
 
-    const getEventColor = (type) => {
-        switch (type) {
-            case 'hearing': return 'text-red-500 bg-red-50';
-            case 'meeting': return 'text-blue-500 bg-blue-50';
-            case 'deadline': return 'text-yellow-500 bg-yellow-50';
-            default: return 'text-green-500 bg-green-50';
+    const handleAvatarUpload = async (event) => {
+        try {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Show immediate preview
+            const previewUrl = URL.createObjectURL(file);
+            setAvatarUrl(previewUrl);
+            setUploading(true);
+
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${user.id}/${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            // Upload to Supabase Storage
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file);
+
+            if (uploadError) throw uploadError;
+
+            // Get Public URL
+            const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+            const publicUrl = data.publicUrl;
+
+            // Update User Metadata
+            const { error: updateError } = await supabase.auth.updateUser({
+                data: { avatar_url: publicUrl }
+            });
+
+            if (updateError) throw updateError;
+
+            // Update state with final public URL (though it should look the same)
+            setAvatarUrl(publicUrl);
+            setMessage({ type: 'success', text: 'Photo updated successfully!' });
+
+        } catch (error) {
+            console.error('Error uploading avatar:', error);
+            setMessage({ type: 'error', text: 'Error uploading image.' });
+            // Revert to original if needed, but for now we leave the error message
+        } finally {
+            setUploading(false);
         }
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-1 lg:grid-cols-3 gap-8"
-            >
-                {/* User Info Card */}
-                <div className="lg:col-span-1">
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-                        <div className="h-32 bg-primary"></div>
-                        <div className="px-6 pb-6">
-                            <div className="relative flex justify-center -mt-16 mb-4">
-                                <div className="h-32 w-32 rounded-full border-4 border-white shadow-md bg-accent flex items-center justify-center text-white text-4xl font-bold">
-                                    {userInitial}
-                                </div>
-                            </div>
-                            <div className="text-center mb-6">
-                                <h2 className="text-2xl font-bold text-primary">{displayName}</h2>
-                                <p className="text-gray-500 flex items-center justify-center mt-1">
-                                    <Mail className="h-4 w-4 mr-1" /> {user.email}
-                                </p>
-                            </div>
-                            <div className="border-t border-gray-100 pt-4">
-
-                                <div className="flex justify-between items-center py-2">
-                                    <span className="text-gray-600">Member Since</span>
-                                    <span className="font-semibold text-primary">
-                                        {new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+        <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
+            <Helmet>
+                <title>Profile - Legal Remedies</title>
+            </Helmet>
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-slate-800 rounded-2xl shadow-xl border border-white/5 overflow-hidden"
+                >
+                    {/* Header / Cover */}
+                    <div className="h-40 bg-gradient-to-r from-slate-900 to-slate-800 relative border-b border-white/5">
+                        <div className="absolute inset-0 bg-black/30"></div>
                     </div>
-                </div>
 
-                {/* Dashboard / Activity */}
-                <div className="lg:col-span-2 space-y-8">
-                    <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-                        <h3 className="text-xl font-bold text-primary mb-6 flex items-center">
-                            <Clock className="h-5 w-5 mr-2 text-accent" />
-                            Recent Activity
-                        </h3>
-                        <div className="space-y-4">
-                            {isLoadingData ? (
-                                <div className="text-center py-4 text-gray-500">Loading activity...</div>
-                            ) : events.length > 0 ? (
-                                events.slice(0, 5).map((item) => {
-                                    const Icon = getEventIcon(item.event_type);
-                                    const colorClass = getEventColor(item.event_type);
-                                    return (
-                                        <div
-                                            key={item.id}
-                                            className="flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200"
-                                        >
-                                            <div className="flex items-center space-x-4">
-                                                <div className={`p-2 rounded-full shadow-sm ${colorClass}`}>
-                                                    <Icon className="h-5 w-5" />
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-semibold text-primary">{item.title}</h4>
-                                                    <p className="text-xs text-gray-500 capitalize">{item.event_type}</p>
-                                                </div>
-                                            </div>
-                                            <span className="text-sm text-gray-400">
-                                                {new Date(item.date).toLocaleDateString()}
-                                            </span>
+                    <div className="px-8 pb-8 relative">
+                        {/* Avatar Section */}
+                        <div className="flex flex-col items-center -mt-32 mb-8">
+                            <div className="relative group">
+                                <div className="h-64 w-64 rounded-full border-4 border-slate-800 shadow-2xl bg-slate-700 flex items-center justify-center overflow-hidden">
+                                    {avatarUrl ? (
+                                        <img src={avatarUrl} alt="Profile" className="h-full w-full object-cover" />
+                                    ) : (
+                                        <div className="h-full w-full bg-slate-700 flex items-center justify-center text-6xl font-bold text-slate-500">
+                                            {userInitial}
                                         </div>
-                                    );
-                                })
-                            ) : (
-                                <div className="text-center py-8 text-gray-500">
-                                    <p>No recent activity found.</p>
+                                    )}
+                                </div>
+
+                                <label className="absolute bottom-4 right-4 p-3 bg-accent hover:bg-accent/90 text-white rounded-full shadow-lg transition-all transform hover:scale-105 cursor-pointer border border-white/10" title="Change Photo">
+                                    {uploading ? <Loader className="animate-spin h-5 w-5" /> : <Camera className="h-5 w-5" />}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleAvatarUpload}
+                                        disabled={uploading}
+                                    />
+                                </label>
+                            </div>
+                            <h2 className="text-3xl font-bold text-white mt-4">{name || 'User'}</h2>
+                            <p className="text-slate-400 font-medium">{user.email}</p>
+                        </div>
+
+                        {/* Form Section */}
+                        <form onSubmit={handleUpdateProfile} className="max-w-lg mx-auto space-y-6">
+                            {message && (
+                                <div className={`p-4 rounded-lg flex items-center ${message.type === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
+                                    {message.type === 'success' ? <CheckCircle className="h-5 w-5 mr-2" /> : <AlertCircle className="h-5 w-5 mr-2" />}
+                                    {message.text}
                                 </div>
                             )}
-                        </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-primary text-white rounded-xl p-6 shadow-lg">
-                            <h3 className="text-lg font-bold mb-2">Saved Drafts</h3>
-                            <p className="text-3xl font-bold text-accent">0</p>
-                            <p className="text-sm text-gray-400 mt-1">Access your legal documents</p>
-                        </div>
-                        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
-                            <h3 className="text-lg font-bold text-primary mb-2">Upcoming Events</h3>
-                            <p className="text-3xl font-bold text-accent">{pendingConsultations}</p>
-                            <p className="text-sm text-gray-500 mt-1">Hearings & Meetings</p>
-                        </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-slate-300 ml-1">Full Name</label>
+                                <div className="relative">
+                                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="w-full pl-10 pr-4 py-3 rounded-lg bg-black/20 border border-white/10 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all outline-none text-white placeholder-slate-500"
+                                        placeholder="Enter your full name"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-slate-300 ml-1">Email Address</label>
+                                <div className="relative opacity-70">
+                                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                                    <input
+                                        type="email"
+                                        value={user.email}
+                                        disabled
+                                        className="w-full pl-10 pr-4 py-3 rounded-lg bg-black/40 border border-white/5 cursor-not-allowed text-slate-400"
+                                    />
+                                </div>
+                                <p className="text-xs text-slate-500 ml-1">Email cannot be changed.</p>
+                            </div>
+
+                            <div className="pt-4 flex flex-col gap-4">
+                                <button
+                                    type="submit"
+                                    disabled={isUpdating}
+                                    className="w-full flex items-center justify-center py-3.5 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
+                                >
+                                    {isUpdating ? (
+                                        <Loader className="animate-spin h-5 w-5 mr-2" />
+                                    ) : (
+                                        <Save className="h-5 w-5 mr-2" />
+                                    )}
+                                    {isUpdating ? 'Saving Changes...' : 'Save Profile'}
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={logout}
+                                    className="w-full flex items-center justify-center py-3.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold rounded-xl transition-colors border border-red-500/20"
+                                >
+                                    <LogOut className="h-5 w-5 mr-2" />
+                                    Sign Out
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </div>
-            </motion.div>
+                </motion.div>
+            </div>
         </div>
     );
 };

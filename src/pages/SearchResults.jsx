@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, User, Scale, FileText, Newspaper, ArrowRight, Loader } from 'lucide-react';
 import { SearchService } from '../services/search-service';
+import { Helmet } from 'react-helmet-async';
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams();
@@ -31,7 +32,7 @@ const SearchResults = () => {
 
         return (
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-primary mb-4 flex items-center">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
                     <Icon className="h-6 w-6 mr-2 text-accent" />
                     {title} ({items.length})
                 </h2>
@@ -42,22 +43,22 @@ const SearchResults = () => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
-                            className="bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:border-accent transition-colors cursor-pointer"
+                            className="bg-slate-800 rounded-lg p-4 shadow-md border border-white/5 hover:border-accent/50 transition-all cursor-pointer group"
                         >
-                            <h3 className="text-lg font-semibold text-primary mb-2">
+                            <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-primary transition-colors">
                                 {item.name || item.case_title || item.title}
                             </h3>
-                            <p className="text-gray-600 text-sm line-clamp-2">
+                            <p className="text-slate-400 text-sm line-clamp-2">
                                 {item.specialization || item.summary || item.description || item.excerpt}
                             </p>
                             {item.location && (
-                                <p className="text-gray-500 text-xs mt-2">{item.location}</p>
+                                <p className="text-slate-500 text-xs mt-2">{item.location}</p>
                             )}
                             {item.case_number && (
-                                <p className="text-gray-500 text-xs mt-2">Case No: {item.case_number}</p>
+                                <p className="text-slate-500 text-xs mt-2">Case No: {item.case_number}</p>
                             )}
                             {item.court && (
-                                <p className="text-gray-500 text-xs mt-1">Court: {item.court}</p>
+                                <p className="text-slate-500 text-xs mt-1">Court: {item.court}</p>
                             )}
                         </motion.div>
                     ))}
@@ -67,68 +68,73 @@ const SearchResults = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-8"
-            >
-                <h1 className="text-4xl font-bold text-primary mb-2">Search Results</h1>
-                {query && (
-                    <p className="text-lg text-gray-600">
-                        Showing results for: <span className="font-semibold text-accent">"{query}"</span>
-                    </p>
-                )}
-            </motion.div>
+        <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
+            <Helmet>
+                <title>Search Results - Legal Remedies</title>
+            </Helmet>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-8"
+                >
+                    <h1 className="text-4xl font-bold text-white mb-2">Search Results</h1>
+                    {query && (
+                        <p className="text-lg text-slate-400">
+                            Showing results for: <span className="font-semibold text-accent">"{query}"</span>
+                        </p>
+                    )}
+                </motion.div>
 
-            {loading ? (
-                <div className="flex flex-col items-center justify-center py-20">
-                    <Loader className="h-12 w-12 text-accent animate-spin mb-4" />
-                    <p className="text-gray-600">Searching...</p>
-                </div>
-            ) : results && results.totalResults > 0 ? (
-                <>
-                    <div className="mb-6 p-4 bg-accent/10 rounded-lg border border-accent/20">
-                        <p className="text-primary font-semibold">
-                            Found {results.totalResults} result{results.totalResults !== 1 ? 's' : ''}
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center py-20">
+                        <Loader className="h-12 w-12 text-accent animate-spin mb-4" />
+                        <p className="text-slate-400">Searching...</p>
+                    </div>
+                ) : results && results.totalResults > 0 ? (
+                    <>
+                        <div className="mb-6 p-4 bg-accent/10 rounded-lg border border-accent/20">
+                            <p className="text-white font-semibold">
+                                Found {results.totalResults} result{results.totalResults !== 1 ? 's' : ''}
+                            </p>
+                        </div>
+
+                        <ResultSection
+                            title="Advocates"
+                            items={results.advocates}
+                            icon={User}
+                        />
+
+                        <ResultSection
+                            title="Judgements"
+                            items={results.judgements}
+                            icon={Scale}
+                        />
+
+                        <ResultSection
+                            title="Bare Acts"
+                            items={results.bareActs}
+                            icon={FileText}
+                        />
+
+                        <ResultSection
+                            title="News"
+                            items={results.news}
+                            icon={Newspaper}
+                        />
+                    </>
+                ) : (
+                    <div className="text-center py-20 bg-slate-800 rounded-xl border border-dashed border-white/10">
+                        <Search className="h-16 w-16 text-slate-600 mx-auto mb-4" />
+                        <h2 className="text-2xl font-bold text-slate-400 mb-2">No Results Found</h2>
+                        <p className="text-slate-500">
+                            {query
+                                ? `We couldn't find anything matching "${query}". Try different keywords.`
+                                : 'Enter a search query to get started.'}
                         </p>
                     </div>
-
-                    <ResultSection
-                        title="Advocates"
-                        items={results.advocates}
-                        icon={User}
-                    />
-
-                    <ResultSection
-                        title="Judgements"
-                        items={results.judgements}
-                        icon={Scale}
-                    />
-
-                    <ResultSection
-                        title="Bare Acts"
-                        items={results.bareActs}
-                        icon={FileText}
-                    />
-
-                    <ResultSection
-                        title="News"
-                        items={results.news}
-                        icon={Newspaper}
-                    />
-                </>
-            ) : (
-                <div className="text-center py-20">
-                    <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-600 mb-2">No Results Found</h2>
-                    <p className="text-gray-500">
-                        {query
-                            ? `We couldn't find anything matching "${query}". Try different keywords.`
-                            : 'Enter a search query to get started.'}
-                    </p>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

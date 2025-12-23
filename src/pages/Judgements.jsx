@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Filter, Plus, Trash2, Calendar, Scale, FileText, Loader } from 'lucide-react';
+import { Search, Filter, Plus, Trash2, Calendar, Scale, Loader, ArrowRight, X } from 'lucide-react';
 import { JudgementService } from '../services/judgement-service';
 import { courts, categories } from '../data/judgements-data';
 import { useAdmin } from '../hooks/useAdmin';
 import AddJudgementModal from '../components/AddJudgementModal';
 import JudgementDetailModal from '../components/JudgementDetailModal';
+import { Helmet } from 'react-helmet-async';
 
 const Judgements = () => {
     const [judgements, setJudgements] = useState([]);
@@ -91,23 +92,110 @@ const Judgements = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="text-center mb-12 relative">
-                    <div className="flex items-center justify-center mb-4">
-                        <Scale className="h-10 w-10 text-accent mr-3" />
-                        <h1 className="text-4xl font-bold text-primary">Legal Judgements Database</h1>
-                    </div>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Search and browse comprehensive database of court judgements from Indian courts
-                    </p>
+        <div className="min-h-screen bg-slate-900 text-slate-100">
+            <Helmet>
+                <title>Judgements Database - Legal Remedies</title>
+                <meta name="description" content="Search and browse thousands of legal judgements." />
+            </Helmet>
 
-                    {/* Admin Add Button */}
+            {/* Hero Header with Search */}
+            <div className="bg-primary pt-16 pb-24 text-white relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-primary to-slate-900 opacity-90"></div>
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <Scale className="h-16 w-16 text-accent mx-auto mb-6" />
+                        <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                            Legal Judgements Database
+                        </h1>
+                        <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-light">
+                            Access a comprehensive repository of case laws, legal precedents, and court orders.
+                        </p>
+
+                        {/* Glassmorphic Search Bar */}
+                        <div className="max-w-2xl mx-auto relative group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-accent via-purple-500 to-indigo-500 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                            <div className="relative flex items-center bg-slate-800 border border-white/10 rounded-xl shadow-2xl p-2">
+                                <Search className="h-6 w-6 text-slate-400 ml-3" />
+                                <input
+                                    type="text"
+                                    placeholder="Search by case title, number, or keywords..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                                    className="w-full px-4 py-3 bg-transparent border-none text-white placeholder-slate-500 focus:ring-0 text-lg"
+                                />
+                                <button
+                                    onClick={handleSearch}
+                                    className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* Main Content Area */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20 pb-20">
+
+                {/* Filters & Actions Bar */}
+                <div className="bg-slate-800 rounded-xl shadow-xl p-6 mb-8 border border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 w-full md:flex-1 md:min-w-0 items-center">
+                        {/* Court Filter */}
+                        <div className="relative w-full sm:w-auto min-w-[200px] shrink-0">
+                            <select
+                                value={selectedCourt}
+                                onChange={(e) => setSelectedCourt(e.target.value)}
+                                className="w-full appearance-none pl-4 pr-10 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-slate-300 cursor-pointer hover:bg-black/30 transition-colors"
+                            >
+                                <option value="">All Courts</option>
+                                {courts.map(court => (
+                                    <option key={court} value={court}>{court}</option>
+                                ))}
+                            </select>
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-500">
+                                <Filter className="h-4 w-4" />
+                            </div>
+                        </div>
+
+                        {/* Category Filter */}
+                        <div className="flex space-x-2 overflow-x-auto pb-2 sm:pb-0 custom-scrollbar w-full sm:w-auto sm:flex-1 sm:min-w-0 md:max-w-none">
+                            <button
+                                onClick={() => setSelectedCategory('all')}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${selectedCategory === 'all'
+                                    ? 'bg-accent text-white shadow-md'
+                                    : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                                    }`}
+                            >
+                                All
+                            </button>
+                            {categories.map(cat => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setSelectedCategory(cat.id)}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${selectedCategory === cat.id
+                                        ? 'bg-accent text-white shadow-md'
+                                        : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                                        }`}
+                                >
+                                    {cat.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Admin Action */}
                     {isAdmin && (
                         <button
                             onClick={() => setIsAddModalOpen(true)}
-                            className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
+                            className="flex items-center px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md font-medium whitespace-nowrap shrink-0 w-full sm:w-auto justify-center"
                         >
                             <Plus className="h-5 w-5 mr-2" />
                             Add Judgement
@@ -115,139 +203,81 @@ const Judgements = () => {
                     )}
                 </div>
 
-                {/* Search and Filters */}
-                <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {/* Search */}
-                        <div className="md:col-span-2">
-                            <div className="relative">
-                                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                <input
-                                    type="text"
-                                    placeholder="Search by case number, title, or keywords..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                                />
-                            </div>
-                        </div>
-                        <button
-                            onClick={handleSearch}
-                            className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors font-medium"
-                        >
-                            Search
-                        </button>
-                    </div>
-
-                    {/* Filters */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Court</label>
-                            <select
-                                value={selectedCourt}
-                                onChange={(e) => setSelectedCourt(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                            >
-                                <option value="">All Courts</option>
-                                {courts.map(court => (
-                                    <option key={court} value={court}>{court}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
-                            <select
-                                value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                            >
-                                {categories.map(cat => (
-                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Results */}
+                {/* Results Grid */}
                 {loading ? (
-                    <div className="flex justify-center py-12">
+                    <div className="flex justify-center py-20">
                         <Loader className="animate-spin h-12 w-12 text-accent" />
                     </div>
                 ) : filteredJudgements.length > 0 ? (
                     <div className="grid grid-cols-1 gap-6">
-                        {filteredJudgements.map((judgement) => (
+                        {filteredJudgements.map((judgement, index) => (
                             <motion.div
                                 key={judgement.id}
-                                whileHover={{ scale: 1.01 }}
-                                className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 cursor-pointer hover:border-accent transition-all relative group"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                                className="bg-slate-800 rounded-xl shadow-lg hover:shadow-2xl border border-white/5 overflow-hidden cursor-pointer group hover:border-accent/30"
                                 onClick={() => setSelectedJudgement(judgement)}
                             >
-                                {/* Admin Delete Button */}
-                                {isAdmin && (
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDeleteJudgement(judgement.id);
-                                        }}
-                                        className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
-                                        title="Delete Judgement"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </button>
-                                )}
-
-                                <div className="flex items-start justify-between mb-4">
-                                    <div className="flex-1">
-                                        <h3 className="text-xl font-bold text-primary mb-2">{judgement.case_title}</h3>
-                                        <p className="text-sm text-gray-600 mb-2">{judgement.case_number}</p>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                                    <div className="flex items-center text-sm text-gray-600">
-                                        <Scale className="h-4 w-4 mr-2 text-accent" />
-                                        {judgement.court}
-                                    </div>
-                                    <div className="flex items-center text-sm text-gray-600">
-                                        <Calendar className="h-4 w-4 mr-2 text-accent" />
-                                        {formatDate(judgement.date_of_judgement)}
-                                    </div>
-                                    <div className="flex items-center text-sm text-gray-600">
-                                        <FileText className="h-4 w-4 mr-2 text-accent" />
-                                        {categories.find(c => c.id === judgement.category)?.name || judgement.category}
-                                    </div>
-                                    {judgement.pdf_url && (
-                                        <div className="flex items-center text-sm text-accent font-medium">
-                                            <FileText className="h-4 w-4 mr-2" />
-                                            PDF Available
-                                        </div>
+                                <div className="p-6 md:p-8 relative">
+                                    {isAdmin && (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteJudgement(judgement.id);
+                                            }}
+                                            className="absolute top-6 right-6 p-2 bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-red-600"
+                                            title="Delete Judgement"
+                                        >
+                                            <Trash2 className="h-5 w-5" />
+                                        </button>
                                     )}
-                                </div>
 
-                                {judgement.summary && (
-                                    <p className="text-gray-700 line-clamp-2">{judgement.summary}</p>
-                                )}
-
-                                {judgement.keywords && judgement.keywords.length > 0 && (
-                                    <div className="flex flex-wrap gap-2 mt-4">
-                                        {judgement.keywords.slice(0, 5).map((keyword, index) => (
-                                            <span
-                                                key={index}
-                                                className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium"
-                                            >
-                                                {keyword}
-                                            </span>
-                                        ))}
+                                    <div className="flex items-center space-x-3 mb-4">
+                                        <span className="px-3 py-1 bg-accent/10 text-accent text-xs font-bold uppercase rounded-full tracking-wider border border-accent/20">
+                                            {categories.find(c => c.id === judgement.category)?.name || judgement.category}
+                                        </span>
+                                        <span className="text-slate-600 text-sm">•</span>
+                                        <span className="text-slate-400 text-sm font-medium">{judgement.case_number}</span>
                                     </div>
-                                )}
+
+                                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
+                                        {judgement.case_title}
+                                    </h3>
+
+                                    <p className="text-slate-400 mb-6 line-clamp-2 leading-relaxed">
+                                        {judgement.summary || "No summary available for this judgement."}
+                                    </p>
+
+                                    <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/5">
+                                        <div className="flex flex-wrap gap-6 text-sm text-slate-500">
+                                            <div className="flex items-center">
+                                                <Scale className="h-4 w-4 mr-2 text-accent" />
+                                                {judgement.court}
+                                            </div>
+                                            <div className="flex items-center">
+                                                <Calendar className="h-4 w-4 mr-2 text-primary" />
+                                                {formatDate(judgement.date_of_judgement)}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center text-accent font-bold group-hover:translate-x-1 transition-transform">
+                                            Read Judgement
+                                            <ArrowRight className="h-4 w-4 ml-2" />
+                                        </div>
+                                    </div>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No judgements found matching your criteria.</p>
+                    <div className="text-center py-20 bg-slate-800 rounded-xl border border-dashed border-white/10">
+                        <div className="bg-white/5 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Search className="h-10 w-10 text-slate-500" />
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-300 mb-2">No judgements found</h3>
+                        <p className="text-slate-500">Try adjusting your filters or search terms.</p>
                     </div>
                 )}
             </div>

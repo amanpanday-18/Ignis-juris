@@ -4,6 +4,7 @@ import { Briefcase, MapPin, Clock, IndianRupee, ExternalLink, Plus, Trash2, Load
 import { JobService, experienceLevels } from '../services/job-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddJobModal from '../components/AddJobModal';
+import { Helmet } from 'react-helmet-async';
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -55,17 +56,20 @@ const Jobs = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
+        <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
+            <Helmet>
+                <title>Job Openings - Legal Remedies</title>
+            </Helmet>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12 relative">
                     <div className="flex items-center justify-center mb-4">
-                        <div className="bg-purple-100 p-3 rounded-full mr-3">
-                            <Briefcase className="h-8 w-8 text-purple-600" />
+                        <div className="bg-purple-500/20 p-3 rounded-full mr-3">
+                            <Briefcase className="h-8 w-8 text-purple-400" />
                         </div>
-                        <h1 className="text-4xl font-bold text-primary">Legal Job Openings</h1>
+                        <h1 className="text-4xl font-bold text-white">Legal Job Openings</h1>
                     </div>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                         Explore career opportunities with top law firms, corporate legal teams, and senior advocates.
                     </p>
 
@@ -86,7 +90,7 @@ const Jobs = () => {
                     <select
                         value={selectedExperience}
                         onChange={(e) => setSelectedExperience(e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent bg-white shadow-sm"
+                        className="px-4 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white shadow-sm"
                     >
                         {experienceLevels.map(exp => (
                             <option key={exp.id} value={exp.id}>{exp.name}</option>
@@ -107,13 +111,13 @@ const Jobs = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow relative group"
+                                className="bg-slate-800 rounded-xl shadow-md border border-white/5 p-6 hover:shadow-lg transition-all relative group hover:border-accent/30"
                             >
                                 {/* Admin Delete Button */}
                                 {isAdmin && (
                                     <button
                                         onClick={() => handleDeleteJob(job.id)}
-                                        className="absolute top-4 right-4 p-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="absolute top-4 right-4 p-2 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
                                         title="Delete Job"
                                     >
                                         <Trash2 className="h-5 w-5" />
@@ -123,36 +127,36 @@ const Jobs = () => {
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                     <div className="flex-1">
                                         <div className="flex items-center mb-2">
-                                            <h3 className="text-xl font-bold text-gray-900 mr-3">{job.title}</h3>
-                                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs font-bold uppercase tracking-wider">
+                                            <h3 className="text-xl font-bold text-white mr-3">{job.title}</h3>
+                                            <span className="px-2 py-0.5 bg-white/10 text-slate-300 rounded text-xs font-bold uppercase tracking-wider">
                                                 {job.type}
                                             </span>
                                         </div>
-                                        <div className="flex items-center text-lg text-gray-700 font-medium mb-2">
-                                            <Building className="h-4 w-4 mr-2 text-gray-400" />
+                                        <div className="flex items-center text-lg text-slate-300 font-medium mb-2">
+                                            <Building className="h-4 w-4 mr-2 text-slate-500" />
                                             {job.organization}
                                         </div>
 
-                                        <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
+                                        <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
                                             <div className="flex items-center">
-                                                <MapPin className="h-4 w-4 mr-1 text-gray-400" />
+                                                <MapPin className="h-4 w-4 mr-1 text-slate-500" />
                                                 {job.location}
                                             </div>
                                             <div className="flex items-center">
-                                                <Briefcase className="h-4 w-4 mr-1 text-gray-400" />
+                                                <Briefcase className="h-4 w-4 mr-1 text-slate-500" />
                                                 {job.experience}
                                             </div>
                                             <div className="flex items-center">
-                                                <IndianRupee className="h-4 w-4 mr-1 text-gray-400" />
+                                                <IndianRupee className="h-4 w-4 mr-1 text-slate-500" />
                                                 {job.salary || 'Not Disclosed'}
                                             </div>
                                             <div className="flex items-center">
-                                                <Clock className="h-4 w-4 mr-1 text-gray-400" />
+                                                <Clock className="h-4 w-4 mr-1 text-slate-500" />
                                                 Posted: {formatDate(job.posted_date)}
                                             </div>
                                         </div>
 
-                                        <p className="text-gray-600 text-sm line-clamp-2 mb-4 md:mb-0">
+                                        <p className="text-slate-400 text-sm line-clamp-2 mb-4 md:mb-0">
                                             {job.description}
                                         </p>
                                     </div>
@@ -162,7 +166,7 @@ const Jobs = () => {
                                             href={job.apply_link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-colors shadow-md hover:shadow-lg"
+                                            className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
                                         >
                                             Apply Now
                                             <ExternalLink className="h-4 w-4 ml-2" />
@@ -173,9 +177,9 @@ const Jobs = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-                        <Briefcase className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                        <p className="text-gray-500 text-lg">No job openings found.</p>
+                    <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
+                        <Briefcase className="h-12 w-12 text-slate-500 mx-auto mb-3" />
+                        <p className="text-slate-400 text-lg">No job openings found.</p>
                         {isAdmin && (
                             <button
                                 onClick={() => setIsAddModalOpen(true)}

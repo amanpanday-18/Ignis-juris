@@ -8,15 +8,21 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#0f172a', // Slate 900 - Deep Navy
-          light: '#1e293b', // Slate 800
+          DEFAULT: '#6366f1', // Indigo 500 - New Primary for Dark Mode (Visible on dark bg)
+          light: '#818cf8', // Indigo 400
+          dark: '#4338ca', // Indigo 700
         },
         accent: {
-          DEFAULT: '#d97706', // Amber 600 - Gold/Amber
-          hover: '#b45309', // Amber 700
+          DEFAULT: '#fbbf24', // Amber 400 - Brighter Gold for Dark Mode
+          hover: '#d97706', // Amber 600
         },
-        background: '#f8fafc', // Slate 50
-        surface: '#ffffff',
+        background: '#0f172a', // Slate 900 - Deep Navy Background
+        surface: '#1e293b', // Slate 800 - Lighter for cards
+        text: {
+          primary: '#f8fafc', // Slate 50
+          secondary: '#94a3b8', // Slate 400
+          muted: '#64748b', // Slate 500
+        }
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

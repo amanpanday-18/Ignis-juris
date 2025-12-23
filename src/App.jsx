@@ -6,6 +6,8 @@ import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import Advocates from './pages/Advocates';
 import Judgements from './pages/Judgements';
+import Dashboard from './pages/Dashboard';
+import DocumentViewer from './pages/DocumentViewer';
 import AIDrafting from './pages/AIDrafting';
 import Store from './pages/Store';
 import Profile from './pages/Profile';
@@ -23,20 +25,21 @@ import Jobs from './pages/Jobs';
 import Scholarships from './pages/Scholarships';
 import SearchResults from './pages/SearchResults';
 import ProtectedRoute from './components/ProtectedRoute';
+import UsageTracker from './components/UsageTracker';
 
-// Placeholder components for other routes
-const Placeholder = ({ title }) => (
-  <div className="flex items-center justify-center h-96">
-    <h1 className="text-3xl font-bold text-gray-400">{title} Coming Soon</h1>
-  </div>
-);
+import Opportunities from './pages/Opportunities';
+
+// Placeholder component removed
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
+        <UsageTracker />
         <Router>
           <Routes>
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/documents/:id" element={<ProtectedRoute><DocumentViewer /></ProtectedRoute>} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="advocates" element={<ProtectedRoute><Advocates /></ProtectedRoute>} />
@@ -44,7 +47,7 @@ function App() {
               <Route path="bare-acts" element={<ProtectedRoute><BareActs /></ProtectedRoute>} />
               <Route path="drafting" element={<ProtectedRoute><DraftingTemplates /></ProtectedRoute>} />
               <Route path="ai-drafting" element={<ProtectedRoute><AIDrafting /></ProtectedRoute>} />
-              <Route path="opportunities" element={<ProtectedRoute><Placeholder title="Opportunities" /></ProtectedRoute>} />
+              <Route path="opportunities" element={<ProtectedRoute><Opportunities /></ProtectedRoute>} />
               <Route path="education" element={<ProtectedRoute><Education /></ProtectedRoute>} />
               <Route path="internships" element={<ProtectedRoute><Internships /></ProtectedRoute>} />
               <Route path="jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />

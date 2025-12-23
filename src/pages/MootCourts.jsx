@@ -4,6 +4,7 @@ import { Trophy, Calendar, MapPin, ExternalLink, Plus, Trash2, Loader, Clock } f
 import { MootCourtService } from '../services/moot-court-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddMootCourtModal from '../components/AddMootCourtModal';
+import { Helmet } from 'react-helmet-async';
 
 const MootCourts = () => {
     const [competitions, setCompetitions] = useState([]);
@@ -65,17 +66,20 @@ const MootCourts = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12">
+        <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
+            <Helmet>
+                <title>Moot Courts - Legal Remedies</title>
+            </Helmet>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12 relative">
                     <div className="flex items-center justify-center mb-4">
-                        <div className="bg-yellow-100 p-3 rounded-full mr-3">
-                            <Trophy className="h-8 w-8 text-yellow-600" />
+                        <div className="bg-yellow-500/20 p-3 rounded-full mr-3">
+                            <Trophy className="h-8 w-8 text-yellow-400" />
                         </div>
-                        <h1 className="text-4xl font-bold text-primary">Moot Courts & Competitions</h1>
+                        <h1 className="text-4xl font-bold text-white">Moot Courts & Competitions</h1>
                     </div>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                         Discover upcoming moot court competitions, debates, and legal hackathons across India.
                     </p>
 
@@ -93,12 +97,12 @@ const MootCourts = () => {
 
                 {/* Filter Tabs */}
                 <div className="flex justify-center mb-8">
-                    <div className="bg-white p-1 rounded-xl shadow-sm border border-gray-200 inline-flex">
+                    <div className="bg-slate-800 p-1 rounded-xl shadow-sm border border-white/10 inline-flex">
                         <button
                             onClick={() => setFilter('upcoming')}
                             className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${filter === 'upcoming'
-                                    ? 'bg-primary text-white shadow-md'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-primary text-white shadow-md'
+                                : 'text-slate-400 hover:text-white'
                                 }`}
                         >
                             Upcoming Events
@@ -106,8 +110,8 @@ const MootCourts = () => {
                         <button
                             onClick={() => setFilter('past')}
                             className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${filter === 'past'
-                                    ? 'bg-primary text-white shadow-md'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-primary text-white shadow-md'
+                                : 'text-slate-400 hover:text-white'
                                 }`}
                         >
                             Past Events
@@ -128,13 +132,13 @@ const MootCourts = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow relative group flex flex-col"
+                                className="bg-slate-800 rounded-xl shadow-md border border-white/5 overflow-hidden hover:shadow-lg transition-all relative group flex flex-col hover:border-accent/30"
                             >
                                 {/* Admin Delete Button */}
                                 {isAdmin && (
                                     <button
                                         onClick={() => handleDeleteCompetition(comp.id)}
-                                        className="absolute top-4 right-4 z-10 p-2 bg-white/80 rounded-full text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="absolute top-4 right-4 z-10 p-2 bg-black/50 rounded-full text-white hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"
                                         title="Delete Competition"
                                     >
                                         <Trash2 className="h-5 w-5" />
@@ -153,27 +157,27 @@ const MootCourts = () => {
                                         <span className="text-xs font-bold text-accent uppercase tracking-wider">
                                             {comp.organizer}
                                         </span>
-                                        <h3 className="text-xl font-bold text-gray-900 mt-1 mb-2 line-clamp-2">{comp.title}</h3>
+                                        <h3 className="text-xl font-bold text-white mt-1 mb-2 line-clamp-2">{comp.title}</h3>
                                     </div>
 
-                                    <div className="space-y-2 mb-4 text-sm text-gray-600">
+                                    <div className="space-y-2 mb-4 text-sm text-slate-400">
                                         <div className="flex items-center">
-                                            <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                                            <span>Event: <span className="font-medium text-gray-800">{formatDate(comp.event_date)}</span></span>
+                                            <Calendar className="h-4 w-4 mr-2 text-slate-500" />
+                                            <span>Event: <span className="font-medium text-slate-300">{formatDate(comp.event_date)}</span></span>
                                         </div>
                                         {comp.registration_deadline && (
                                             <div className="flex items-center">
                                                 <Clock className="h-4 w-4 mr-2 text-red-400" />
-                                                <span>Deadline: <span className="font-medium text-red-600">{formatDate(comp.registration_deadline)}</span></span>
+                                                <span>Deadline: <span className="font-medium text-red-400">{formatDate(comp.registration_deadline)}</span></span>
                                             </div>
                                         )}
                                         <div className="flex items-center">
-                                            <MapPin className="h-4 w-4 mr-2 text-gray-400" />
+                                            <MapPin className="h-4 w-4 mr-2 text-slate-500" />
                                             <span>{comp.location}</span>
                                         </div>
                                     </div>
 
-                                    <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-1">
+                                    <p className="text-slate-400 text-sm mb-6 line-clamp-3 flex-1">
                                         {comp.description}
                                     </p>
 
@@ -182,13 +186,13 @@ const MootCourts = () => {
                                             href={comp.official_link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center w-full px-4 py-2 bg-gray-50 text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-colors text-sm mt-auto"
+                                            className="flex items-center justify-center w-full px-4 py-2 bg-white/5 text-slate-300 font-bold rounded-lg hover:bg-primary hover:text-white transition-colors text-sm mt-auto"
                                         >
                                             <ExternalLink className="h-4 w-4 mr-2" />
                                             Visit Official Website
                                         </a>
                                     ) : (
-                                        <button disabled className="w-full px-4 py-2 bg-gray-100 text-gray-400 font-bold rounded-lg text-sm mt-auto cursor-not-allowed">
+                                        <button disabled className="w-full px-4 py-2 bg-white/5 text-slate-600 font-bold rounded-lg text-sm mt-auto cursor-not-allowed">
                                             Details Not Available
                                         </button>
                                     )}
@@ -197,9 +201,9 @@ const MootCourts = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-                        <Trophy className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                        <p className="text-gray-500 text-lg">No {filter} competitions found.</p>
+                    <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
+                        <Trophy className="h-12 w-12 text-slate-500 mx-auto mb-3" />
+                        <p className="text-slate-400 text-lg">No {filter} competitions found.</p>
                         {isAdmin && (
                             <button
                                 onClick={() => setIsAddModalOpen(true)}

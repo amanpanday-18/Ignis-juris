@@ -52,55 +52,55 @@ const AddInternshipModal = ({ isOpen, onClose, onAdd }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden my-8"
+                className="bg-slate-900 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden my-8 border border-white/10"
             >
-                <div className="flex justify-between items-center p-6 border-b border-gray-100">
-                    <h2 className="text-xl font-bold text-primary">Post Internship Opportunity</h2>
-                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                <div className="flex justify-between items-center p-6 border-b border-white/10">
+                    <h2 className="text-xl font-bold text-white">Post Internship Opportunity</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Role Title *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Role Title *</label>
                         <input
                             type="text"
                             name="title"
                             required
                             value={formData.title}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             placeholder="e.g., Legal Intern"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Organization *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Organization *</label>
                         <input
                             type="text"
                             name="organization"
                             required
                             value={formData.organization}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             placeholder="e.g., Khaitan & Co"
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Type *</label>
                             <select
                                 name="type"
                                 value={formData.type}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
                             >
                                 {internshipTypes.filter(t => t.id !== 'all').map(type => (
                                     <option key={type.id} value={type.id}>{type.name}</option>
@@ -108,14 +108,14 @@ const AddInternshipModal = ({ isOpen, onClose, onAdd }) => {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Location *</label>
                             <input
                                 type="text"
                                 name="location"
                                 required
                                 value={formData.location}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                 placeholder="e.g., Mumbai / Remote"
                             />
                         </div>
@@ -123,71 +123,78 @@ const AddInternshipModal = ({ isOpen, onClose, onAdd }) => {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Stipend</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Stipend</label>
                             <input
                                 type="text"
                                 name="stipend"
                                 value={formData.stipend}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                 placeholder="e.g., ₹5,000/month"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Duration</label>
                             <input
                                 type="text"
                                 name="duration"
                                 value={formData.duration}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                 placeholder="e.g., 2 Months"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Application Deadline *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Application Deadline *</label>
                         <input
                             type="date"
                             name="deadline"
                             required
                             value={formData.deadline}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Job Description</label>
                         <textarea
                             name="description"
                             rows="3"
                             value={formData.description}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             placeholder="Responsibilities, requirements..."
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Application Link / Email *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Application Link / Email *</label>
                         <input
                             type="text"
                             name="applyLink"
                             required
                             value={formData.applyLink}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                             placeholder="https://... or mailto:hr@example.com"
                         />
                     </div>
 
-                    <div className="pt-4">
+                    <div className="pt-4 flex space-x-4">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg transition-colors border border-white/10"
+                        >
+                            Cancel
+                        </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                            className="flex-1 flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
                         >
                             {loading ? (
                                 <>

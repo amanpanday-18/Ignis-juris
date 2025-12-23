@@ -74,7 +74,6 @@ const Navbar = () => {
         { name: 'Judgements', path: '/judgements' },
         { name: 'Drafting', path: '/drafting' },
         { name: 'AI Drafting', path: '/ai-drafting' },
-        { name: 'More', path: '/more' },
     ];
 
     const handleNavClick = (link, e) => {
@@ -115,15 +114,15 @@ const Navbar = () => {
     return (
         <>
             <nav className="bg-primary text-white sticky top-0 z-50 shadow-lg">
-                <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+                <div className="w-full px-2 sm:px-4 lg:px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
-                        <Link to="/" className="flex-shrink-0 font-bold text-2xl text-accent tracking-wider">
+                        <Link to="/" className="flex-shrink-0 font-bold text-xl md:text-2xl text-accent tracking-wider whitespace-nowrap">
                             THE LEGAL REMEDIES
                         </Link>
 
                         {/* Desktop Search */}
-                        <div className="hidden md:flex flex-1 max-w-4xl mx-2 relative min-w-[300px]">
+                        <div className="hidden md:flex flex-1 max-w-2xl mx-4 relative min-w-[200px]">
                             <form onSubmit={(e) => handleSearch(e, false)} className="w-full">
                                 <div className="relative w-full">
                                     <div
@@ -135,7 +134,7 @@ const Navbar = () => {
                                     <input
                                         ref={searchInputRef}
                                         type="text"
-                                        className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent sm:text-sm transition duration-150 ease-in-out shadow-sm"
+                                        className="block w-full pl-10 pr-3 py-2 border border-white/10 rounded-md leading-5 bg-slate-800 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent sm:text-sm transition duration-150 ease-in-out shadow-sm"
                                         placeholder="Search for advocates, judgements, bare acts..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -151,51 +150,51 @@ const Navbar = () => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 10 }}
-                                        className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50 max-h-96 overflow-y-auto"
+                                        className="absolute top-full left-0 right-0 mt-2 bg-slate-900 rounded-lg shadow-xl border border-white/10 overflow-hidden z-50 max-h-96 overflow-y-auto"
                                     >
                                         {suggestions.advocates?.length > 0 && (
                                             <div className="p-2">
-                                                <div className="text-xs font-semibold text-gray-500 uppercase px-2 mb-1">Advocates</div>
+                                                <div className="text-xs font-semibold text-slate-400 uppercase px-2 mb-1">Advocates</div>
                                                 {suggestions.advocates.slice(0, 3).map(item => (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => handleSuggestionClick(`/advocates`)}
-                                                        className="flex items-center px-2 py-2 hover:bg-gray-50 cursor-pointer rounded-md group"
+                                                        className="flex items-center px-2 py-2 hover:bg-slate-800 cursor-pointer rounded-md group transition-colors"
                                                     >
-                                                        <Search className="h-4 w-4 text-gray-400 mr-2 group-hover:text-accent" />
-                                                        <span className="text-sm text-gray-700 group-hover:text-primary">{item.name}</span>
+                                                        <Search className="h-4 w-4 text-slate-500 mr-2 group-hover:text-accent" />
+                                                        <span className="text-sm text-slate-300 group-hover:text-white">{item.name}</span>
                                                     </div>
                                                 ))}
                                             </div>
                                         )}
 
                                         {suggestions.judgements?.length > 0 && (
-                                            <div className="p-2 border-t border-gray-100">
-                                                <div className="text-xs font-semibold text-gray-500 uppercase px-2 mb-1">Judgements</div>
+                                            <div className="p-2 border-t border-white/5">
+                                                <div className="text-xs font-semibold text-slate-400 uppercase px-2 mb-1">Judgements</div>
                                                 {suggestions.judgements.slice(0, 3).map(item => (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => handleSuggestionClick(`/judgements`)}
-                                                        className="flex items-center px-2 py-2 hover:bg-gray-50 cursor-pointer rounded-md group"
+                                                        className="flex items-center px-2 py-2 hover:bg-slate-800 cursor-pointer rounded-md group transition-colors"
                                                     >
-                                                        <Search className="h-4 w-4 text-gray-400 mr-2 group-hover:text-accent" />
-                                                        <span className="text-sm text-gray-700 group-hover:text-primary">{item.title || item.case_title}</span>
+                                                        <Search className="h-4 w-4 text-slate-500 mr-2 group-hover:text-accent" />
+                                                        <span className="text-sm text-slate-300 group-hover:text-white">{item.title || item.case_title}</span>
                                                     </div>
                                                 ))}
                                             </div>
                                         )}
 
                                         {suggestions.bareActs?.length > 0 && (
-                                            <div className="p-2 border-t border-gray-100">
-                                                <div className="text-xs font-semibold text-gray-500 uppercase px-2 mb-1">Bare Acts</div>
+                                            <div className="p-2 border-t border-white/5">
+                                                <div className="text-xs font-semibold text-slate-400 uppercase px-2 mb-1">Bare Acts</div>
                                                 {suggestions.bareActs.slice(0, 3).map(item => (
                                                     <div
                                                         key={item.id}
                                                         onClick={() => handleSuggestionClick(`/bare-acts`)}
-                                                        className="flex items-center px-2 py-2 hover:bg-gray-50 cursor-pointer rounded-md group"
+                                                        className="flex items-center px-2 py-2 hover:bg-slate-800 cursor-pointer rounded-md group transition-colors"
                                                     >
-                                                        <Search className="h-4 w-4 text-gray-400 mr-2 group-hover:text-accent" />
-                                                        <span className="text-sm text-gray-700 group-hover:text-primary">{item.title}</span>
+                                                        <Search className="h-4 w-4 text-slate-500 mr-2 group-hover:text-accent" />
+                                                        <span className="text-sm text-slate-300 group-hover:text-white">{item.title}</span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -203,7 +202,7 @@ const Navbar = () => {
 
                                         <div
                                             onClick={(e) => handleSearch(e, false)}
-                                            className="p-3 bg-gray-50 text-center cursor-pointer hover:bg-gray-100 border-t border-gray-100"
+                                            className="p-3 bg-slate-800/50 text-center cursor-pointer hover:bg-slate-800 border-t border-white/5 transition-colors"
                                         >
                                             <span className="text-sm font-medium text-accent">View all results for "{searchQuery}"</span>
                                         </div>
@@ -214,13 +213,21 @@ const Navbar = () => {
 
                         {/* Desktop Menu */}
                         <div className="hidden md:block">
-                            <div className="ml-2 flex items-center space-x-2">
+                            <div className="ml-2 flex items-center space-x-1">
+                                {user && (
+                                    <Link
+                                        to="/dashboard"
+                                        className="px-2 py-2 rounded-md text-sm font-medium text-accent hover:text-white transition-colors border border-accent/50 hover:bg-accent hover:border-accent whitespace-nowrap"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                )}
                                 {navLinks.map((link) => (
                                     <Link
                                         key={link.name}
                                         to={link.path}
                                         onClick={(e) => handleNavClick(link, e)}
-                                        className="px-3 py-2 rounded-md text-sm font-medium hover:text-accent transition-colors"
+                                        className="px-2 py-2 rounded-md text-sm font-medium hover:text-accent transition-colors whitespace-nowrap"
                                     >
                                         {link.name}
                                     </Link>
@@ -228,12 +235,22 @@ const Navbar = () => {
                                 <Link to="/store" className="p-2 rounded-full hover:bg-primary-light transition-colors">
                                     <ShoppingBag className="h-5 w-5" />
                                 </Link>
+                                <Link
+                                    to="/more"
+                                    className="px-2 py-2 rounded-md text-sm font-medium hover:text-accent transition-colors whitespace-nowrap"
+                                >
+                                    More
+                                </Link>
 
                                 {user ? (
-                                    <div className="flex items-center space-x-4 ml-2">
+                                    <div className="flex items-center space-x-2 ml-2">
                                         <Link to="/profile" className="flex items-center space-x-2 hover:text-accent transition-colors">
-                                            <div className="h-8 w-8 rounded-full border-2 border-accent bg-accent flex items-center justify-center text-white font-bold">
-                                                {user.user_metadata?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                                            <div className="h-8 w-8 rounded-full border-2 border-accent bg-slate-700 flex items-center justify-center text-white font-bold overflow-hidden">
+                                                {user.user_metadata?.avatar_url ? (
+                                                    <img src={user.user_metadata.avatar_url} alt="Profile" className="h-full w-full object-cover" />
+                                                ) : (
+                                                    <span>{user.user_metadata?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}</span>
+                                                )}
                                             </div>
                                             <span className="text-sm font-medium">{user.user_metadata?.name || user.email}</span>
                                         </Link>
@@ -291,7 +308,7 @@ const Navbar = () => {
                                             <input
                                                 ref={mobileSearchInputRef}
                                                 type="text"
-                                                className="block w-full pl-10 pr-3 py-2 rounded-md leading-5 bg-primary text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm"
+                                                className="block w-full pl-10 pr-3 py-2 rounded-md leading-5 bg-slate-800 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:bg-slate-700 focus:text-white focus:ring-2 focus:ring-accent sm:text-sm"
                                                 placeholder="Search..."
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -312,6 +329,15 @@ const Navbar = () => {
                                         {link.name}
                                     </Link>
                                 ))}
+                                {user && (
+                                    <Link
+                                        to="/dashboard"
+                                        className="block px-3 py-2 rounded-md text-base font-medium text-accent hover:text-white hover:bg-primary transition-colors"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        Dashboard
+                                    </Link>
+                                )}
 
                                 {user ? (
                                     <>
@@ -320,7 +346,11 @@ const Navbar = () => {
                                             className="flex items-center px-3 py-2 rounded-md text-base font-medium hover:text-accent hover:bg-primary transition-colors"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            <User className="h-5 w-5 mr-2" />
+                                            {user.user_metadata?.avatar_url ? (
+                                                <img src={user.user_metadata.avatar_url} alt="Profile" className="h-6 w-6 rounded-full object-cover mr-2 border border-accent/50" />
+                                            ) : (
+                                                <User className="h-5 w-5 mr-2" />
+                                            )}
                                             Profile ({user.user_metadata?.name || user.email})
                                         </Link>
                                         <button

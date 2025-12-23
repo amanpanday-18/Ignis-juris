@@ -40,9 +40,11 @@ const Layout = () => {
                                     <Instagram className="h-5 w-5" />
                                 </a>
                                 <a
-                                    href="mailto:thelegalremedies@gmail.com"
+                                    href="https://mail.google.com/mail/?view=cm&fs=1&to=thelegalremedies@gmail.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-white"
-                                    title="Email Us"
+                                    title="Email Us via Gmail"
                                 >
                                     <Mail className="h-5 w-5" />
                                 </a>
