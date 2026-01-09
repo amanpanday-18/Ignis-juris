@@ -34,8 +34,20 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                 setPassword('');
             } else {
                 // Send OTP for sign up
-                await signUp(email, password, name);
-                setOtpSent(true);
+                const { session } = await signUp(email, password, name);
+
+                if (session) {
+                    // User was auto-confirmed (Review Supabase settings if this is unwanted)
+                    onClose();
+                    navigate('/dashboard');
+                    // Reset form
+                    setEmail('');
+                    setPassword('');
+                    setName('');
+                } else {
+                    // Requires verification
+                    setOtpSent(true);
+                }
             }
         } catch (err) {
             setError(err.message || 'An error occurred');
