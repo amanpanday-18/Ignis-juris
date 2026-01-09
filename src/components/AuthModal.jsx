@@ -39,7 +39,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                 if (session) {
                     // User was auto-confirmed (Review Supabase settings if this is unwanted)
                     onClose();
-                    navigate('/dashboard');
+                    navigate('/');
                     // Reset form
                     setEmail('');
                     setPassword('');
@@ -64,7 +64,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
         try {
             await verifyOTP(email, otp, 'signup');
             onClose();
-            navigate('/dashboard');
+            navigate('/');
             // Reset form
             setEmail('');
             setName('');
