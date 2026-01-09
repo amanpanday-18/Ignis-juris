@@ -77,7 +77,7 @@ const OTPInput = ({ length = 6, onComplete, onChange }) => {
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     onPaste={handlePaste}
-                    className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-accent focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                    className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-accent focus:ring-2 focus:ring-accent focus:outline-none transition-all text-gray-900"
                     autoFocus={index === 0}
                 />
             ))}

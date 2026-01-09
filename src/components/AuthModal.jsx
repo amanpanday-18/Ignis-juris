@@ -198,7 +198,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                                 required
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
-                                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm"
+                                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm text-gray-900"
                                                 placeholder="Name"
                                             />
                                         </div>
@@ -216,7 +216,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                             required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm"
+                                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm text-gray-900"
                                             placeholder="you@example.com"
                                         />
                                     </div>
@@ -234,7 +234,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                                             minLength={6}
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm"
+                                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent sm:text-sm text-gray-900"
                                             placeholder="••••••••"
                                         />
                                     </div>
