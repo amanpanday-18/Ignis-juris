@@ -11,7 +11,7 @@ import logo from '../assets/ignis_juris_logo.jpg';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [suggestions, setSuggestions] = useState({ advocates: [], judgements: [], bareActs: [], news: [] });
+    const [suggestions, setSuggestions] = useState({ bareActs: [] });
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const { user, logout } = useAuth();
@@ -42,7 +42,7 @@ const Navbar = () => {
                     console.error('Error fetching suggestions:', error);
                 }
             } else {
-                setSuggestions({ advocates: [], judgements: [], bareActs: [], news: [] });
+                setSuggestions({ bareActs: [] });
                 setShowSuggestions(false);
             }
         }, 300);
@@ -70,11 +70,6 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'News', path: '/', scrollTo: 'news-section' },
-        { name: 'Advocates', path: '/advocates' },
-        { name: 'Judgements', path: '/judgements' },
-        { name: 'Drafting', path: '/drafting' },
-        { name: 'AI Drafting', path: '/ai-drafting' },
     ];
 
     const handleNavClick = (link, e) => {
@@ -139,7 +134,7 @@ const Navbar = () => {
                                         ref={searchInputRef}
                                         type="text"
                                         className="block w-full pl-10 pr-3 py-2 border border-white/10 rounded-md leading-5 bg-slate-800 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent sm:text-sm transition duration-150 ease-in-out shadow-sm"
-                                        placeholder="Search for advocates, judgements, bare acts..."
+                                        placeholder="Search for bare acts..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         onFocus={() => setShowSuggestions(true)}
@@ -149,44 +144,14 @@ const Navbar = () => {
 
                             {/* Search Suggestions Dropdown */}
                             <AnimatePresence>
-                                {showSuggestions && searchQuery.trim() && (suggestions.advocates?.length > 0 || suggestions.judgements?.length > 0 || suggestions.bareActs?.length > 0 || suggestions.news?.length > 0) && (
+                                {showSuggestions && searchQuery.trim() && (suggestions.bareActs?.length > 0) && (
                                     <motion.div
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 10 }}
                                         className="absolute top-full left-0 right-0 mt-2 bg-slate-900 rounded-lg shadow-xl border border-white/10 overflow-hidden z-50 max-h-96 overflow-y-auto"
                                     >
-                                        {suggestions.advocates?.length > 0 && (
-                                            <div className="p-2">
-                                                <div className="text-xs font-semibold text-slate-400 uppercase px-2 mb-1">Advocates</div>
-                                                {suggestions.advocates.slice(0, 3).map(item => (
-                                                    <div
-                                                        key={item.id}
-                                                        onClick={() => handleSuggestionClick(`/advocates`)}
-                                                        className="flex items-center px-2 py-2 hover:bg-slate-800 cursor-pointer rounded-md group transition-colors"
-                                                    >
-                                                        <Search className="h-4 w-4 text-slate-500 mr-2 group-hover:text-accent" />
-                                                        <span className="text-sm text-slate-300 group-hover:text-white">{item.name}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
 
-                                        {suggestions.judgements?.length > 0 && (
-                                            <div className="p-2 border-t border-white/5">
-                                                <div className="text-xs font-semibold text-slate-400 uppercase px-2 mb-1">Judgements</div>
-                                                {suggestions.judgements.slice(0, 3).map(item => (
-                                                    <div
-                                                        key={item.id}
-                                                        onClick={() => handleSuggestionClick(`/judgements`)}
-                                                        className="flex items-center px-2 py-2 hover:bg-slate-800 cursor-pointer rounded-md group transition-colors"
-                                                    >
-                                                        <Search className="h-4 w-4 text-slate-500 mr-2 group-hover:text-accent" />
-                                                        <span className="text-sm text-slate-300 group-hover:text-white">{item.title || item.case_title}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
 
                                         {suggestions.bareActs?.length > 0 && (
                                             <div className="p-2 border-t border-white/5">

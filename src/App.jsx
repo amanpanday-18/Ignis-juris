@@ -4,11 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
-import Advocates from './pages/Advocates';
-import Judgements from './pages/Judgements';
-import Dashboard from './pages/Dashboard';
 import DocumentViewer from './pages/DocumentViewer';
-import AIDrafting from './pages/AIDrafting';
 import Store from './pages/Store';
 import Profile from './pages/Profile';
 import Quizzes from './pages/Quizzes';
@@ -16,7 +12,7 @@ import TakeQuiz from './pages/TakeQuiz';
 import QuizResults from './pages/QuizResults';
 import More from './pages/More';
 import BareActs from './pages/BareActs';
-import DraftingTemplates from './pages/DraftingTemplates';
+import BareActs from './pages/BareActs';
 import Education from './pages/Education';
 import AdvocateDiary from './pages/AdvocateDiary';
 import MootCourts from './pages/MootCourts';
@@ -42,11 +38,7 @@ function App() {
             <Route path="/documents/:id" element={<ProtectedRoute><DocumentViewer /></ProtectedRoute>} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="advocates" element={<ProtectedRoute><Advocates /></ProtectedRoute>} />
-              <Route path="judgements" element={<ProtectedRoute><Judgements /></ProtectedRoute>} />
               <Route path="bare-acts" element={<ProtectedRoute><BareActs /></ProtectedRoute>} />
-              <Route path="drafting" element={<ProtectedRoute><DraftingTemplates /></ProtectedRoute>} />
-              <Route path="ai-drafting" element={<ProtectedRoute><AIDrafting /></ProtectedRoute>} />
               <Route path="opportunities" element={<ProtectedRoute><Opportunities /></ProtectedRoute>} />
               <Route path="education" element={<ProtectedRoute><Education /></ProtectedRoute>} />
               <Route path="internships" element={<ProtectedRoute><Internships /></ProtectedRoute>} />
