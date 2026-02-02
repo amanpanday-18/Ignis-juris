@@ -177,14 +177,10 @@ const Home = () => {
                     onClose={() => setIsAddModalOpen(false)}
                     onAdd={handleAddNews}
                 />
+            </div>
 
-                Disclaimer
-            </motion.button>
-        </div >
-            </div >
-
-    {/* Disclaimer Toggle - Fixed at bottom right */ }
-    < div className = "fixed bottom-4 right-8 z-[9999] flex flex-col items-end" >
+            {/* Disclaimer Toggle - Fixed at bottom right */}
+            <div className="fixed bottom-4 right-8 z-[9999] flex flex-col items-end">
                 <AnimatePresence>
                     {showDisclaimer && (
                         <motion.div
@@ -204,7 +200,7 @@ const Home = () => {
                         </motion.div>
                     )}
                 </AnimatePresence>
-                
+
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -214,7 +210,7 @@ const Home = () => {
                 >
                     Disclaimer
                 </motion.button>
-            </div >
+            </div>
         </>
     );
 };
