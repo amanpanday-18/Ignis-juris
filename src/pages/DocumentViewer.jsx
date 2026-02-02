@@ -34,7 +34,7 @@ const DocumentViewer = () => {
     return (
         <div className="min-h-screen bg-slate-900 p-6 text-slate-100">
             <Helmet>
-                <title>{document.title} - Legal Remedies</title>
+                <title>{document.title} - IGNIS JURIS</title>
             </Helmet>
             <div className="max-w-4xl mx-auto">
 

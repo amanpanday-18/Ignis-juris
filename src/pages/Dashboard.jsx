@@ -11,7 +11,7 @@ const Dashboard = () => {
     return (
         <div className="flex h-screen bg-slate-900 overflow-hidden">
             <Helmet>
-                <title>Dashboard - Legal Remedies</title>
+                <title>Dashboard - IGNIS JURIS</title>
             </Helmet>
 
             {/* Sidebar (Fixed Width) */}

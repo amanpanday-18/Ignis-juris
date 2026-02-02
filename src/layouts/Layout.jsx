@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { Instagram, Mail } from 'lucide-react';
-import logoFooter from '../assets/logo-footer.jpg';
+import logoFooter from '../assets/ignis_juris_logo.jpg';
 
 const Layout = () => {
     return (
@@ -15,7 +15,7 @@ const Layout = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <h3 className="text-white text-lg font-bold mb-4">The Legal Remedies</h3>
+                            <h3 className="text-white text-lg font-bold mb-4">IGNIS JURIS</h3>
                             <p className="text-sm">
                                 Your one-stop solution for all legal needs. From news to drafting, we have it all.
                             </p>
@@ -23,7 +23,7 @@ const Layout = () => {
                         <div className="flex items-center justify-center">
                             <img
                                 src={logoFooter}
-                                alt="The Legal Remedies Logo"
+                                alt="IGNIS JURIS Logo"
                                 className="w-32 h-32 rounded-full object-cover shadow-lg"
                             />
                         </div>
@@ -52,7 +52,7 @@ const Layout = () => {
                         </div>
                     </div>
                     <div className="mt-8 pt-8 border-t border-gray-700 text-center text-sm">
-                        &copy; {new Date().getFullYear()} The Legal Remedies. All rights reserved.
+                        &copy; {new Date().getFullYear()} IGNIS JURIS. All rights reserved.
                     </div>
                 </div>
             </footer>

@@ -116,7 +116,7 @@ const AuthModal = ({ isOpen, onClose, type = 'signin' }) => {
                             <p className="text-gray-500 mt-2 text-sm">
                                 {isSignIn
                                     ? 'Enter your credentials to access your account'
-                                    : 'Join Legal Remedies today for full access'}
+                                    : 'Join IGNIS JURIS today for full access'}
                             </p>
                         </div>
 

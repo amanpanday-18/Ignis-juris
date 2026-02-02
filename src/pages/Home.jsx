@@ -60,7 +60,7 @@ const Home = () => {
     return (
         <div className="min-h-screen bg-slate-900 text-white selection:bg-accent selection:text-white">
             <Helmet>
-                <title>Legal Remedies - Justice Simplified</title>
+                <title>IGNIS JURIS - Justice Simplified</title>
                 <meta name="description" content="Your comprehensive legal platform for news, resources, and AI-powered document drafting." />
             </Helmet>
 

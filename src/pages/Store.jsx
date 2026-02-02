@@ -68,7 +68,7 @@ const Store = () => {
     return (
         <div className="min-h-screen bg-slate-900 text-slate-100">
             <Helmet>
-                <title>Legal Resources Store - Legal Remedies</title>
+                <title>Legal Resources Store - IGNIS JURIS</title>
                 <meta name="description" content="Premium legal templates, e-books, and study materials." />
             </Helmet>
 

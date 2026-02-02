@@ -95,7 +95,7 @@ const AIDrafting = () => {
     return (
         <div className="min-h-screen bg-slate-900 flex flex-col text-slate-100">
             <Helmet>
-                <title>AI Drafting - Legal Remedies</title>
+                <title>AI Drafting - IGNIS JURIS</title>
                 <meta name="description" content="Generate legal documents instantly with our AI-powered drafting tool." />
             </Helmet>
 

@@ -148,7 +148,7 @@ const TakeQuiz = () => {
     return (
         <div className="min-h-screen bg-slate-900 py-8 text-slate-100">
             <Helmet>
-                <title>{quiz.title} - Legal Remedies</title>
+                <title>{quiz.title} - IGNIS JURIS</title>
             </Helmet>
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}

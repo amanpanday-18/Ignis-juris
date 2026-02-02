@@ -21,7 +21,7 @@ const Sidebar = () => {
             <div className="p-6 flex items-center border-b border-blue-800">
                 <Scale className="h-8 w-8 text-[#c5a572] mr-3" />
                 <div>
-                    <h1 className="text-xl font-bold font-serif tracking-wide">LEGAL REMEDIES</h1>
+                    <h1 className="text-xl font-bold font-serif tracking-wide">IGNIS JURIS</h1>
                     <p className="text-xs text-blue-200">ADVOCATE SUITE</p>
                 </div>
             </div>

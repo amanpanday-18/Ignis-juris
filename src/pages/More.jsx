@@ -124,7 +124,7 @@ const More = () => {
     return (
         <div className="min-h-screen bg-slate-900 text-slate-100">
             <Helmet>
-                <title>More Resources - Legal Remedies</title>
+                <title>More Resources - IGNIS JURIS</title>
                 <meta name="description" content="Explore additional legal resources, quizzes, internships, and jobs." />
             </Helmet>
 

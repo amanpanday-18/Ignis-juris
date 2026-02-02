@@ -6,6 +6,7 @@ import AuthModal from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
 import { SearchService } from '../services/search-service';
+import logo from '../assets/ignis_juris_logo.jpg';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -117,8 +118,11 @@ const Navbar = () => {
                 <div className="w-full px-2 sm:px-4 lg:px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
-                        <Link to="/" className="flex-shrink-0 font-bold text-xl md:text-2xl text-accent tracking-wider whitespace-nowrap">
-                            THE LEGAL REMEDIES
+                        <Link to="/" className="flex-shrink-0 flex items-center gap-2">
+                            <img src={logo} alt="IGNIS JURIS Logo" className="h-10 w-10 rounded-full object-cover border border-accent/20" />
+                            <span className="font-bold text-xl md:text-2xl text-accent tracking-wider whitespace-nowrap">
+                                IGNIS JURIS
+                            </span>
                         </Link>
 
                         {/* Desktop Search */}

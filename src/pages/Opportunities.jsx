@@ -61,7 +61,7 @@ const Opportunities = () => {
     return (
         <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
             <Helmet>
-                <title>Opportunities - Legal Remedies</title>
+                <title>Opportunities - IGNIS JURIS</title>
             </Helmet>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">

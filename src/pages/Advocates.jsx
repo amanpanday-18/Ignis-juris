@@ -85,7 +85,7 @@ const Advocates = () => {
     return (
         <div className="min-h-screen bg-slate-900 text-slate-100">
             <Helmet>
-                <title>Find Advocates - Legal Remedies</title>
+                <title>Find Advocates - IGNIS JURIS</title>
                 <meta name="description" content="Connect with top legal experts and advocates for your case." />
             </Helmet>
 
