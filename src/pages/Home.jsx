@@ -175,6 +175,12 @@ const Home = () => {
                 onClose={() => setIsAddModalOpen(false)}
                 onAdd={handleAddNews}
             />
+
+            {/* Disclaimer */}
+            <div className="fixed bottom-4 right-4 z-50 max-w-sm bg-slate-800/90 backdrop-blur-md p-4 rounded-xl border border-white/10 text-[10px] text-slate-400 shadow-2xl leading-relaxed">
+                <p><strong>Disclaimer:</strong> This website is for educational purposes only and is intended to share legal knowledge. The content provided here does not constitute professional legal advice, and no attorney-client relationship is formed by your use of this site. As I am a law student, the information provided may not reflect the most current legal developments. For specific legal issues, please consult a licensed legal professional.</p>
+                <p className="mt-2">We do not take responsibility for any information provided on the website. This entire website is for educational purposes only, and no responsibility will be taken for its authenticity.</p>
+            </div>
         </div>
     );
 };
