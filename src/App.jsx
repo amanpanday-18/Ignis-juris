@@ -11,9 +11,7 @@ import Quizzes from './pages/Quizzes';
 import TakeQuiz from './pages/TakeQuiz';
 import QuizResults from './pages/QuizResults';
 import More from './pages/More';
-import BareActs from './pages/BareActs';
 import Education from './pages/Education';
-import AdvocateDiary from './pages/AdvocateDiary';
 import MootCourts from './pages/MootCourts';
 import Internships from './pages/Internships';
 import Jobs from './pages/Jobs';
@@ -37,13 +35,13 @@ function App() {
             <Route path="/documents/:id" element={<ProtectedRoute><DocumentViewer /></ProtectedRoute>} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="bare-acts" element={<ProtectedRoute><BareActs /></ProtectedRoute>} />
+
               <Route path="opportunities" element={<ProtectedRoute><Opportunities /></ProtectedRoute>} />
               <Route path="education" element={<ProtectedRoute><Education /></ProtectedRoute>} />
               <Route path="internships" element={<ProtectedRoute><Internships /></ProtectedRoute>} />
               <Route path="jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
               <Route path="scholarships" element={<ProtectedRoute><Scholarships /></ProtectedRoute>} />
-              <Route path="diary" element={<ProtectedRoute><AdvocateDiary /></ProtectedRoute>} />
+
               <Route path="more" element={<ProtectedRoute><More /></ProtectedRoute>} />
               <Route path="competitions" element={<ProtectedRoute><MootCourts /></ProtectedRoute>} />
               <Route path="quizzes" element={<ProtectedRoute><Quizzes /></ProtectedRoute>} />
