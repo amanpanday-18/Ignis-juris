@@ -178,7 +178,7 @@ const Home = () => {
             />
 
             {/* Disclaimer Toggle */}
-            <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
+            <div className="fixed bottom-4 right-8 z-50 flex flex-col items-end">
                 <AnimatePresence>
                     {showDisclaimer && (
                         <motion.div
@@ -203,11 +203,10 @@ const Home = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowDisclaimer(!showDisclaimer)}
-                    className="bg-accent/90 hover:bg-accent text-white p-3 rounded-full shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center group"
+                    className="bg-accent/90 hover:bg-accent text-white px-4 py-2 rounded-full shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center group font-bold text-xs tracking-wide"
                     title="Read Disclaimer"
                 >
-                    <span className="sr-only">Disclaimer</span>
-                    <span className="font-bold text-xs">!</span>
+                    Disclaimer
                 </motion.button>
             </div>
         </div>
