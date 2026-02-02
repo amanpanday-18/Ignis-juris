@@ -178,40 +178,45 @@ const Home = () => {
                     onAdd={handleAddNews}
                 />
 
-                {/* Disclaimer Toggle */}
-                <div className="fixed bottom-4 right-8 z-50 flex flex-col items-end">
-                    <AnimatePresence>
-                        {showDisclaimer && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                                className="bg-slate-800/95 backdrop-blur-md p-4 rounded-xl border border-white/10 text-[10px] text-slate-400 shadow-2xl leading-relaxed max-w-sm mb-4"
-                            >
-                                <div className="flex justify-between items-start mb-2">
-                                    <strong className="text-slate-300">Disclaimer</strong>
-                                    <button onClick={() => setShowDisclaimer(false)} className="text-slate-500 hover:text-white">
-                                        <X className="h-3 w-3" />
-                                    </button>
-                                </div>
-                                <p className="mb-2">This website is for educational purposes only and is intended to share legal knowledge. The content provided here does not constitute professional legal advice, and no attorney-client relationship is formed by your use of this site. As I am a law student, the information provided may not reflect the most current legal developments. For specific legal issues, please consult a licensed legal professional.</p>
-                                <p>We do not take responsibility for any information provided on the website. This entire website is for educational purposes only, and no responsibility will be taken for its authenticity.</p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                Disclaimer
+            </motion.button>
+        </div >
+            </div >
 
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setShowDisclaimer(!showDisclaimer)}
-                        className="bg-accent/90 hover:bg-accent text-white px-4 py-2 rounded-full shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center group font-bold text-xs tracking-wide"
-                        title="Read Disclaimer"
-                    >
-                        Disclaimer
-                    </motion.button>
-                </div>
-            </div>
-            );
+    {/* Disclaimer Toggle - Fixed at bottom right */ }
+    < div className = "fixed bottom-4 right-8 z-[9999] flex flex-col items-end" >
+                <AnimatePresence>
+                    {showDisclaimer && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                            className="bg-slate-800/95 backdrop-blur-md p-4 rounded-xl border border-white/10 text-[10px] text-slate-400 shadow-2xl leading-relaxed max-w-sm mb-4"
+                        >
+                            <div className="flex justify-between items-start mb-2">
+                                <strong className="text-slate-300">Disclaimer</strong>
+                                <button onClick={() => setShowDisclaimer(false)} className="text-slate-500 hover:text-white">
+                                    <X className="h-3 w-3" />
+                                </button>
+                            </div>
+                            <p className="mb-2">This website is for educational purposes only and is intended to share legal knowledge. The content provided here does not constitute professional legal advice, and no attorney-client relationship is formed by your use of this site. As I am a law student, the information provided may not reflect the most current legal developments. For specific legal issues, please consult a licensed legal professional.</p>
+                            <p>We do not take responsibility for any information provided on the website. This entire website is for educational purposes only, and no responsibility will be taken for its authenticity.</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+                
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowDisclaimer(!showDisclaimer)}
+                    className="bg-accent/90 hover:bg-accent text-white px-4 py-2 rounded-full shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center group font-bold text-xs tracking-wide"
+                    title="Read Disclaimer"
+                >
+                    Disclaimer
+                </motion.button>
+            </div >
+        </>
+    );
 };
 
-            export default Home;
+export default Home;
