@@ -27,17 +27,7 @@ const More = () => {
             gradient: 'from-blue-500 to-blue-600',
             available: true
         },
-        {
-            id: 'bare-acts',
-            title: 'Bare Acts',
-            description: 'Access a comprehensive database of Indian laws and acts.',
-            icon: Scale,
-            link: '/bare-acts',
-            color: 'bg-indigo-500',
-            textColor: 'text-indigo-400',
-            gradient: 'from-indigo-500 to-indigo-600',
-            available: true
-        },
+
         {
             id: 'internships',
             title: 'Internships',
@@ -71,17 +61,7 @@ const More = () => {
             gradient: 'from-teal-500 to-teal-600',
             available: true
         },
-        {
-            id: 'diary',
-            title: 'Schedule',
-            description: 'Manage your case schedules, hearings, and client appointments.',
-            icon: Calendar,
-            link: '/diary',
-            color: 'bg-orange-500',
-            textColor: 'text-orange-400',
-            gradient: 'from-orange-500 to-orange-600',
-            available: true
-        },
+
         {
             id: 'competitions',
             title: 'Moot Courts',
