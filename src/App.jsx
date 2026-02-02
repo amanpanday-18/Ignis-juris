@@ -4,7 +4,6 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
 import DocumentViewer from './pages/DocumentViewer';
 import Store from './pages/Store';
 import Profile from './pages/Profile';
@@ -34,7 +33,7 @@ function App() {
         <UsageTracker />
         <Router>
           <Routes>
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+
             <Route path="/documents/:id" element={<ProtectedRoute><DocumentViewer /></ProtectedRoute>} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
