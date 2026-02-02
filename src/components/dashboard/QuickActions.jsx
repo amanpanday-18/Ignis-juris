@@ -6,10 +6,8 @@ const QuickActions = () => {
     const navigate = useNavigate();
 
     const actions = [
-        { icon: Search, label: 'Find a Lawyer', path: '/advocates', description: 'Search our verified directory' },
-        { icon: FileText, label: 'Draft Document', path: '/ai-drafting', description: 'Create legal agreements with AI' },
         { icon: Calendar, label: 'Schedule', path: '/diary', description: 'Manage your case schedule' },
-        { icon: BookOpen, label: 'Access Legal Library', path: '/judgements', description: 'Browse bare acts & cases' },
+        { icon: BookOpen, label: 'Browse Bare Acts', path: '/bare-acts', description: 'Access comprehensive legal texts' },
     ];
 
     return (

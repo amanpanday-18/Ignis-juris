@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import DocumentViewer from './pages/DocumentViewer';
 import Store from './pages/Store';
 import Profile from './pages/Profile';
@@ -11,7 +12,6 @@ import Quizzes from './pages/Quizzes';
 import TakeQuiz from './pages/TakeQuiz';
 import QuizResults from './pages/QuizResults';
 import More from './pages/More';
-import BareActs from './pages/BareActs';
 import BareActs from './pages/BareActs';
 import Education from './pages/Education';
 import AdvocateDiary from './pages/AdvocateDiary';
@@ -53,6 +53,7 @@ function App() {
               <Route path="store" element={<ProtectedRoute><Store /></ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>
         </Router>

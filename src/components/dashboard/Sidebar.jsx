@@ -8,9 +8,6 @@ const Sidebar = () => {
 
     const navItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-        { icon: PenTool, label: 'AI Drafting', path: '/ai-drafting' },
-        { icon: FileText, label: 'Drafting', path: '/drafting' },
-        { icon: BookOpen, label: 'Judgements', path: '/judgements' },
         { icon: Book, label: 'Bare Acts', path: '/bare-acts' },
         { icon: Settings, label: 'Settings', path: '/profile' },
     ];
