@@ -27,6 +27,7 @@ import BlogList from './pages/BlogList';
 import CreateBlog from './pages/CreateBlog';
 import AdminBlogs from './pages/AdminBlogs';
 import BlogDetail from './pages/BlogDetail';
+import MyBlogs from './pages/MyBlogs';
 
 // Placeholder component removed
 
@@ -59,6 +60,7 @@ function App() {
               <Route path="blog" element={<BlogList />} />
               <Route path="blog/:id" element={<BlogDetail />} />
               <Route path="blog/new" element={<ProtectedRoute><CreateBlog /></ProtectedRoute>} />
+              <Route path="my-blogs" element={<ProtectedRoute><MyBlogs /></ProtectedRoute>} />
               <Route path="admin/blogs" element={<ProtectedRoute><AdminBlogs /></ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />

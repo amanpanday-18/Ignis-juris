@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
-import { Loader, PlusCircle, ShieldAlert } from 'lucide-react';
+import { Loader, PlusCircle, ShieldAlert, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../hooks/useAdmin';
 import { Helmet } from 'react-helmet-async';
@@ -68,6 +68,15 @@ const BlogList = () => {
                             >
                                 <ShieldAlert className="h-5 w-5 mr-2" />
                                 Review Pending
+                            </Link>
+                        )}
+                        {user && (
+                            <Link
+                                to="/my-blogs"
+                                className="inline-flex items-center px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors border border-slate-700"
+                            >
+                                <User className="h-5 w-5 mr-2" />
+                                My Submissions
                             </Link>
                         )}
                         <Link
