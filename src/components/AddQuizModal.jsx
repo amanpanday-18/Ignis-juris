@@ -20,7 +20,7 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
     const [questions, setQuestions] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState({
         questionText: '',
-        questionType: 'mcq',
+        questionType: 'mcq-single',
         options: ['', '', '', ''],
         correctAnswer: '',
         explanation: '',
@@ -43,8 +43,15 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
     };
 
     const addQuestion = () => {
-        if (!currentQuestion.questionText || !currentQuestion.correctAnswer) {
-            alert('Please fill in the question text and correct answer.');
+        if (!currentQuestion.questionText) {
+            alert('Please fill in the question text.');
+            return;
+        }
+
+        // Only require correct answer for MCQ and True/False
+        const requiresAnswer = ['mcq-single', 'mcq-multiple', 'true-false'].includes(currentQuestion.questionType);
+        if (requiresAnswer && !currentQuestion.correctAnswer) {
+            alert('Please select the correct answer.');
             return;
         }
 
@@ -52,7 +59,7 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
         // Reset current question
         setCurrentQuestion({
             questionText: '',
-            questionType: 'mcq',
+            questionType: 'mcq-single',
             options: ['', '', '', ''],
             correctAnswer: '',
             explanation: '',
@@ -205,6 +212,18 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                 </div>
                             </div>
 
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Submission Deadline (Optional)</label>
+                                <input
+                                    type="datetime-local"
+                                    name="submissionDeadline"
+                                    value={quizData.submissionDeadline || ''}
+                                    onChange={handleQuizChange}
+                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">Students won't be able to submit after this time</p>
+                            </div>
+
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
@@ -263,8 +282,11 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                             onChange={handleQuestionChange}
                                             className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
                                         >
-                                            <option value="mcq">Multiple Choice</option>
+                                            <option value="mcq-single">MCQ - Single Choice</option>
+                                            <option value="mcq-multiple">MCQ - Multiple Choice</option>
                                             <option value="true-false">True/False</option>
+                                            <option value="short-answer">Short Answer</option>
+                                            <option value="long-answer">Long Answer</option>
                                         </select>
                                     </div>
                                     <div>
@@ -280,10 +302,12 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                     </div>
                                 </div>
 
-                                {/* Options */}
-                                <div className="mb-3">
-                                    <label className="block text-sm font-medium text-gray-300 mb-2">Options</label>
-                                    {currentQuestion.questionType === 'mcq' ? (
+                                {/* Options - Dynamic based on question type */}
+                                {(currentQuestion.questionType === 'mcq-single' || currentQuestion.questionType === 'mcq-multiple') && (
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            Options {currentQuestion.questionType === 'mcq-multiple' && <span className="text-xs text-yellow-400">(Multiple answers allowed)</span>}
+                                        </label>
                                         <div className="space-y-2">
                                             {currentQuestion.options.map((option, idx) => (
                                                 <div key={idx} className="flex items-center">
@@ -295,18 +319,42 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                                         className="flex-1 px-3 py-1 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
                                                         placeholder={`Option ${idx + 1}`}
                                                     />
-                                                    <input
-                                                        type="radio"
-                                                        name="correctAnswer"
-                                                        checked={currentQuestion.correctAnswer === option && option !== ''}
-                                                        onChange={() => setCurrentQuestion({ ...currentQuestion, correctAnswer: option })}
-                                                        className="ml-2 h-4 w-4 text-accent focus:ring-accent bg-slate-800 border-gray-600"
-                                                        disabled={option === ''}
-                                                    />
+                                                    {currentQuestion.questionType === 'mcq-single' ? (
+                                                        <input
+                                                            type="radio"
+                                                            name="correctAnswer"
+                                                            checked={currentQuestion.correctAnswer === option && option !== ''}
+                                                            onChange={() => setCurrentQuestion({ ...currentQuestion, correctAnswer: option })}
+                                                            className="ml-2 h-4 w-4 text-accent focus:ring-accent bg-slate-800 border-gray-600"
+                                                            disabled={option === ''}
+                                                        />
+                                                    ) : (
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={Array.isArray(currentQuestion.correctAnswer) && currentQuestion.correctAnswer.includes(option) && option !== ''}
+                                                            onChange={(e) => {
+                                                                const answers = Array.isArray(currentQuestion.correctAnswer) ? [...currentQuestion.correctAnswer] : [];
+                                                                if (e.target.checked) {
+                                                                    answers.push(option);
+                                                                } else {
+                                                                    const idx = answers.indexOf(option);
+                                                                    if (idx > -1) answers.splice(idx, 1);
+                                                                }
+                                                                setCurrentQuestion({ ...currentQuestion, correctAnswer: answers });
+                                                            }}
+                                                            className="ml-2 h-4 w-4 text-accent focus:ring-accent bg-slate-800 border-gray-600 rounded"
+                                                            disabled={option === ''}
+                                                        />
+                                                    )}
                                                 </div>
                                             ))}
                                         </div>
-                                    ) : (
+                                    </div>
+                                )}
+
+                                {currentQuestion.questionType === 'true-false' && (
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Correct Answer</label>
                                         <div className="flex space-x-4">
                                             {['True', 'False'].map((option) => (
                                                 <label key={option} className="flex items-center space-x-2 cursor-pointer text-gray-300">
@@ -321,8 +369,49 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                                 </label>
                                             ))}
                                         </div>
-                                    )}
-                                </div>
+                                    </div>
+                                )}
+
+                                {(currentQuestion.questionType === 'short-answer' || currentQuestion.questionType === 'long-answer') && (
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            Sample/Expected Answer (Optional)
+                                        </label>
+                                        <textarea
+                                            value={currentQuestion.correctAnswer}
+                                            onChange={(e) => setCurrentQuestion({ ...currentQuestion, correctAnswer: e.target.value })}
+                                            rows="3"
+                                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                            placeholder="Enter a sample answer for reference (will be shown to grader)..."
+                                        />
+                                        {currentQuestion.questionType === 'short-answer' && (
+                                            <div className="mt-2">
+                                                <label className="block text-xs text-gray-400 mb-1">Character Limit (optional)</label>
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    value={currentQuestion.charLimit || ''}
+                                                    onChange={(e) => setCurrentQuestion({ ...currentQuestion, charLimit: e.target.value ? parseInt(e.target.value) : null })}
+                                                    className="w-32 px-3 py-1 bg-slate-800 border border-white/10 rounded-lg text-white text-sm"
+                                                    placeholder="500"
+                                                />
+                                            </div>
+                                        )}
+                                        {currentQuestion.questionType === 'long-answer' && (
+                                            <div className="mt-2">
+                                                <label className="block text-xs text-gray-400 mb-1">Word Limit (optional)</label>
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    value={currentQuestion.maxWords || ''}
+                                                    onChange={(e) => setCurrentQuestion({ ...currentQuestion, maxWords: e.target.value ? parseInt(e.target.value) : null })}
+                                                    className="w-32 px-3 py-1 bg-slate-800 border border-white/10 rounded-lg text-white text-sm"
+                                                    placeholder="1000"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
 
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-300 mb-1">Explanation (Optional)</label>

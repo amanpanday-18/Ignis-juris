@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Loader } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Clock, CheckCircle, ChevronRight, ChevronLeft, Loader, AlertCircle } from 'lucide-react';
 import { QuizService } from '../services/quiz-service';
 import { useAuth } from '../context/AuthContext';
 import { Helmet } from 'react-helmet-async';
@@ -14,7 +14,7 @@ const TakeQuiz = () => {
     const [quiz, setQuiz] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [answers, setAnswers] = useState({}); // { questionId: selectedOption }
+    const [answers, setAnswers] = useState({}); // { questionId: answer or [answers] }
     const [timeLeft, setTimeLeft] = useState(0); // in seconds
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -52,26 +52,45 @@ const TakeQuiz = () => {
         }
     };
 
-    const handleAnswerSelect = (option) => {
+    // Handle answer for single-choice questions (MCQ-Single, True/False)
+    const handleSingleAnswer = (answer) => {
         const currentQuestion = quiz.questions[currentQuestionIndex];
         setAnswers({
             ...answers,
-            [currentQuestion.id]: option
+            [currentQuestion.id]: answer
         });
     };
 
-    const calculateScore = () => {
-        let score = 0;
-        let totalPoints = 0;
+    // Handle answer for multiple-choice questions (MCQ-Multiple)
+    const handleMultipleAnswer = (option) => {
+        const currentQuestion = quiz.questions[currentQuestionIndex];
+        const currentAnswers = answers[currentQuestion.id] || [];
 
-        quiz.questions.forEach(q => {
-            totalPoints += q.points;
-            if (answers[q.id] === q.correct_answer) {
-                score += q.points;
-            }
+        let newAnswers;
+        if (currentAnswers.includes(option)) {
+            newAnswers = currentAnswers.filter(a => a !== option);
+        } else {
+            newAnswers = [...currentAnswers, option];
+        }
+
+        setAnswers({
+            ...answers,
+            [currentQuestion.id]: newAnswers
         });
+    };
 
-        return { score, totalPoints };
+    // Handle text answer (Short Answer, Long Answer)
+    const handleTextAnswer = (text) => {
+        const currentQuestion = quiz.questions[currentQuestionIndex];
+        setAnswers({
+            ...answers,
+            [currentQuestion.id]: text
+        });
+    };
+
+    // Count words in text
+    const countWords = (text) => {
+        return text.trim().split(/\s+/).filter(word => word.length > 0).length;
     };
 
     const handleSubmit = async () => {
@@ -79,34 +98,34 @@ const TakeQuiz = () => {
         setIsSubmitting(true);
 
         try {
-            const { score, totalPoints } = calculateScore();
-            const percentage = Math.round((score / totalPoints) * 100);
             const timeTaken = (quiz.time_limit * 60) - timeLeft;
 
-            const attemptData = {
+            const submissionData = {
                 quizId: quiz.id,
                 userId: user.id,
-                score,
-                totalPoints,
-                percentage,
                 answers,
                 timeTaken
             };
 
-            const result = await QuizService.submitAttempt(attemptData);
+            const submission = await QuizService.submitAnswers(submissionData);
 
-            // Navigate to results page with state
-            navigate(`/quizzes/${id}/results`, {
+            // Navigate to success page
+            navigate(`/quizzes/${id}/submission-success`, {
                 state: {
-                    result,
-                    quiz,
-                    userAnswers: answers
+                    submission,
+                    quiz
                 }
             });
 
         } catch (error) {
             console.error('Error submitting quiz:', error);
-            alert('Failed to submit quiz. Please try again.');
+            console.error('Submission Data:', {
+                quizId: quiz.id,
+                userId: user.id,
+                answers,
+                timeTaken: (quiz.time_limit * 60) - timeLeft
+            });
+            alert(`Failed to submit quiz: ${error.message || 'Unknown error'}`);
             setIsSubmitting(false);
         }
     };
@@ -144,6 +163,7 @@ const TakeQuiz = () => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
     const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
+    const currentAnswer = answers[currentQuestion.id];
 
     return (
         <div className="min-h-screen bg-slate-900 py-8 text-slate-100">
@@ -151,6 +171,17 @@ const TakeQuiz = () => {
                 <title>{quiz.title} - IGNIS JURIS</title>
             </Helmet>
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Submission Loading Overlay */}
+                {isSubmitting && (
+                    <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-[100]">
+                        <div className="text-center">
+                            <Loader className="animate-spin h-12 w-12 text-accent mx-auto mb-4" />
+                            <p className="text-xl font-bold text-white">Submitting your answers...</p>
+                            <p className="text-slate-400 mt-2">Please do not refresh the page.</p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Header */}
                 <div className="bg-slate-800 rounded-xl shadow-lg border border-white/5 p-4 mb-6 flex justify-between items-center sticky top-4 z-10">
                     <div>
@@ -182,45 +213,138 @@ const TakeQuiz = () => {
                     exit={{ opacity: 0, x: -20 }}
                     className="bg-slate-800 rounded-xl shadow-xl border border-white/5 p-8 mb-8"
                 >
-                    <h2 className="text-xl font-bold text-white mb-6 leading-relaxed">
-                        {currentQuestion.question_text}
-                    </h2>
+                    <div className="flex justify-between items-start mb-4">
+                        <h2 className="text-xl font-bold text-white leading-relaxed flex-1">
+                            {currentQuestion.question_text}
+                        </h2>
+                        <span className="ml-4 px-3 py-1 bg-accent/20 text-accent rounded-full text-sm font-bold">
+                            {currentQuestion.points} {currentQuestion.points === 1 ? 'pt' : 'pts'}
+                        </span>
+                    </div>
 
+                    {/* Render different UI based on question type */}
                     <div className="space-y-3">
-                        {currentQuestion.question_type === 'mcq' ? (
-                            currentQuestion.options.map((option, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => handleAnswerSelect(option)}
-                                    className={`w-full text-left p-4 rounded-lg border-2 transition-all ${answers[currentQuestion.id] === option
-                                        ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
-                                        : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
-                                        }`}
-                                >
-                                    <div className="flex items-center">
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold ${answers[currentQuestion.id] === option
-                                            ? 'bg-accent text-white'
-                                            : 'bg-white/10 text-slate-400'
-                                            }`}>
-                                            {String.fromCharCode(65 + idx)}
+                        {/* MCQ - Single Choice */}
+                        {currentQuestion.question_type === 'mcq-single' && (
+                            <>
+                                {currentQuestion.options.map((option, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => handleSingleAnswer(option)}
+                                        className={`w-full text-left p-4 rounded-lg border-2 transition-all ${currentAnswer === option
+                                            ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
+                                            : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
+                                            }`}
+                                    >
+                                        <div className="flex items-center">
+                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold ${currentAnswer === option
+                                                ? 'bg-accent text-white'
+                                                : 'bg-white/10 text-slate-400'
+                                                }`}>
+                                                {String.fromCharCode(65 + idx)}
+                                            </div>
+                                            {option}
                                         </div>
-                                        {option}
+                                    </button>
+                                ))}
+                            </>
+                        )}
+
+                        {/* MCQ - Multiple Choice */}
+                        {currentQuestion.question_type === 'mcq-multiple' && (
+                            <>
+                                <p className="text-sm text-slate-400 mb-2">Select all that apply</p>
+                                {currentQuestion.options.map((option, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => handleMultipleAnswer(option)}
+                                        className={`w-full text-left p-4 rounded-lg border-2 transition-all ${currentAnswer && currentAnswer.includes(option)
+                                            ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
+                                            : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
+                                            }`}
+                                    >
+                                        <div className="flex items-center">
+                                            <div className={`w-6 h-6 rounded border-2 flex items-center justify-center mr-3 ${currentAnswer && currentAnswer.includes(option)
+                                                ? 'bg-accent border-accent'
+                                                : 'border-white/30'
+                                                }`}>
+                                                {currentAnswer && currentAnswer.includes(option) && (
+                                                    <CheckCircle className="h-4 w-4 text-white" />
+                                                )}
+                                            </div>
+                                            {option}
+                                        </div>
+                                    </button>
+                                ))}
+                            </>
+                        )}
+
+                        {/* True/False */}
+                        {currentQuestion.question_type === 'true-false' && (
+                            <>
+                                {['True', 'False'].map((option) => (
+                                    <button
+                                        key={option}
+                                        onClick={() => handleSingleAnswer(option)}
+                                        className={`w-full text-left p-4 rounded-lg border-2 transition-all ${currentAnswer === option
+                                            ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
+                                            : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
+                                            }`}
+                                    >
+                                        <div className="flex items-center justify-center font-bold text-lg">
+                                            {option}
+                                        </div>
+                                    </button>
+                                ))}
+                            </>
+                        )}
+
+                        {/* Short Answer */}
+                        {currentQuestion.question_type === 'short-answer' && (
+                            <div>
+                                <input
+                                    type="text"
+                                    value={currentAnswer || ''}
+                                    onChange={(e) => handleTextAnswer(e.target.value)}
+                                    maxLength={currentQuestion.char_limit || 500}
+                                    className="w-full px-4 py-3 bg-slate-700 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-slate-400"
+                                    placeholder="Type your answer here..."
+                                />
+                                {currentQuestion.char_limit && (
+                                    <p className="text-sm text-slate-400 mt-2">
+                                        {(currentAnswer || '').length} / {currentQuestion.char_limit} characters
+                                    </p>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Long Answer */}
+                        {currentQuestion.question_type === 'long-answer' && (
+                            <div>
+                                <textarea
+                                    value={currentAnswer || ''}
+                                    onChange={(e) => handleTextAnswer(e.target.value)}
+                                    rows="8"
+                                    className="w-full px-4 py-3 bg-slate-700 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-slate-400 resize-none"
+                                    placeholder="Write your detailed answer here..."
+                                />
+                                {currentQuestion.max_words && (
+                                    <div className="flex justify-between items-center mt-2">
+                                        <p className={`text-sm ${countWords(currentAnswer || '') > currentQuestion.max_words
+                                            ? 'text-red-400'
+                                            : 'text-slate-400'
+                                            }`}>
+                                            {countWords(currentAnswer || '')} / {currentQuestion.max_words} words
+                                        </p>
+                                        {countWords(currentAnswer || '') > currentQuestion.max_words && (
+                                            <p className="text-sm text-red-400 flex items-center">
+                                                <AlertCircle className="h-4 w-4 mr-1" />
+                                                Exceeds word limit
+                                            </p>
+                                        )}
                                     </div>
-                                </button>
-                            ))
-                        ) : (
-                            ['True', 'False'].map((option) => (
-                                <button
-                                    key={option}
-                                    onClick={() => handleAnswerSelect(option)}
-                                    className={`w-full text-left p-4 rounded-lg border-2 transition-all ${answers[currentQuestion.id] === option
-                                        ? 'border-accent bg-accent/10 text-white font-medium shadow-md'
-                                        : 'border-white/10 hover:border-white/30 hover:bg-white/5 text-slate-300'
-                                        }`}
-                                >
-                                    {option}
-                                </button>
-                            ))
+                                )}
+                            </div>
                         )}
                     </div>
                 </motion.div>

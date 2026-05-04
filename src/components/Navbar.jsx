@@ -29,6 +29,7 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', path: '/' },
+        { name: 'Blog', path: '/blog' },
     ];
 
     const handleNavClick = (link, e) => {

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Plus, Trash2, Clock, Award, BookOpen, PlayCircle, Loader } from 'lucide-react';
+import { Search, Filter, Plus, Trash2, Clock, Award, BookOpen, PlayCircle, Loader, Eye, EyeOff, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { QuizService } from '../services/quiz-service';
 import { quizCategories, difficultyLevels } from '../data/quiz-data';
 import { useAdmin } from '../hooks/useAdmin';
+import { useAuth } from '../context/AuthContext';
 import AddQuizModal from '../components/AddQuizModal';
 import { Helmet } from 'react-helmet-async';
 
@@ -14,14 +15,16 @@ const Quizzes = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedDifficulty, setSelectedDifficulty] = useState('all');
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [userSubmissions, setUserSubmissions] = useState([]);
     const { isAdmin } = useAdmin();
+    const { user } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        loadQuizzes();
-    }, [selectedCategory, selectedDifficulty]);
+        loadData();
+    }, [selectedCategory, selectedDifficulty, user?.id]);
 
-    const loadQuizzes = async () => {
+    const loadData = async () => {
         setLoading(true);
         try {
             const filters = {
@@ -29,14 +32,22 @@ const Quizzes = () => {
                 difficulty: selectedDifficulty,
                 isAdmin
             };
-            const data = await QuizService.getAll(filters);
-            setQuizzes(data);
+
+            const [quizzesData, submissionsData] = await Promise.all([
+                QuizService.getAll(filters),
+                user?.id ? QuizService.getUserSubmissions(user.id) : Promise.resolve([])
+            ]);
+
+            setQuizzes(quizzesData);
+            setUserSubmissions(submissionsData);
         } catch (error) {
-            console.error('Error loading quizzes:', error);
+            console.error('Error loading data:', error);
         } finally {
             setLoading(false);
         }
     };
+
+    const loadQuizzes = loadData; // Alias for backward compatibility if needed
 
     const handleAddQuiz = (newQuiz) => {
         setQuizzes([newQuiz, ...quizzes]);
@@ -52,6 +63,35 @@ const Quizzes = () => {
                 alert('Failed to delete quiz.');
             }
         }
+    };
+
+    const handlePublishAnswers = async (quizId) => {
+        try {
+            await QuizService.publishAnswers(quizId);
+            // Reload quizzes to reflect the change
+            loadQuizzes();
+            alert('Answers published successfully! Students can now view their results.');
+        } catch (error) {
+            console.error('Error publishing answers:', error);
+            alert('Failed to publish answers.');
+        }
+    };
+
+    const handleUnpublishAnswers = async (quizId) => {
+        if (window.confirm('Are you sure you want to unpublish answers? Students will no longer see results.')) {
+            try {
+                await QuizService.unpublishAnswers(quizId);
+                loadQuizzes();
+                alert('Answers unpublished successfully.');
+            } catch (error) {
+                console.error('Error unpublishing answers:', error);
+                alert('Failed to unpublish answers.');
+            }
+        }
+    };
+
+    const handleViewSubmissions = (quizId) => {
+        navigate(`/admin/quizzes/${quizId}/submissions`);
     };
 
     const getDifficultyColor = (difficulty) => {
@@ -136,18 +176,30 @@ const Quizzes = () => {
                                 transition={{ delay: index * 0.1 }}
                                 className="bg-slate-800 rounded-xl shadow-lg border border-white/5 overflow-hidden hover:shadow-xl transition-all relative group hover:border-accent/30"
                             >
-                                {/* Admin Delete Button */}
+                                {/* Admin Controls */}
                                 {isAdmin && (
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDeleteQuiz(quiz.id);
-                                        }}
-                                        className="absolute top-4 right-4 z-10 p-2 bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
-                                        title="Delete Quiz"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </button>
+                                    <div className="absolute top-4 right-4 z-10 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleViewSubmissions(quiz.id);
+                                            }}
+                                            className="p-2 bg-blue-500/80 text-white rounded-full hover:bg-blue-600"
+                                            title="View Submissions"
+                                        >
+                                            <Users className="h-4 w-4" />
+                                        </button>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteQuiz(quiz.id);
+                                            }}
+                                            className="p-2 bg-red-500/80 text-white rounded-full hover:bg-red-600"
+                                            title="Delete Quiz"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </button>
+                                    </div>
                                 )}
 
                                 <div className="p-6">
@@ -163,6 +215,23 @@ const Quizzes = () => {
                                     <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{quiz.title}</h3>
                                     <p className="text-slate-400 text-sm mb-4 line-clamp-2">{quiz.description}</p>
 
+                                    {/* Admin: Answers Published Status */}
+                                    {isAdmin && (
+                                        <div className="mb-3">
+                                            {quiz.answers_published ? (
+                                                <span className="inline-flex items-center px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs font-bold">
+                                                    <Eye className="h-3 w-3 mr-1" />
+                                                    Answers Published
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs font-bold">
+                                                    <EyeOff className="h-3 w-3 mr-1" />
+                                                    Answers Hidden
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+
                                     <div className="flex items-center justify-between text-sm text-slate-500 mb-6">
                                         <div className="flex items-center">
                                             <Clock className="h-4 w-4 mr-1" />
@@ -174,13 +243,73 @@ const Quizzes = () => {
                                         </div>
                                     </div>
 
-                                    <button
-                                        onClick={() => navigate(`/quizzes/${quiz.id}`)}
-                                        className="w-full flex items-center justify-center py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg"
-                                    >
-                                        <PlayCircle className="h-5 w-5 mr-2" />
-                                        Start Quiz
-                                    </button>
+                                    {isAdmin ? (
+                                        <div className="space-y-2">
+                                            {quiz.answers_published ? (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleUnpublishAnswers(quiz.id);
+                                                    }}
+                                                    className="w-full flex items-center justify-center py-2 bg-yellow-600 text-white font-medium rounded-lg hover:bg-yellow-700 transition-colors text-sm"
+                                                >
+                                                    <EyeOff className="h-4 w-4 mr-2" />
+                                                    Unpublish Answers
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handlePublishAnswers(quiz.id);
+                                                    }}
+                                                    className="w-full flex items-center justify-center py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors text-sm"
+                                                >
+                                                    <Eye className="h-4 w-4 mr-2" />
+                                                    Publish Answers
+                                                </button>
+                                            )}
+                                            <button
+                                                onClick={() => navigate(`/quizzes/${quiz.id}`)}
+                                                className="w-full flex items-center justify-center py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors"
+                                            >
+                                                <PlayCircle className="h-5 w-5 mr-2" />
+                                                Preview Quiz
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        (() => {
+                                            const submission = userSubmissions.find(s => s.quiz_id === quiz.id);
+                                            if (submission) {
+                                                if (quiz.answers_published) {
+                                                    return (
+                                                        <button
+                                                            onClick={() => navigate(`/quizzes/${quiz.id}/results`)}
+                                                            className="w-full flex items-center justify-center py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg"
+                                                        >
+                                                            <Award className="h-5 w-5 mr-2" />
+                                                            View Results
+                                                        </button>
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <div className="w-full py-3 bg-slate-700/50 text-slate-400 font-bold rounded-lg text-center border border-white/5 flex items-center justify-center cursor-default">
+                                                            <Clock className="h-5 w-5 mr-2" />
+                                                            Grading Pending
+                                                        </div>
+                                                    );
+                                                }
+                                            }
+                                            return (
+                                                <button
+                                                    onClick={() => navigate(`/quizzes/${quiz.id}`)}
+                                                    className="w-full flex items-center justify-center py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg"
+                                                >
+                                                    <PlayCircle className="h-5 w-5 mr-2" />
+                                                    Start Quiz
+                                                </button>
+                                            );
+                                        })()
+                                    )}
                                 </div>
                             </motion.div>
                         ))}

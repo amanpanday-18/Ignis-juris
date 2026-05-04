@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Camera, Save, LogOut, Loader, CheckCircle, AlertCircle } from 'lucide-react';
+import { User, Mail, Camera, Save, LogOut, Loader, CheckCircle, AlertCircle, Clock, Award, ChevronRight, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { QuizService } from '../services/quiz-service';
 import { Helmet } from 'react-helmet-async';
 
 const Profile = () => {
@@ -16,8 +17,27 @@ const Profile = () => {
     if (!user) return <Navigate to="/" />;
 
     const userInitial = name[0]?.toUpperCase() || user.email[0]?.toUpperCase() || 'U';
-    const [avatarUrl, setAvatarUrl] = useState(user.user_metadata?.avatar_url);
     const [uploading, setUploading] = useState(false);
+    const [submissions, setSubmissions] = useState([]);
+    const [loadingSubmissions, setLoadingSubmissions] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user?.id) {
+            loadSubmissions();
+        }
+    }, [user?.id]);
+
+    const loadSubmissions = async () => {
+        try {
+            const data = await QuizService.getUserSubmissions(user.id);
+            setSubmissions(data);
+        } catch (error) {
+            console.error('Error loading submissions:', error);
+        } finally {
+            setLoadingSubmissions(false);
+        }
+    };
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
@@ -191,6 +211,76 @@ const Profile = () => {
                             </div>
                         </form>
                     </div>
+                </motion.div>
+
+                {/* Quiz Submissions Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-8 bg-slate-800 rounded-2xl shadow-xl border border-white/5 p-8"
+                >
+                    <div className="flex items-center mb-6">
+                        <Award className="h-6 w-6 text-accent mr-3" />
+                        <h3 className="text-xl font-bold text-white">Quiz Submissions</h3>
+                    </div>
+
+                    {loadingSubmissions ? (
+                        <div className="flex justify-center py-8">
+                            <Loader className="animate-spin h-8 w-8 text-accent" />
+                        </div>
+                    ) : submissions.length > 0 ? (
+                        <div className="space-y-4">
+                            {submissions.map((sub) => (
+                                <div
+                                    key={sub.id}
+                                    className="bg-slate-900/50 rounded-xl p-4 border border-white/5 hover:border-accent/30 transition-all flex items-center justify-between group"
+                                >
+                                    <div className="flex-1">
+                                        <h4 className="font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                                            {sub.quiz?.title || 'Unknown Quiz'}
+                                        </h4>
+                                        <div className="flex items-center text-xs text-slate-500 space-x-4">
+                                            <span className="flex items-center">
+                                                <Clock className="h-3 w-3 mr-1" />
+                                                {new Date(sub.submitted_at).toLocaleDateString()}
+                                            </span>
+                                            {sub.quiz?.answers_published ? (
+                                                <span className="flex items-center text-green-400 font-bold">
+                                                    <Award className="h-3 w-3 mr-1" />
+                                                    Score: {sub.total_score}
+                                                </span>
+                                            ) : (
+                                                <span className="flex items-center text-yellow-400">
+                                                    <FileText className="h-3 w-3 mr-1" />
+                                                    Awaiting Grading
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {sub.quiz?.answers_published && (
+                                        <button
+                                            onClick={() => navigate(`/quizzes/${sub.quiz_id}/results`)}
+                                            className="p-2 bg-slate-800 text-slate-400 rounded-full hover:bg-primary hover:text-white transition-all transform group-hover:translate-x-1"
+                                        >
+                                            <ChevronRight className="h-5 w-5" />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-8 bg-slate-900/50 rounded-xl border border-dashed border-white/10">
+                            <p className="text-slate-500">No quiz submissions found.</p>
+                            <button
+                                onClick={() => navigate('/quizzes')}
+                                className="mt-4 text-accent hover:underline font-medium text-sm"
+                            >
+                                Take your first quiz
+                            </button>
+                        </div>
+                    )}
                 </motion.div>
             </div>
         </div>

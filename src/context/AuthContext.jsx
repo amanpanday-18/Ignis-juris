@@ -8,18 +8,42 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check active session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(session?.user ?? null);
-            setLoading(false);
-        });
+        let mounted = true;
+
+        // Check active session with a safe guard for errors/timeouts
+        const checkSession = async () => {
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                if (error) throw error;
+                if (mounted) setUser(session?.user ?? null);
+            } catch (error) {
+                console.error("Auth initialization error:", error);
+            } finally {
+                if (mounted) setLoading(false);
+            }
+        };
+
+        checkSession();
 
         // Listen for auth changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null);
+            if (mounted) setUser(session?.user ?? null);
+            if (mounted) setLoading(false); // Ensure loading is false on any auth change
         });
 
-        return () => subscription.unsubscribe();
+        // Safety timeout to ensure app loads even if Supabase hangs
+        const timeoutId = setTimeout(() => {
+            if (mounted && loading) {
+                console.warn("Auth initialization timed out after 1.5s, forcing load");
+                setLoading(false);
+            }
+        }, 1500); // Reduced from 3000ms to improve perceived performance
+
+        return () => {
+            mounted = false;
+            subscription.unsubscribe();
+            clearTimeout(timeoutId);
+        };
     }, []);
 
     const signUp = async (email, password, name) => {

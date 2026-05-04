@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import Quizzes from './pages/Quizzes';
 import TakeQuiz from './pages/TakeQuiz';
 import QuizResults from './pages/QuizResults';
+import QuizSubmissionSuccess from './pages/QuizSubmissionSuccess';
+import AdminQuizSubmissions from './pages/AdminQuizSubmissions';
 import More from './pages/More';
 import Education from './pages/Education';
 import MootCourts from './pages/MootCourts';
@@ -21,6 +23,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import UsageTracker from './components/UsageTracker';
 
 import Opportunities from './pages/Opportunities';
+import BlogList from './pages/BlogList';
+import CreateBlog from './pages/CreateBlog';
+import AdminBlogs from './pages/AdminBlogs';
+import BlogDetail from './pages/BlogDetail';
 
 // Placeholder component removed
 
@@ -47,7 +53,13 @@ function App() {
               <Route path="quizzes" element={<ProtectedRoute><Quizzes /></ProtectedRoute>} />
               <Route path="quizzes/:id" element={<ProtectedRoute><TakeQuiz /></ProtectedRoute>} />
               <Route path="quizzes/:id/results" element={<ProtectedRoute><QuizResults /></ProtectedRoute>} />
+              <Route path="quizzes/:id/submission-success" element={<ProtectedRoute><QuizSubmissionSuccess /></ProtectedRoute>} />
+              <Route path="admin/quizzes/:id/submissions" element={<ProtectedRoute><AdminQuizSubmissions /></ProtectedRoute>} />
               <Route path="store" element={<ProtectedRoute><Store /></ProtectedRoute>} />
+              <Route path="blog" element={<BlogList />} />
+              <Route path="blog/:id" element={<BlogDetail />} />
+              <Route path="blog/new" element={<ProtectedRoute><CreateBlog /></ProtectedRoute>} />
+              <Route path="admin/blogs" element={<ProtectedRoute><AdminBlogs /></ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
