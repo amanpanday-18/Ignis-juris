@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Scale, ChevronLeft, ChevronRight, Clock, User, Plus, Sparkles, X, Calendar } from 'lucide-react';
+import { Scale, ChevronLeft, ChevronRight, Clock, User, Plus, Sparkles, X, Calendar, BookOpen, GraduationCap, Briefcase } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { newsCategories } from '../data/news-data';
 import { NewsService } from '../services/news-service';
@@ -67,7 +67,7 @@ const Home = () => {
                 </Helmet>
 
                 {/* Hero Section */}
-                <div className="relative overflow-hidden bg-slate-900 min-h-[600px] flex items-center">
+                <div className="relative overflow-hidden bg-slate-900 min-h-[600px] flex items-center pt-24 pb-16">
                     {/* Radial Gradient Background */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/40 via-slate-900 to-slate-900"></div>
 
@@ -94,9 +94,47 @@ const Home = () => {
                                     JUSTICE SIMPLIFIED
                                 </span>
                             </h1>
-                            <p className="text-xl md:text-2xl text-slate-300 mb-10 leading-relaxed font-light">
+                            <p className="text-xl md:text-2xl text-slate-300 mb-12 leading-relaxed font-light">
                                 Empowering your legal journey with AI-driven insights, expert connections, and seamless drafting.
                             </p>
+
+                            {/* Quick Links Section */}
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4, duration: 0.6 }}
+                                className="flex flex-col md:flex-row gap-6 justify-center items-stretch w-full max-w-4xl mx-auto"
+                            >
+                                <Link to="/blog" className="flex-1 group">
+                                    <div className="h-full bg-slate-800/50 hover:bg-slate-800 border border-white/10 hover:border-blue-500/50 p-6 rounded-2xl transition-all duration-300 backdrop-blur-sm flex flex-col items-center text-center">
+                                        <div className="bg-blue-500/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
+                                            <BookOpen className="h-8 w-8 text-blue-400" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-2">Legal Blogs</h3>
+                                        <p className="text-slate-400 text-sm">Stay updated with the latest legal insights and analyses.</p>
+                                    </div>
+                                </Link>
+
+                                <Link to="/education" className="flex-1 group">
+                                    <div className="h-full bg-slate-800/50 hover:bg-slate-800 border border-white/10 hover:border-indigo-500/50 p-6 rounded-2xl transition-all duration-300 backdrop-blur-sm flex flex-col items-center text-center">
+                                        <div className="bg-indigo-500/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
+                                            <GraduationCap className="h-8 w-8 text-indigo-400" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-2">Education</h3>
+                                        <p className="text-slate-400 text-sm">Access study materials, bare acts, and legal resources.</p>
+                                    </div>
+                                </Link>
+
+                                <Link to="/internships" className="flex-1 group">
+                                    <div className="h-full bg-slate-800/50 hover:bg-slate-800 border border-white/10 hover:border-accent/50 p-6 rounded-2xl transition-all duration-300 backdrop-blur-sm flex flex-col items-center text-center">
+                                        <div className="bg-accent/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
+                                            <Briefcase className="h-8 w-8 text-accent" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-2">Internships</h3>
+                                        <p className="text-slate-400 text-sm">Find top opportunities to kickstart your legal career.</p>
+                                    </div>
+                                </Link>
+                            </motion.div>
 
                         </motion.div>
                     </div>
