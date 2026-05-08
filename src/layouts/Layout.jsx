@@ -16,7 +16,7 @@ const Layout = () => {
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -mr-48 -mt-48"></div>
                 
                 <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
                         {/* Brand Column */}
                         <div className="space-y-6">
                             <Link to="/" className="flex items-center gap-3">
@@ -101,7 +101,7 @@ const Layout = () => {
                         </div>
                     </div>
 
-                    <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold tracking-widest uppercase text-slate-500">
+                    <div className="mt-12 md:mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 text-[10px] md:text-xs font-bold tracking-widest uppercase text-slate-500 text-center">
                         <p>&copy; {new Date().getFullYear()} IGNIS JURIS. ALL RIGHTS RESERVED.</p>
                         <p>Designed with ❤️ for Justice</p>
                     </div>

@@ -28,6 +28,25 @@ const Navbar = () => {
         }
     }, [location.state]);
 
+    // Close mobile menu on route change
+    useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
+
+    // Close mobile menu on outside click
+    useEffect(() => {
+        if (!isOpen) return;
+        const handler = (e) => {
+            if (!e.target.closest('nav')) setIsOpen(false);
+        };
+        document.addEventListener('mousedown', handler);
+        document.addEventListener('touchstart', handler);
+        return () => {
+            document.removeEventListener('mousedown', handler);
+            document.removeEventListener('touchstart', handler);
+        };
+    }, [isOpen]);
+
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'Blog', path: '/blog' },
@@ -138,7 +157,7 @@ const Navbar = () => {
                             exit={{ opacity: 0, y: -20 }}
                             className="md:hidden mt-4 px-2"
                         >
-                            <div className="glass-dark rounded-2xl p-4 shadow-2xl border border-white/10">
+                            <div className="glass-dark rounded-2xl p-4 shadow-2xl border border-white/10 max-h-[75vh] overflow-y-auto">
                                 <div className="flex flex-col gap-2">
                                     {navLinks.map((link) => (
                                         <Link
