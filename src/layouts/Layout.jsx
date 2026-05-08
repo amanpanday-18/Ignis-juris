@@ -1,14 +1,17 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { Instagram, Mail, Twitter, Linkedin, ExternalLink } from 'lucide-react';
 import logoFooter from '../assets/ignis_juris_logo.jpg';
 
 const Layout = () => {
+    const location = useLocation();
+    const isHomePage = location.pathname === '/';
+
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Navbar />
-            <main className="flex-grow">
+            <main className={`flex-grow ${isHomePage ? '' : 'pt-28 md:pt-36'}`}>
                 <Outlet />
             </main>
             <footer className="bg-slate-950 text-slate-400 py-20 border-t border-white/5 relative overflow-hidden">
