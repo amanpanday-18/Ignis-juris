@@ -138,7 +138,7 @@ const AdvocateDiary = () => {
                                             className={`h-24 p-2 rounded-lg border cursor-pointer transition-all hover:shadow-md flex flex-col ${isSelected
                                                 ? 'border-accent bg-accent/10 ring-2 ring-accent ring-opacity-50'
                                                 : isToday
-                                                    ? 'border-blue-500/50 bg-blue-500/10'
+                                                    ? 'border-primary-light/50 bg-primary-light/10'
                                                     : 'border-white/5 bg-slate-900/50 hover:border-white/20'
                                                 }`}
                                         >

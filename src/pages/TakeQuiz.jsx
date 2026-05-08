@@ -190,7 +190,7 @@ const TakeQuiz = () => {
                             Question {currentQuestionIndex + 1} of {quiz.questions.length}
                         </p>
                     </div>
-                    <div className={`flex items-center px-4 py-2 rounded-lg font-mono font-bold ${timeLeft < 60 ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'
+                    <div className={`flex items-center px-4 py-2 rounded-lg font-mono font-bold ${timeLeft < 60 ? 'bg-red-500/20 text-red-400' : 'bg-primary-light/20 text-blue-400'
                         }`}>
                         <Clock className="h-5 w-5 mr-2" />
                         {formatTime(timeLeft)}

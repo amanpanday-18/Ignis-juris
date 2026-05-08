@@ -129,7 +129,7 @@ const Internships = () => {
                                         <div className="flex items-center mb-2">
                                             <h3 className="text-xl font-bold text-white mr-3">{internship.title}</h3>
                                             <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${internship.type === 'remote' ? 'bg-purple-500/20 text-purple-400' :
-                                                internship.type === 'in-office' ? 'bg-blue-500/20 text-blue-400' :
+                                                internship.type === 'in-office' ? 'bg-primary-light/20 text-blue-400' :
                                                     'bg-orange-500/20 text-orange-400'
                                                 }`}>
                                                 {internship.type}

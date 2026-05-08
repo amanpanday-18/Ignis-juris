@@ -71,7 +71,7 @@ const DocumentViewer = () => {
                     <div className="bg-black/20 border-b border-white/5 px-8 py-4 flex items-center">
                         <FileText className="h-5 w-5 text-[#c5a572] mr-3" />
                         <h1 className="text-xl font-bold text-white">{document.title}</h1>
-                        <span className="ml-4 text-xs bg-blue-900/30 text-blue-300 border border-blue-500/30 px-2 py-1 rounded-full uppercase tracking-wide">
+                        <span className="ml-4 text-xs bg-blue-900/30 text-blue-300 border border-primary-light/30 px-2 py-1 rounded-full uppercase tracking-wide">
                             {document.type}
                         </span>
                     </div>

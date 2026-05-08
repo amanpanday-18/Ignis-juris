@@ -361,7 +361,7 @@ const AdminQuizSubmissions = () => {
                                             {isTextQuestion && question.correct_answer && (
                                                 <div className="mb-4">
                                                     <p className="text-sm text-slate-400 mb-1">Sample Answer / Keywords:</p>
-                                                    <div className="p-3 bg-blue-500/10 rounded border border-blue-500/20">
+                                                    <div className="p-3 bg-primary-light/10 rounded border border-primary-light/20">
                                                         <p className="text-blue-200 text-sm">{question.correct_answer}</p>
                                                     </div>
                                                 </div>

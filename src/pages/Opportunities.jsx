@@ -12,7 +12,7 @@ const Opportunities = () => {
             description: 'Test your knowledge with our comprehensive legal quizzes and earn certificates.',
             icon: BookOpen,
             link: '/quizzes',
-            color: 'bg-blue-500/20 text-blue-400',
+            color: 'bg-primary-light/20 text-blue-400',
             buttonText: 'Take a Quiz',
             available: true
         },

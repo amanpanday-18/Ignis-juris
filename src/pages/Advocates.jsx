@@ -267,7 +267,7 @@ const Advocates = () => {
                                         </div>
 
                                         {(advocate.podcast_title) && (
-                                            <div className="mb-4 p-3 bg-indigo-500/10 rounded-lg border border-indigo-500/20">
+                                            <div className="mb-4 p-3 bg-primary-light/10 rounded-lg border border-primary-light/20">
                                                 <div className="flex items-center mb-1">
                                                     <Mic className="h-3 w-3 text-indigo-400 mr-2" />
                                                     <span className="text-xs font-bold text-indigo-300 uppercase">Podcast</span>
@@ -381,9 +381,9 @@ const Advocates = () => {
                                         </a>
                                     )}
                                     {selectedAdvocate.linkedin_url && (
-                                        <a href={selectedAdvocate.linkedin_url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-3 rounded-lg border border-white/10 hover:border-blue-500/50 hover:bg-blue-500/10 group transition-colors bg-white/5">
+                                        <a href={selectedAdvocate.linkedin_url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-3 rounded-lg border border-white/10 hover:border-primary-light/50 hover:bg-primary-light/10 group transition-colors bg-white/5">
                                             <div className="flex items-center">
-                                                <div className="p-2 bg-white/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+                                                <div className="p-2 bg-white/10 rounded-lg group-hover:bg-primary-light/20 transition-colors">
                                                     <Linkedin className="h-5 w-5 text-slate-400 group-hover:text-blue-400" />
                                                 </div>
                                                 <span className="ml-3 font-medium text-slate-300 group-hover:text-white">LinkedIn Profile</span>

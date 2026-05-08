@@ -184,7 +184,7 @@ const Quizzes = () => {
                                                 e.stopPropagation();
                                                 handleViewSubmissions(quiz.id);
                                             }}
-                                            className="p-2 bg-blue-500/80 text-white rounded-full hover:bg-blue-600"
+                                            className="p-2 bg-primary-light/80 text-white rounded-full hover:bg-primary"
                                             title="View Submissions"
                                         >
                                             <Users className="h-4 w-4" />

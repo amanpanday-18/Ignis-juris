@@ -210,7 +210,7 @@ const QuizResults = () => {
                                 {/* Your Answer */}
                                 <div className="mb-4">
                                     <p className="text-sm text-slate-400 mb-2">Your Answer:</p>
-                                    <div className={`p-3 rounded-lg ${isTextQuestion ? 'bg-blue-500/10 border border-blue-500/20' :
+                                    <div className={`p-3 rounded-lg ${isTextQuestion ? 'bg-primary-light/10 border border-primary-light/20' :
                                             correct ? 'bg-green-500/10 border border-green-500/20' :
                                                 'bg-red-500/10 border border-red-500/20'
                                         }`}>
@@ -265,7 +265,7 @@ const QuizResults = () => {
                                 {question.explanation && (
                                     <div>
                                         <p className="text-sm text-slate-400 mb-2">Explanation:</p>
-                                        <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                        <div className="p-3 rounded-lg bg-primary-light/10 border border-primary-light/20">
                                             <p className="text-blue-200">{question.explanation}</p>
                                         </div>
                                     </div>

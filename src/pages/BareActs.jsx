@@ -143,7 +143,7 @@ const BareActs = () => {
                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                                     <div className="flex-1">
                                         <div className="flex items-center mb-2">
-                                            <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-bold uppercase tracking-wider mr-3">
+                                            <span className="px-3 py-1 bg-primary-light/20 text-blue-400 rounded-full text-xs font-bold uppercase tracking-wider mr-3">
                                                 {actCategories.find(c => c.id === act.category)?.name || act.category}
                                             </span>
                                             <span className="text-sm text-slate-500 font-mono">

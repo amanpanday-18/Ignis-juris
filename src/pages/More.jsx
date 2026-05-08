@@ -22,9 +22,9 @@ const More = () => {
             description: 'Test your knowledge with our comprehensive legal quizzes and earn certificates.',
             icon: BookOpen,
             link: '/quizzes',
-            color: 'bg-blue-500',
+            color: 'bg-primary-light',
             textColor: 'text-blue-400',
-            gradient: 'from-blue-500 to-blue-600',
+            gradient: 'from-primary-light to-primary',
             available: true
         },
 
@@ -56,9 +56,9 @@ const More = () => {
             description: 'Study materials, lecture notes, and video tutorials for law students.',
             icon: Library,
             link: '/education',
-            color: 'bg-teal-500',
-            textColor: 'text-teal-400',
-            gradient: 'from-teal-500 to-teal-600',
+            color: 'bg-primary',
+            textColor: 'text-primary-light',
+            gradient: 'from-primary to-teal-600',
             available: true
         },
 

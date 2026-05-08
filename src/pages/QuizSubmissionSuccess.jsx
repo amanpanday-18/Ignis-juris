@@ -71,7 +71,7 @@ const QuizSubmissionSuccess = () => {
                     </div>
 
                     <div className="p-8 border-t border-white/5">
-                        <div className="bg-blue-500/10 p-4 rounded-lg border border-blue-500/20 mb-6">
+                        <div className="bg-primary-light/10 p-4 rounded-lg border border-primary-light/20 mb-6">
                             <h3 className="text-blue-200 font-bold mb-2 flex items-center">
                                 <CheckCircle className="h-5 w-5 mr-2" />
                                 What Happens Next?

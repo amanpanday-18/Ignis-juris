@@ -137,7 +137,7 @@ const DraftingTemplates = () => {
 
                                 <div className="flex-1">
                                     <div className="flex items-center mb-3">
-                                        <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-bold uppercase tracking-wider">
+                                        <span className="px-3 py-1 bg-primary-light/20 text-blue-400 rounded-full text-xs font-bold uppercase tracking-wider">
                                             {templateCategories.find(c => c.id === template.category)?.name || template.category}
                                         </span>
                                     </div>

@@ -77,8 +77,8 @@ const Education = () => {
                 {/* Header */}
                 <div className="text-center mb-12 relative">
                     <div className="flex items-center justify-center mb-4">
-                        <div className="bg-teal-500/20 p-3 rounded-full mr-3">
-                            <Video className="h-8 w-8 text-teal-400" />
+                        <div className="bg-primary/20 p-3 rounded-full mr-3">
+                            <Video className="h-8 w-8 text-primary-light" />
                         </div>
                         <h1 className="text-4xl font-bold text-white">Educational Resources</h1>
                     </div>
@@ -162,7 +162,7 @@ const Education = () => {
                                 <div className="p-6 flex-1 flex flex-col">
                                     <div className="flex items-center mb-3">
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mr-2 ${resource.type === 'video' ? 'bg-red-500/20 text-red-400' :
-                                            resource.type === 'pdf' ? 'bg-blue-500/20 text-blue-400' :
+                                            resource.type === 'pdf' ? 'bg-primary-light/20 text-blue-400' :
                                                 'bg-green-500/20 text-green-400'
                                             }`}>
                                             {resourceTypes.find(t => t.id === resource.type)?.name}

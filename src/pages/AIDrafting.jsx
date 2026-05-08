@@ -227,7 +227,7 @@ const AIDrafting = () => {
                                         type="button"
                                         onClick={handleGenerate}
                                         disabled={!isFormValid() || isGenerating}
-                                        className="w-full relative overflow-hidden flex items-center justify-center py-4 px-6 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-1"
+                                        className="w-full relative overflow-hidden flex items-center justify-center py-4 px-6 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-primary-light/20 transform hover:-translate-y-1"
                                     >
                                         {isGenerating ? (
                                             <>

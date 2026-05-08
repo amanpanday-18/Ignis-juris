@@ -8,26 +8,26 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#6366f1',
-          light: '#818cf8',
-          dark: '#4338ca',
-          900: '#1e1b4b',
+          DEFAULT: '#d4af37', // Classic Gold
+          light: '#e6c96e',
+          dark: '#b5952f',
+          900: '#4a3d13',
         },
         accent: {
-          DEFAULT: '#f59e0b',
-          hover: '#b45309',
+          DEFAULT: '#f59e0b', // Rich Amber
+          hover: '#d97706',
           light: '#fbbf24',
         },
-        background: '#030712',
-        surface: '#0f172a',
-        'surface-light': '#1e293b',
+        background: '#0a0a0a', // Deep Charcoal/Onyx
+        surface: '#171717',    // Slightly lighter charcoal for cards
+        'surface-light': '#262626',
         text: {
           primary: '#f8fafc',
-          secondary: '#94a3b8',
-          muted: '#64748b',
+          secondary: '#d1d5db',
+          muted: '#9ca3af',
         },
         indigo: {
-          950: '#1e1b4b',
+          950: '#0a0a0a', // Override indigo 950 to match background just in case it's hardcoded somewhere
         },
       },
       fontFamily: {
