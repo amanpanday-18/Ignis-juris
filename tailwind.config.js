@@ -8,31 +8,31 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#d4af37', // Classic Gold
-          light: '#e6c96e',
-          dark: '#b5952f',
-          900: '#4a3d13',
+          DEFAULT: '#6366f1',
+          light: '#818cf8',
+          dark: '#4338ca',
+          900: '#1e1b4b',
         },
         accent: {
-          DEFAULT: '#f59e0b', // Rich Amber
-          hover: '#d97706',
+          DEFAULT: '#f59e0b',
+          hover: '#b45309',
           light: '#fbbf24',
         },
-        background: '#0a0a0a', // Deep Charcoal/Onyx
-        surface: '#171717',    // Slightly lighter charcoal for cards
-        'surface-light': '#262626',
+        background: '#030712',
+        surface: '#0f172a',
+        'surface-light': '#1e293b',
         text: {
           primary: '#f8fafc',
-          secondary: '#d1d5db',
-          muted: '#9ca3af',
+          secondary: '#94a3b8',
+          muted: '#64748b',
         },
         indigo: {
-          950: '#0a0a0a', // Override indigo 950 to match background just in case it's hardcoded somewhere
+          950: '#1e1b4b',
         },
       },
       fontFamily: {
-        sans: ['"Times New Roman"', 'Times', 'serif'],
-        serif: ['"Times New Roman"', 'Times', 'serif'],
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
       },
       animation: {
         'gradient-x': 'gradient-x 15s ease infinite',
