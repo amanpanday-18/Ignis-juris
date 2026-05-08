@@ -87,7 +87,7 @@ const AdvocateDiary = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-900 py-8 text-slate-100">
+        <div className="w-full py-8 text-slate-100">
             <Helmet>
                 <title>Advocate Diary - IGNIS JURIS</title>
             </Helmet>

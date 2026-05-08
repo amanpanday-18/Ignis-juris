@@ -60,7 +60,7 @@ const MyBlogs = () => {
     }
 
     return (
-        <div className="min-h-screen bg-background py-12">
+        <div className="w-full py-12">
             <Helmet>
                 <title>My Blogs - IGNIS JURIS</title>
             </Helmet>

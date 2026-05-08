@@ -69,7 +69,7 @@ const Education = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 py-12 text-slate-100">
+        <div className="w-full py-12 text-slate-100">
             <Helmet>
                 <title>Education - IGNIS JURIS</title>
             </Helmet>

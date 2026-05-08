@@ -32,7 +32,7 @@ const DocumentViewer = () => {
     if (error) return <div className="flex justify-center items-center h-screen bg-slate-900 text-red-500">{error}</div>;
 
     return (
-        <div className="min-h-screen bg-slate-900 p-6 text-slate-100">
+        <div className="w-full p-6 text-slate-100">
             <Helmet>
                 <title>{document.title} - IGNIS JURIS</title>
             </Helmet>

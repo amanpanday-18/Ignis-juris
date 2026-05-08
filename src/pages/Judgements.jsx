@@ -93,7 +93,7 @@ const Judgements = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 text-slate-100">
+        <div className="w-full text-slate-100">
             <Helmet>
                 <title>Judgements Database - IGNIS JURIS</title>
                 <meta name="description" content="Search and browse thousands of legal judgements." />

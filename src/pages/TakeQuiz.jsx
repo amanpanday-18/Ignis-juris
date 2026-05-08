@@ -166,7 +166,7 @@ const TakeQuiz = () => {
     const currentAnswer = answers[currentQuestion.id];
 
     return (
-        <div className="min-h-screen bg-slate-900 py-8 text-slate-100">
+        <div className="w-full py-8 text-slate-100">
             <Helmet>
                 <title>{quiz.title} - IGNIS JURIS</title>
             </Helmet>
