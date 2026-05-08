@@ -11,7 +11,8 @@ import { NewsService } from '../services/news-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddNewsModal from '../components/AddNewsModal';
 import { Helmet } from 'react-helmet-async';
-import introVideo from '../assets/video/ignis_intro.mp4';
+import introVideoMobile from '../assets/video/ignis_intro_mobile.mp4';
+import introVideoDesktop from '../assets/video/ignis_intro_desktop.mp4';
 import heroLastFrame from '../assets/video/ignis_hero_last.jpg';
 
 const Home = () => {
@@ -21,9 +22,17 @@ const Home = () => {
     const [showDisclaimer, setShowDisclaimer] = useState(false);
     const [videoPlaying, setVideoPlaying] = useState(true);
     const [videoFading, setVideoFading] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const videoRef = useRef(null);
     const { isAdmin } = useAdmin();
     const { user } = useAuth();
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile(); // Check immediately on mount
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         loadNews();
@@ -105,12 +114,12 @@ const Home = () => {
                             initial={{ opacity: 1 }}
                             animate={{ opacity: videoFading ? 0 : 1 }}
                             transition={{ duration: 0.8 }}
-                            className="relative w-full min-h-[90vh] flex items-end justify-center pb-16"
+                            className="relative w-full min-h-[90vh] flex items-end justify-center pb-16 bg-black"
                         >
                             {/* Fullwidth video */}
                             <video
                                 ref={videoRef}
-                                src={introVideo}
+                                src={isMobile ? introVideoMobile : introVideoDesktop}
                                 autoPlay
                                 muted
                                 playsInline
