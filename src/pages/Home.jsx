@@ -18,6 +18,7 @@ import heroLastFrame from '../assets/video/ignis_hero_last.jpg';
 const Home = () => {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
     const [videoPlaying, setVideoPlaying] = useState(true);
     const [videoFading, setVideoFading] = useState(false);
