@@ -18,20 +18,19 @@ import heroLastFrame from '../assets/video/ignis_hero_last.jpg';
 const Home = () => {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
     const [videoPlaying, setVideoPlaying] = useState(true);
     const [videoFading, setVideoFading] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isPortrait, setIsPortrait] = useState(false);
     const videoRef = useRef(null);
     const { isAdmin } = useAdmin();
     const { user } = useAuth();
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile(); // Check immediately on mount
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
+        const checkOrientation = () => setIsPortrait(window.innerHeight > window.innerWidth);
+        checkOrientation(); // Check immediately on mount
+        window.addEventListener('resize', checkOrientation);
+        return () => window.removeEventListener('resize', checkOrientation);
     }, []);
 
     useEffect(() => {
@@ -119,7 +118,7 @@ const Home = () => {
                             {/* Fullwidth video */}
                             <video
                                 ref={videoRef}
-                                src={isMobile ? introVideoMobile : introVideoDesktop}
+                                src={isPortrait ? introVideoMobile : introVideoDesktop}
                                 autoPlay
                                 muted
                                 playsInline
