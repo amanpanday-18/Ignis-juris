@@ -10,7 +10,8 @@ import {
     ArrowRight,
     Scale,
     Calendar,
-    Library
+    Library,
+    Camera
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
@@ -82,6 +83,17 @@ const More = () => {
             color: 'bg-red-500',
             textColor: 'text-red-400',
             gradient: 'from-red-500 to-red-600',
+            available: true
+        },
+        {
+            id: 'gallery',
+            title: 'Event Gallery',
+            description: 'Highlights, photos and winner announcements from our past legal events and competitions.',
+            icon: Camera,
+            link: '/gallery',
+            color: 'bg-orange-500',
+            textColor: 'text-orange-400',
+            gradient: 'from-orange-500 to-amber-500',
             available: true
         }
     ];
