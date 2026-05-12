@@ -104,7 +104,7 @@ const Home = () => {
             </Helmet>
 
             {/* Hero Section */}
-            <section className="relative min-h-[90vh] overflow-hidden">
+            <section className="relative min-h-screen overflow-hidden">
 
                 <AnimatePresence mode="wait">
                     {videoPlaying ? (
@@ -114,7 +114,7 @@ const Home = () => {
                             initial={{ opacity: 1 }}
                             animate={{ opacity: videoFading ? 0 : 1 }}
                             transition={{ duration: 0.8 }}
-                            className="relative w-full min-h-[90vh] flex items-end justify-center pb-16 bg-black"
+                            className="relative w-full min-h-screen flex items-end justify-center pb-16 bg-black"
                         >
                             {/* Fullwidth video */}
                             <video
