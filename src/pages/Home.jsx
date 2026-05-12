@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { 
     Scale, BookOpen, GraduationCap, Briefcase, 
     ChevronRight, Sparkles, X, Star, Users, 
-    ArrowRight, CheckCircle2, ShieldCheck, Zap, SkipForward
+    ArrowRight, CheckCircle2, ShieldCheck, Zap, SkipForward, Trophy
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { NewsService } from '../services/news-service';
+import { GalleryService } from '../services/gallery-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddNewsModal from '../components/AddNewsModal';
 import { Helmet } from 'react-helmet-async';
@@ -17,6 +18,7 @@ import heroLastFrame from '../assets/video/ignis_hero_last.jpg';
 
 const Home = () => {
     const [news, setNews] = useState([]);
+    const [galleryEvents, setGalleryEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -36,6 +38,7 @@ const Home = () => {
 
     useEffect(() => {
         loadNews();
+        loadGalleryEvents();
     }, []);
 
     const loadNews = async () => {
@@ -46,6 +49,16 @@ const Home = () => {
             console.error('Error loading news:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const loadGalleryEvents = async () => {
+        try {
+            const data = await GalleryService.getAll();
+            // Show only latest 4 events on home page
+            setGalleryEvents(data ? data.slice(0, 4) : []);
+        } catch (error) {
+            console.error('Error loading gallery:', error);
         }
     };
 
@@ -275,6 +288,69 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Event Highlights Section */}
+            {(galleryEvents.length > 0 || isAdmin) && (
+                <section className="py-16 md:py-24 relative bg-slate-900/50 border-t border-white/5">
+                    <div className="container mx-auto px-6">
+                        <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-6">
+                            <div className="max-w-2xl">
+                                <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Gallery</h2>
+                                <h3 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-white mb-4">Event Highlights.</h3>
+                                <p className="text-slate-400 text-lg">
+                                    Relive the moments from our past competitions, seminars, and legal events.
+                                </p>
+                            </div>
+                            {isAdmin && (
+                                <Link to="/admin/gallery" className="px-5 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-lg font-bold transition-colors">
+                                    Manage Gallery
+                                </Link>
+                            )}
+                        </div>
+
+                        {galleryEvents.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {galleryEvents.map((event) => (
+                                    <motion.div
+                                        key={event.id}
+                                        whileHover={{ y: -10 }}
+                                        className="bg-slate-800 rounded-2xl overflow-hidden border border-white/5 group shadow-xl"
+                                    >
+                                        <div className="h-48 relative overflow-hidden">
+                                            <img 
+                                                src={event.image_url} 
+                                                alt={event.title} 
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60"></div>
+                                            <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white">
+                                                {new Date(event.event_date).toLocaleDateString()}
+                                            </div>
+                                        </div>
+                                        <div className="p-5">
+                                            <h4 className="text-xl font-bold text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">{event.title}</h4>
+                                            <p className="text-slate-400 text-sm line-clamp-2 mb-4">{event.description}</p>
+                                            
+                                            {event.winners && (
+                                                <div className="pt-3 border-t border-white/10">
+                                                    <span className="text-xs text-accent font-bold uppercase flex items-center mb-1">
+                                                        <Trophy className="h-3 w-3 mr-1" /> Winners
+                                                    </span>
+                                                    <p className="text-sm text-slate-300 line-clamp-2">{event.winners}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 bg-slate-800/30 rounded-2xl border border-white/5">
+                                <p className="text-slate-400">No events to show yet.</p>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            )}
 
             {/* Mission Section */}
             <section className="py-16 md:py-32 relative overflow-hidden">

@@ -28,6 +28,7 @@ import CreateBlog from './pages/CreateBlog';
 import AdminBlogs from './pages/AdminBlogs';
 import BlogDetail from './pages/BlogDetail';
 import MyBlogs from './pages/MyBlogs';
+import AdminGallery from './pages/AdminGallery';
 
 // Placeholder component removed
 
@@ -62,6 +63,7 @@ function App() {
               <Route path="blog/new" element={<ProtectedRoute><CreateBlog /></ProtectedRoute>} />
               <Route path="my-blogs" element={<ProtectedRoute><MyBlogs /></ProtectedRoute>} />
               <Route path="admin/blogs" element={<ProtectedRoute><AdminBlogs /></ProtectedRoute>} />
+              <Route path="admin/gallery" element={<ProtectedRoute><AdminGallery /></ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
