@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
     Scale, BookOpen, GraduationCap, Briefcase, 
-    ChevronRight, Sparkles, X, Star, Users, 
-    ArrowRight, CheckCircle2, ShieldCheck, Zap, SkipForward, Trophy
+    ChevronRight, ChevronLeft, Sparkles, X, Star, Users, 
+    ArrowRight, CheckCircle2, ShieldCheck, Zap, SkipForward, Trophy, Image as ImageIcon
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { NewsService } from '../services/news-service';
@@ -15,6 +15,91 @@ import { Helmet } from 'react-helmet-async';
 import introVideoMobile from '../assets/video/ignis_intro_mobile.mp4';
 import introVideoDesktop from '../assets/video/ignis_intro_desktop.mp4';
 import heroLastFrame from '../assets/video/ignis_hero_last.jpg';
+
+/* ── Mini image carousel for gallery cards on Home page ── */
+const GalleryCard = ({ event }) => {
+    const [imgIdx, setImgIdx] = React.useState(0);
+    const imgs = event.image_urls?.length ? event.image_urls : [event.image_url].filter(Boolean);
+    const prev = (e) => { e.stopPropagation(); setImgIdx((i) => (i - 1 + imgs.length) % imgs.length); };
+    const next = (e) => { e.stopPropagation(); setImgIdx((i) => (i + 1) % imgs.length); };
+    const winnersList = Array.isArray(event.winners_list) && event.winners_list.length
+        ? event.winners_list
+        : null;
+
+    return (
+        <motion.div
+            whileHover={{ y: -8 }}
+            className="bg-slate-800 rounded-2xl overflow-hidden border border-white/5 group shadow-xl"
+        >
+            {/* Image with carousel */}
+            <div className="h-48 relative overflow-hidden">
+                <img
+                    src={imgs[imgIdx]}
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60" />
+
+                {/* Carousel controls — only if multiple images */}
+                {imgs.length > 1 && (
+                    <>
+                        <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-1 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                            <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                            <ChevronRight className="h-4 w-4" />
+                        </button>
+                        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+                            {imgs.map((_, i) => (
+                                <button key={i} onClick={(e) => { e.stopPropagation(); setImgIdx(i); }}
+                                    className={`h-1 rounded-full transition-all ${i === imgIdx ? 'w-4 bg-white' : 'w-1.5 bg-white/40'}`}
+                                />
+                            ))}
+                        </div>
+                    </>
+                )}
+
+                {/* badges */}
+                <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white">
+                    {new Date(event.event_date).toLocaleDateString()}
+                </div>
+                {imgs.length > 1 && (
+                    <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full text-xs font-bold text-white flex items-center gap-1">
+                        <ImageIcon className="h-3 w-3" /> {imgs.length}
+                    </div>
+                )}
+            </div>
+
+            <div className="p-5">
+                <h4 className="text-xl font-bold text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">{event.title}</h4>
+                <p className="text-slate-400 text-sm line-clamp-2 mb-4">{event.description}</p>
+
+                {(winnersList || event.winners) && (
+                    <div className="pt-3 border-t border-white/10">
+                        <span className="text-xs text-accent font-bold uppercase flex items-center gap-1 mb-1">
+                            <Trophy className="h-3 w-3" /> Winners
+                        </span>
+                        {winnersList ? (
+                            <ul className="space-y-0.5">
+                                {winnersList.slice(0, 3).map((w, i) => (
+                                    <li key={i} className="text-sm text-slate-300 flex gap-2">
+                                        {w.position && <span className="text-accent font-bold shrink-0">{w.position}</span>}
+                                        <span className="line-clamp-1">{w.name}</span>
+                                    </li>
+                                ))}
+                                {winnersList.length > 3 && (
+                                    <li className="text-xs text-slate-500">+{winnersList.length - 3} more</li>
+                                )}
+                            </ul>
+                        ) : (
+                            <p className="text-sm text-slate-300 line-clamp-2">{event.winners}</p>
+                        )}
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+};
 
 const Home = () => {
     const [news, setNews] = useState([]);
@@ -311,36 +396,7 @@ const Home = () => {
                         {galleryEvents.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {galleryEvents.map((event) => (
-                                    <motion.div
-                                        key={event.id}
-                                        whileHover={{ y: -10 }}
-                                        className="bg-slate-800 rounded-2xl overflow-hidden border border-white/5 group shadow-xl"
-                                    >
-                                        <div className="h-48 relative overflow-hidden">
-                                            <img 
-                                                src={event.image_url} 
-                                                alt={event.title} 
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60"></div>
-                                            <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white">
-                                                {new Date(event.event_date).toLocaleDateString()}
-                                            </div>
-                                        </div>
-                                        <div className="p-5">
-                                            <h4 className="text-xl font-bold text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">{event.title}</h4>
-                                            <p className="text-slate-400 text-sm line-clamp-2 mb-4">{event.description}</p>
-                                            
-                                            {event.winners && (
-                                                <div className="pt-3 border-t border-white/10">
-                                                    <span className="text-xs text-accent font-bold uppercase flex items-center mb-1">
-                                                        <Trophy className="h-3 w-3 mr-1" /> Winners
-                                                    </span>
-                                                    <p className="text-sm text-slate-300 line-clamp-2">{event.winners}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </motion.div>
+                                    <GalleryCard key={event.id} event={event} />
                                 ))}
                             </div>
                         ) : (
