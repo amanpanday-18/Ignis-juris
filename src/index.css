@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,56 +6,99 @@
 
 @layer base {
   :root {
-    --glass-bg: rgba(15, 23, 42, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --accent-glow: rgba(245, 158, 11, 0.3);
+    --color-primary: #1c1b1b;
+    --color-secondary: #474545;
+    --color-bg: #f3f3f3;
+    --color-surface: #ffffff;
+    --color-border: #e5e5e5;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-[#030712] text-slate-100 font-sans antialiased selection:bg-accent selection:text-white;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
-    background-attachment: fixed;
+    @apply bg-[#f3f3f3] text-[#1c1b1b] antialiased;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-image: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans tracking-tight;
+    font-family: 'Source Sans Pro', sans-serif;
+    @apply tracking-tight text-[#1c1b1b];
   }
 
-  .font-serif {
-    font-family: 'Playfair Display', serif;
+  ::selection {
+    background: #1c1b1b;
+    color: #f3f3f3;
   }
 }
 
 @layer components {
+  /* ── Light Card ── */
+  .card-light {
+    @apply bg-white rounded-2xl border border-[#e5e5e5] shadow-card transition-all duration-300;
+  }
+  .card-light:hover {
+    @apply shadow-card-hover -translate-y-1;
+  }
+
+  /* ── Section Label (e.g. /WHY CHOOSE US) ── */
+  .section-label {
+    @apply text-xs font-bold uppercase tracking-[0.25em] text-[#474545] mb-4;
+  }
+
+  /* ── Dark Pill Button (primary) ── */
+  .btn-dark {
+    @apply inline-flex items-center gap-2 px-6 py-2.5 bg-[#1c1b1b] text-white text-sm font-bold rounded-full transition-all duration-200 hover:bg-[#474545] active:scale-95;
+  }
+
+  /* ── Outlined Pill Button (secondary) ── */
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-6 py-2.5 border border-[#1c1b1b] text-[#1c1b1b] text-sm font-bold rounded-full transition-all duration-200 hover:bg-[#1c1b1b] hover:text-white active:scale-95;
+  }
+
+  /* ── Ghost link ── */
+  .link-dark {
+    @apply text-[#474545] text-sm font-semibold hover:text-[#1c1b1b] transition-colors duration-200;
+  }
+
+  /* ── Navbar ── */
+  .navbar-light {
+    @apply bg-white border-b border-[#e5e5e5];
+  }
+
+  /* ── Glass (kept for modals, overridden to light) ── */
   .glass {
-    @apply backdrop-blur-md bg-white/5 border border-white/10;
+    @apply bg-white/90 backdrop-blur-md border border-[#e5e5e5];
   }
-  
+
   .glass-dark {
-    @apply backdrop-blur-lg bg-slate-900/80 border border-white/5;
+    @apply bg-[#1c1b1b]/95 backdrop-blur-lg border border-white/10;
   }
 
+  /* ── Text gradient replaced ── */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400;
+    @apply text-[#1c1b1b];
   }
 
-  .btn-premium {
-    @apply relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 overflow-hidden;
-  }
-
-  .btn-premium::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-primary to-indigo-600 opacity-0 transition-opacity duration-300;
-  }
-
-  .btn-premium:hover::before {
-    @apply opacity-100;
-  }
-
+  /* ── Card premium (legacy) ── */
   .card-premium {
-    @apply relative p-6 rounded-2xl glass transition-all duration-500 hover:scale-[1.02] hover:bg-white/10 hover:border-white/20;
+    @apply relative p-6 rounded-2xl bg-white border border-[#e5e5e5] shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover;
+  }
+
+  /* ── Icon circle ── */
+  .icon-circle {
+    @apply w-12 h-12 rounded-full bg-[#f3f3f3] border border-[#e5e5e5] flex items-center justify-center text-[#2d3a2e];
+  }
+
+  /* ── Global lucide icon color ── */
+  svg.lucide {
+    color: #2d3a2e;
   }
 }
 
@@ -67,5 +110,11 @@
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+
+  /* ── Divider slash ── */
+  .section-slash::before {
+    content: '/';
+    @apply mr-1 text-[#474545];
   }
 }

@@ -8,54 +8,50 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#6366f1',
-          light: '#818cf8',
-          dark: '#4338ca',
-          900: '#1e1b4b',
+          DEFAULT: '#1c1b1b',
+          light: '#474545',
+          dark: '#0e0d0d',
+          900: '#0e0d0d',
         },
         accent: {
-          DEFAULT: '#f59e0b',
-          hover: '#b45309',
-          light: '#fbbf24',
+          DEFAULT: '#2d3a2e',
+          hover: '#3d4f38',
+          light: '#3d4f38',
         },
-        background: '#030712',
-        surface: '#0f172a',
-        'surface-light': '#1e293b',
+        background: '#f3f3f3',
+        surface: '#ffffff',
+        'surface-light': '#f3f3f3',
+        border: '#e5e5e5',
         text: {
-          primary: '#f8fafc',
-          secondary: '#94a3b8',
-          muted: '#64748b',
-        },
-        indigo: {
-          950: '#1e1b4b',
+          primary: '#1c1b1b',
+          secondary: '#474545',
+          muted: '#888888',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
+        sans: ['"Source Sans Pro"', 'sans-serif'],
+        serif: ['"Source Sans Pro"', 'sans-serif'],
       },
       animation: {
-        'gradient-x': 'gradient-x 15s ease infinite',
         'float': 'float 6s ease-in-out infinite',
+        'fade-in': 'fadeIn 0.5s ease-in-out',
       },
       keyframes: {
-        'gradient-x': {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center',
-          },
-        },
         'float': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
+        },
+        'fadeIn': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
         }
+      },
+      boxShadow: {
+        'card': '0 2px 16px 0 rgba(28,27,27,0.08)',
+        'card-hover': '0 8px 32px 0 rgba(28,27,27,0.14)',
+        'navbar': '0 1px 0 0 #e5e5e5',
       }
     },
   },
   plugins: [],
 }
-

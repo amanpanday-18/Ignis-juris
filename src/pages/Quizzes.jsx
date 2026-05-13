@@ -8,6 +8,8 @@ import { useAdmin } from '../hooks/useAdmin';
 import { useAuth } from '../context/AuthContext';
 import AddQuizModal from '../components/AddQuizModal';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/PageHeader';
+import bgQuizzes from '../assets/more_legal_quizzes.png';
 
 const Quizzes = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -104,32 +106,27 @@ const Quizzes = () => {
     };
 
     return (
-        <div className="w-full py-12 text-slate-100">
+        <div className="w-full min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
                 <title>Legal Quizzes - IGNIS JURIS</title>
             </Helmet>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="text-center mb-12 relative">
-                    <div className="flex items-center justify-center mb-4">
-                        <Award className="h-10 w-10 text-accent mr-3" />
-                        <h1 className="text-4xl font-bold text-white">Legal Quizzes & Tests</h1>
-                    </div>
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                        Test your legal knowledge with our comprehensive quizzes on various law subjects
-                    </p>
 
-                    {/* Admin Add Button */}
-                    {isAdmin && (
-                        <button
-                            onClick={() => setIsAddModalOpen(true)}
-                            className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
-                        >
-                            <Plus className="h-5 w-5 mr-2" />
-                            Create Quiz
-                        </button>
-                    )}
-                </div>
+            <PageHeader
+                label="/QUIZZES"
+                title="Legal Quizzes & Tests"
+                description="Test your legal knowledge with our comprehensive quizzes on various law subjects."
+                bgImage={bgQuizzes}
+                action={isAdmin && (
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="flex items-center px-5 py-2.5 bg-white text-[#3d4f38] rounded-full hover:bg-white/90 transition-colors font-bold text-sm"
+                    >
+                        <Plus className="h-4 w-4 mr-2" />Create Quiz
+                    </button>
+                )}
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filters */}
                 <div className="bg-slate-800 rounded-xl shadow-lg p-6 mb-8 border border-white/5">
@@ -234,11 +231,11 @@ const Quizzes = () => {
 
                                     <div className="flex items-center justify-between text-sm text-slate-500 mb-6">
                                         <div className="flex items-center">
-                                            <Clock className="h-4 w-4 mr-1" />
+                                            <Clock className="h-4 w-4 mr-1 text-[#2d3a2e]" />
                                             {quiz.time_limit} mins
                                         </div>
                                         <div className="flex items-center">
-                                            <BookOpen className="h-4 w-4 mr-1" />
+                                            <BookOpen className="h-4 w-4 mr-1 text-[#2d3a2e]" />
                                             Pass: {quiz.passing_score}%
                                         </div>
                                     </div>

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
-import { Loader, PlusCircle, ShieldAlert, User } from 'lucide-react';
+import { Loader, PlusCircle, ShieldAlert, User, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useAdmin } from '../hooks/useAdmin';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/PageHeader';
+import bgBlog from '../assets/more_legal_articles.png';
 
 const BlogList = () => {
     const [blogs, setBlogs] = useState([]);
@@ -37,95 +39,86 @@ const BlogList = () => {
 
     if (loading) {
         return (
-            <div className="min-h-[70vh] flex items-center justify-center bg-background">
-                <Loader className="animate-spin h-12 w-12 text-accent" />
+            <div className="min-h-[70vh] flex items-center justify-center bg-[#f3f3f3]">
+                <Loader className="animate-spin h-10 w-10 text-[#1c1b1b]" />
             </div>
         );
     }
 
     return (
-        <div className="w-full py-12">
+        <div className="w-full min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
-                <title>Blog - IGNIS JURIS</title>
+                <title>Blog — IGNIS JURIS</title>
             </Helmet>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-                    <div>
-                        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                            Legal <span className="text-accent">Insights</span> & Blogs
-                        </h1>
-                        <p className="text-slate-400 text-lg max-w-2xl">
-                            Read the latest articles, essays, and research from our community of legal minds.
-                        </p>
-                    </div>
-                    
-                    <div className="mt-6 md:mt-0 flex gap-4">
+
+            <PageHeader
+                label="/BLOG"
+                title="Legal Insights & Blogs"
+                description="Read the latest articles, essays, and research from our community of legal minds."
+                bgImage={bgBlog}
+                action={
+                    <div className="flex flex-wrap gap-3">
                         {isAdmin && (
-                            <Link
-                                to="/admin/blogs"
-                                className="inline-flex items-center px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors border border-slate-700"
-                                title="Admin Review"
-                            >
-                                <ShieldAlert className="h-5 w-5 mr-2" />
-                                Review Pending
+                            <Link to="/admin/blogs" className="inline-flex items-center px-4 py-2 border border-white/40 text-white text-sm font-bold rounded-full hover:bg-white hover:text-[#3d4f38] transition-all">
+                                <ShieldAlert className="h-4 w-4 mr-2" />Review Pending
                             </Link>
                         )}
                         {user && (
-                            <Link
-                                to="/my-blogs"
-                                className="inline-flex items-center px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors border border-slate-700"
-                            >
-                                <User className="h-5 w-5 mr-2" />
-                                My Submissions
+                            <Link to="/my-blogs" className="inline-flex items-center px-4 py-2 border border-white/40 text-white text-sm font-bold rounded-full hover:bg-white hover:text-[#3d4f38] transition-all">
+                                <User className="h-4 w-4 mr-2" />My Submissions
                             </Link>
                         )}
-                        <Link
-                            to="/blog/new"
-                            className="inline-flex items-center px-6 py-3 bg-accent text-white font-bold rounded-lg hover:bg-accent-hover transition-colors"
-                        >
-                            <PlusCircle className="h-5 w-5 mr-2" />
-                            Submit a Blog
+                        <Link to="/blog/new" className="inline-flex items-center px-4 py-2 bg-white text-[#3d4f38] text-sm font-bold rounded-full hover:bg-white/90 transition-all">
+                            <PlusCircle className="h-4 w-4 mr-2" />Submit a Blog
                         </Link>
                     </div>
-                </div>
+                }
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                {/* Blog Grid */}
 
                 {blogs.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {blogs.map((blog) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {blogs.map((blog, idx) => (
                             <motion.div
                                 key={blog.id}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 16 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-slate-800/50 rounded-xl overflow-hidden border border-white/5 hover:border-accent/50 transition-colors flex flex-col"
+                                transition={{ delay: idx * 0.05 }}
+                                className="bg-white rounded-2xl overflow-hidden border border-[#e5e5e5] shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col"
                             >
                                 <div className="p-6 flex-grow">
-                                    <h2 className="text-2xl font-bold text-white mb-3 line-clamp-2">{blog.title}</h2>
-                                    <div className="flex items-center text-sm text-slate-400 mb-4">
-                                        <span className="font-medium text-slate-300">{blog.author_name}</span>
-                                        <span className="mx-2">•</span>
-                                        <span>{new Date(blog.created_at).toLocaleDateString()}</span>
+                                    <h2 className="text-xl font-bold text-[#1c1b1b] mb-3 line-clamp-2">{blog.title}</h2>
+                                    <div className="flex items-center text-sm text-[#474545] mb-4 gap-1">
+                                        <span className="font-semibold text-[#1c1b1b]">{blog.author_name}</span>
+                                        <span className="mx-1.5 text-[#888]">•</span>
+                                        <span className="text-[#888]">{new Date(blog.created_at).toLocaleDateString()}</span>
                                     </div>
-                                    <p className="text-slate-300 line-clamp-4 whitespace-pre-wrap">
+                                    <p className="text-[#474545] text-sm line-clamp-4 whitespace-pre-wrap leading-relaxed">
                                         {blog.content}
                                     </p>
                                 </div>
-                                <div className="px-6 py-4 border-t border-white/5 bg-slate-800/30">
-                                    <Link to={`/blog/${blog.id}`} className="text-accent text-sm font-semibold hover:text-accent-hover transition-colors inline-block">
-                                        Read full post
+                                <div className="px-6 py-4 border-t border-[#e5e5e5]">
+                                    <Link
+                                        to={`/blog/${blog.id}`}
+                                        className="inline-flex items-center gap-2 text-sm font-bold text-[#1c1b1b] hover:text-[#474545] transition-colors group"
+                                    >
+                                        Read full post <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-20 bg-slate-800/30 rounded-2xl border border-white/5">
-                        <h3 className="text-2xl font-bold text-white mb-2">No blogs yet</h3>
-                        <p className="text-slate-400 mb-6">Be the first to share your legal insights with our community.</p>
+                    <div className="text-center py-20 bg-white rounded-2xl border border-[#e5e5e5]">
+                        <h3 className="text-2xl font-bold text-[#1c1b1b] mb-2">No blogs yet</h3>
+                        <p className="text-[#474545] mb-6">Be the first to share your legal insights with our community.</p>
                         <Link
                             to="/blog/new"
-                            className="inline-flex items-center px-6 py-3 bg-accent text-white font-bold rounded-lg hover:bg-accent-hover transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-[#1c1b1b] text-white font-bold rounded-full hover:bg-[#474545] transition-all duration-200"
                         >
-                            <PlusCircle className="h-5 w-5 mr-2" />
+                            <PlusCircle className="h-5 w-5" />
                             Write a Blog
                         </Link>
                     </div>

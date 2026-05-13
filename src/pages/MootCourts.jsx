@@ -5,6 +5,8 @@ import { MootCourtService } from '../services/moot-court-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddMootCourtModal from '../components/AddMootCourtModal';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/PageHeader';
+import bgMoot from '../assets/more_moot_courts.png';
 
 const MootCourts = () => {
     const [competitions, setCompetitions] = useState([]);
@@ -66,34 +68,27 @@ const MootCourts = () => {
     };
 
     return (
-        <div className="w-full py-12 text-slate-100">
+        <div className="w-full min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
                 <title>Moot Courts - IGNIS JURIS</title>
             </Helmet>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="text-center mb-12 relative">
-                    <div className="flex items-center justify-center mb-4">
-                        <div className="bg-yellow-500/20 p-3 rounded-full mr-3">
-                            <Trophy className="h-8 w-8 text-yellow-400" />
-                        </div>
-                        <h1 className="text-4xl font-bold text-white">Moot Courts & Competitions</h1>
-                    </div>
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                        Discover upcoming moot court competitions, debates, and legal hackathons across India.
-                    </p>
 
-                    {/* Admin Add Button */}
-                    {isAdmin && (
-                        <button
-                            onClick={() => setIsAddModalOpen(true)}
-                            className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
-                        >
-                            <Plus className="h-5 w-5 mr-2" />
-                            Add Competition
-                        </button>
-                    )}
-                </div>
+            <PageHeader
+                label="/COMPETITIONS"
+                title="Moot Courts & Competitions"
+                description="Discover upcoming moot court competitions, debates, and legal hackathons across India."
+                bgImage={bgMoot}
+                action={isAdmin && (
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="flex items-center px-5 py-2.5 bg-white text-[#3d4f38] rounded-full hover:bg-white/90 transition-colors font-bold text-sm"
+                    >
+                        <Plus className="h-4 w-4 mr-2" />Add Competition
+                    </button>
+                )}
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filter Tabs */}
                 <div className="flex justify-center mb-8">

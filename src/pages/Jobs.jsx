@@ -5,6 +5,8 @@ import { JobService, experienceLevels } from '../services/job-service';
 import { useAdmin } from '../hooks/useAdmin';
 import AddJobModal from '../components/AddJobModal';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/PageHeader';
+import bgJobs from '../assets/more_job_openings.png';
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -56,34 +58,27 @@ const Jobs = () => {
     };
 
     return (
-        <div className="w-full py-12 text-slate-100">
+        <div className="w-full min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
                 <title>Job Openings - IGNIS JURIS</title>
             </Helmet>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="text-center mb-12 relative">
-                    <div className="flex items-center justify-center mb-4">
-                        <div className="bg-purple-500/20 p-3 rounded-full mr-3">
-                            <Briefcase className="h-8 w-8 text-purple-400" />
-                        </div>
-                        <h1 className="text-4xl font-bold text-white">Legal Job Openings</h1>
-                    </div>
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                        Explore career opportunities with top law firms, corporate legal teams, and senior advocates.
-                    </p>
 
-                    {/* Admin Add Button */}
-                    {isAdmin && (
-                        <button
-                            onClick={() => setIsAddModalOpen(true)}
-                            className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
-                        >
-                            <Plus className="h-5 w-5 mr-2" />
-                            Post Job
-                        </button>
-                    )}
-                </div>
+            <PageHeader
+                label="/CAREERS"
+                title="Legal Job Openings"
+                description="Explore career opportunities with top law firms, corporate legal teams, and senior advocates."
+                bgImage={bgJobs}
+                action={isAdmin && (
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="flex items-center px-5 py-2.5 bg-white text-[#3d4f38] rounded-full hover:bg-white/90 transition-colors font-bold text-sm"
+                    >
+                        <Plus className="h-4 w-4 mr-2" />Post Job
+                    </button>
+                )}
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filter */}
                 <div className="flex justify-center mb-8">
@@ -132,29 +127,29 @@ const Jobs = () => {
                                                 {job.type}
                                             </span>
                                         </div>
-                                        <div className="flex items-center text-lg text-slate-300 font-medium mb-2">
-                                            <Building className="h-4 w-4 mr-2 text-slate-500" />
-                                            {job.organization}
-                                        </div>
+                                            <div className="flex items-center text-lg text-slate-300 font-medium mb-2">
+                                                <Building className="h-4 w-4 mr-2 text-[#2d3a2e]" />
+                                                {job.organization}
+                                            </div>
 
-                                        <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
-                                            <div className="flex items-center">
-                                                <MapPin className="h-4 w-4 mr-1 text-slate-500" />
-                                                {job.location}
+                                            <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
+                                                <div className="flex items-center">
+                                                    <MapPin className="h-4 w-4 mr-1 text-[#2d3a2e]" />
+                                                    {job.location}
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <Briefcase className="h-4 w-4 mr-1 text-[#2d3a2e]" />
+                                                    {job.experience}
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <IndianRupee className="h-4 w-4 mr-1 text-[#2d3a2e]" />
+                                                    {job.salary || 'Not Disclosed'}
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <Clock className="h-4 w-4 mr-1 text-[#2d3a2e]" />
+                                                    Posted: {formatDate(job.posted_date)}
+                                                </div>
                                             </div>
-                                            <div className="flex items-center">
-                                                <Briefcase className="h-4 w-4 mr-1 text-slate-500" />
-                                                {job.experience}
-                                            </div>
-                                            <div className="flex items-center">
-                                                <IndianRupee className="h-4 w-4 mr-1 text-slate-500" />
-                                                {job.salary || 'Not Disclosed'}
-                                            </div>
-                                            <div className="flex items-center">
-                                                <Clock className="h-4 w-4 mr-1 text-slate-500" />
-                                                Posted: {formatDate(job.posted_date)}
-                                            </div>
-                                        </div>
 
                                         <p className="text-slate-400 text-sm line-clamp-2 mb-4 md:mb-0">
                                             {job.description}
@@ -178,7 +173,7 @@ const Jobs = () => {
                     </div>
                 ) : (
                     <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
-                        <Briefcase className="h-12 w-12 text-slate-500 mx-auto mb-3" />
+                        <Briefcase className="h-12 w-12 text-[#2d3a2e] mx-auto mb-3" />
                         <p className="text-slate-400 text-lg">No job openings found.</p>
                         {isAdmin && (
                             <button

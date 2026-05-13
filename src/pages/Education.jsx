@@ -5,6 +5,8 @@ import { EducationService, educationCategories, resourceTypes } from '../service
 import { useAdmin } from '../hooks/useAdmin';
 import AddResourceModal from '../components/AddResourceModal';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/PageHeader';
+import bgEducation from '../assets/more_education.png';
 
 const Education = () => {
     const [resources, setResources] = useState([]);
@@ -69,41 +71,34 @@ const Education = () => {
     };
 
     return (
-        <div className="w-full py-12 text-slate-100">
+        <div className="w-full min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
                 <title>Education - IGNIS JURIS</title>
             </Helmet>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="text-center mb-12 relative">
-                    <div className="flex items-center justify-center mb-4">
-                        <div className="bg-primary/20 p-3 rounded-full mr-3">
-                            <Video className="h-8 w-8 text-primary-light" />
-                        </div>
-                        <h1 className="text-4xl font-bold text-white">Educational Resources</h1>
-                    </div>
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                        Curated study materials, video tutorials, and legal articles to enhance your knowledge.
-                    </p>
 
-                    {/* Admin Add Button */}
-                    {isAdmin && (
-                        <button
-                            onClick={() => setIsAddModalOpen(true)}
-                            className="absolute top-0 right-0 flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors shadow-lg"
-                        >
-                            <Plus className="h-5 w-5 mr-2" />
-                            Add Resource
-                        </button>
-                    )}
-                </div>
+            <PageHeader
+                label="/EDUCATION"
+                title="Educational Resources"
+                description="Curated study materials, video tutorials, and legal articles to enhance your knowledge."
+                bgImage={bgEducation}
+                action={isAdmin && (
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="flex items-center px-5 py-2.5 bg-white text-[#3d4f38] rounded-full hover:bg-white/90 transition-colors font-bold text-sm"
+                    >
+                        <Plus className="h-4 w-4 mr-2" />Add Resource
+                    </button>
+                )}
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filters */}
-                <div className="flex flex-col md:flex-row justify-center gap-4 mb-8">
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
                     <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-4 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white"
+                        className="px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-full focus:ring-2 focus:ring-[#1c1b1b] focus:outline-none text-[#1c1b1b] text-sm font-semibold"
                     >
                         {educationCategories.map(cat => (
                             <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -113,7 +108,7 @@ const Education = () => {
                     <select
                         value={selectedType}
                         onChange={(e) => setSelectedType(e.target.value)}
-                        className="px-4 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white"
+                        className="px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-full focus:ring-2 focus:ring-[#1c1b1b] focus:outline-none text-[#1c1b1b] text-sm font-semibold"
                     >
                         {resourceTypes.map(type => (
                             <option key={type.id} value={type.id}>{type.name}</option>
@@ -124,7 +119,7 @@ const Education = () => {
                 {/* Resources Grid */}
                 {loading ? (
                     <div className="flex justify-center py-12">
-                        <Loader className="animate-spin h-12 w-12 text-accent" />
+                        <Loader className="animate-spin h-10 w-10 text-[#2d3a2e]" />
                     </div>
                 ) : resources.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -134,7 +129,7 @@ const Education = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-slate-800 rounded-xl shadow-md border border-white/5 overflow-hidden hover:shadow-lg transition-all relative group flex flex-col hover:border-accent/30"
+                                className="bg-white rounded-2xl shadow-card hover:shadow-card-hover hover:-translate-y-1 border border-[#e5e5e5] overflow-hidden transition-all duration-300 relative group flex flex-col"
                             >
                                 {/* Admin Delete Button */}
                                 {isAdmin && (
@@ -161,25 +156,26 @@ const Education = () => {
 
                                 <div className="p-6 flex-1 flex flex-col">
                                     <div className="flex items-center mb-3">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mr-2 ${resource.type === 'video' ? 'bg-red-500/20 text-red-400' :
-                                            resource.type === 'pdf' ? 'bg-primary-light/20 text-blue-400' :
-                                                'bg-green-500/20 text-green-400'
-                                            }`}>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mr-2 ${
+                                            resource.type === 'video' ? 'bg-[#f3f3f3] text-[#1c1b1b] border border-[#e5e5e5]' :
+                                            resource.type === 'pdf' ? 'bg-[#f3f3f3] text-[#1c1b1b] border border-[#e5e5e5]' :
+                                            'bg-[#f3f3f3] text-[#1c1b1b] border border-[#e5e5e5]'
+                                        }`}>
                                             {resourceTypes.find(t => t.id === resource.type)?.name}
                                         </span>
-                                        <span className="text-xs text-slate-500">
+                                        <span className="text-xs text-[#888]">
                                             {educationCategories.find(c => c.id === resource.category)?.name}
                                         </span>
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">{resource.title}</h3>
-                                    <p className="text-slate-400 mb-4 text-sm line-clamp-3 flex-1">{resource.description}</p>
+                                    <h3 className="text-xl font-bold text-[#1c1b1b] mb-2 line-clamp-2">{resource.title}</h3>
+                                    <p className="text-[#474545] mb-4 text-sm line-clamp-3 flex-1">{resource.description}</p>
 
                                     <a
                                         href={resource.content_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center justify-center w-full px-4 py-2 bg-white/5 text-slate-300 font-bold rounded-lg hover:bg-primary hover:text-white transition-colors text-sm mt-auto"
+                                        className="flex items-center justify-center w-full px-4 py-2.5 bg-[#1c1b1b] text-white font-bold rounded-full hover:bg-[#474545] transition-colors text-sm mt-auto"
                                     >
                                         {resource.type === 'video' ? <PlayCircle className="h-4 w-4 mr-2" /> :
                                             resource.type === 'pdf' ? <Download className="h-4 w-4 mr-2" /> :
@@ -191,15 +187,15 @@ const Education = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
-                        <div className="bg-white/5 p-4 rounded-full inline-block mb-4">
-                            <Video className="h-8 w-8 text-slate-500" />
+                    <div className="text-center py-12 bg-white rounded-2xl border border-[#e5e5e5]">
+                        <div className="w-12 h-12 rounded-full bg-[#f3f3f3] border border-[#e5e5e5] flex items-center justify-center mx-auto mb-4">
+                            <Video className="h-6 w-6 text-[#474545]" />
                         </div>
-                        <p className="text-slate-500 text-lg">No resources found matching your filters.</p>
+                        <p className="text-[#474545] text-lg">No resources found matching your filters.</p>
                         {isAdmin && (
                             <button
                                 onClick={() => setIsAddModalOpen(true)}
-                                className="mt-4 text-accent hover:underline font-medium"
+                                className="mt-4 text-[#1c1b1b] font-bold hover:text-[#474545] underline"
                             >
                                 Add the first resource
                             </button>

@@ -8,6 +8,8 @@ import { GalleryService } from '../services/gallery-service';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useAdmin } from '../hooks/useAdmin';
+import PageHeader from '../components/PageHeader';
+import bgGallery from '../assets/more_gallery.png';
 
 /* ── Medal colours for position labels ── */
 const MEDAL = {
@@ -69,18 +71,18 @@ const EventModal = ({ event, onClose }) => {
                 onClick={e => e.stopPropagation()}
                 className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl"
                 style={{ 
-                    background: '#0f172a', 
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: '#ffffff', 
+                    border: '1px solid #e5e5e5',
                     scrollbarWidth: 'thin',
-                    scrollbarColor: 'rgba(255,255,255,0.2) transparent'
+                    scrollbarColor: '#e5e5e5 transparent'
                 }}
             >
                 {/* Close Button - Sticky at top right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-all backdrop-blur-md border border-white/10"
+                    className="absolute top-4 right-4 z-50 p-2 rounded-full bg-[#f3f3f3] text-[#2d3a2e] hover:bg-[#e5e5e5] transition-all border border-[#e5e5e5]"
                 >
-                    <X className="h-6 w-6" />
+                    <X className="h-5 w-5" />
                 </button>
 
                 {/* ── TOP: Full Width Image Viewer ── */}
@@ -128,30 +130,30 @@ const EventModal = ({ event, onClose }) => {
                 </div>
 
                 {/* ── BOTTOM: Content Sections ── */}
-                <div className="p-8 lg:p-12 space-y-10">
+                <div className="p-8 lg:p-12 space-y-10 bg-white">
                     
                     {/* Header Info */}
                     <div className="space-y-4">
-                        <div className="flex items-center gap-2 text-indigo-400 font-bold tracking-wider text-sm uppercase">
+                        <div className="flex items-center gap-2 text-[#2d3a2e] font-bold tracking-wider text-sm uppercase">
                             <Calendar className="h-4 w-4" />
                             {new Date(event.event_date).toLocaleDateString('en-IN', {
                                 day: 'numeric', month: 'long', year: 'numeric'
                             })}
                         </div>
-                        <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight">
+                        <h2 className="text-3xl lg:text-5xl font-black text-[#1c1b1b] leading-tight">
                             {event.title}
                         </h2>
                     </div>
 
-                    <div className="h-px bg-white/10 w-full" />
+                    <div className="h-px bg-[#e5e5e5] w-full" />
 
                     {/* Description */}
                     <div className="space-y-4">
-                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                            <ImageIcon className="h-5 w-5 text-indigo-500" />
+                        <h3 className="text-xl font-bold text-[#1c1b1b] flex items-center gap-2">
+                            <ImageIcon className="h-5 w-5 text-[#2d3a2e]" />
                             Event Highlights
                         </h3>
-                        <p className="text-slate-300 text-lg leading-relaxed whitespace-pre-wrap">
+                        <p className="text-[#474545] text-lg leading-relaxed whitespace-pre-wrap">
                             {event.description}
                         </p>
                     </div>
@@ -159,8 +161,8 @@ const EventModal = ({ event, onClose }) => {
                     {/* Winners Section */}
                     {(winnersList || event.winners) && (
                         <div className="space-y-6 pt-6">
-                            <h3 className="text-xl font-bold text-yellow-500 flex items-center gap-2">
-                                <Trophy className="h-6 w-6" />
+                            <h3 className="text-xl font-bold text-[#1c1b1b] flex items-center gap-2">
+                                <Trophy className="h-6 w-6 text-[#2d3a2e]" />
                                 Winners & Achievements
                             </h3>
                             
@@ -172,7 +174,7 @@ const EventModal = ({ event, onClose }) => {
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: i * 0.1 }}
-                                            className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10"
+                                            className="flex items-center gap-4 p-5 rounded-2xl bg-[#f3f3f3] border border-[#e5e5e5]"
                                         >
                                             <div 
                                                 className="h-12 w-12 rounded-full flex items-center justify-center shrink-0"
@@ -184,16 +186,16 @@ const EventModal = ({ event, onClose }) => {
                                                 <div className="text-xs font-bold uppercase tracking-tighter opacity-50" style={{ color: medalColor(w.position) }}>
                                                     {w.position || 'Rank'}
                                                 </div>
-                                                <div className="text-white font-bold text-lg">{w.name}</div>
+                                                <div className="text-[#1c1b1b] font-bold text-lg">{w.name}</div>
                                                 {w.institution && (
-                                                    <div className="text-slate-400 text-sm">{w.institution}</div>
+                                                    <div className="text-[#474545] text-sm">{w.institution}</div>
                                                 )}
                                             </div>
                                         </motion.div>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-slate-300 whitespace-pre-wrap text-lg">
+                                <div className="p-6 rounded-2xl bg-[#f3f3f3] border border-[#e5e5e5] text-[#474545] whitespace-pre-wrap text-lg">
                                     {event.winners}
                                 </div>
                             )}
@@ -221,7 +223,7 @@ const EventCard = ({ event, onClick }) => {
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             onClick={onClick}
             className="rounded-2xl overflow-hidden border group shadow-xl flex flex-col cursor-pointer"
-            style={{ background: '#1e293b', borderColor: 'rgba(255,255,255,0.06)' }}
+            style={{ background: '#ffffff', borderColor: '#e5e5e5' }}
             id={`event-card-${event.id}`}
         >
             {/* Main image */}
@@ -267,7 +269,7 @@ const EventCard = ({ event, onClick }) => {
                 {/* "View Details" overlay on hover */}
                 <div
                     className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: 'rgba(79,70,229,0.35)', backdropFilter: 'blur(2px)' }}
+                    style={{ background: 'rgba(28,27,27,0.4)', backdropFilter: 'blur(2px)' }}
                 >
                     <span className="text-white font-bold text-sm px-4 py-2 rounded-full border border-white/50">
                         View Details
@@ -277,16 +279,16 @@ const EventCard = ({ event, onClick }) => {
 
             {/* Card body */}
             <div className="p-5 flex flex-col flex-grow">
-                <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-indigo-300 transition-colors line-clamp-2">
+                <h3 className="text-lg font-bold text-[#1c1b1b] mb-1.5 group-hover:text-[#474545] transition-colors line-clamp-2">
                     {event.title}
                 </h3>
-                <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                <p className="text-[#474545] text-sm leading-relaxed line-clamp-3">
                     {event.description}
                 </p>
 
                 {/* Winners preview */}
                 {(Array.isArray(event.winners_list) && event.winners_list.length > 0 || event.winners) && (
-                    <div className="mt-auto pt-3 border-t border-white/10 flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#FFD700' }}>
+                    <div className="mt-auto pt-3 border-t border-[#e5e5e5] flex items-center gap-1.5 text-xs font-semibold text-[#2d3a2e]">
                         <Trophy className="h-3 w-3" />
                         {Array.isArray(event.winners_list) && event.winners_list.length > 0
                             ? `${event.winners_list.length} winner${event.winners_list.length > 1 ? 's' : ''} listed`
@@ -315,54 +317,32 @@ const Gallery = () => {
     }, []);
 
     return (
-        <div className="w-full text-slate-100">
+        <div className="w-full min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
                 <title>Gallery - IGNIS JURIS</title>
                 <meta name="description" content="Event highlights, photos and winners from Ignis Juris legal events and competitions." />
             </Helmet>
 
-            {/* Hero */}
-            <div className="relative bg-gradient-to-r from-indigo-900 to-black pt-20 pb-32 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/50 via-slate-900 to-black opacity-90" />
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                    <motion.h1
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white"
-                    >
-                        Event <span className="text-accent">Gallery</span>
-                    </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-xl text-slate-300 max-w-2xl mx-auto"
-                    >
-                        Relive the moments from our competitions, seminars, and legal events.
-                        <br />
-                        <span className="text-sm text-slate-400">Click any event to explore full details.</span>
-                    </motion.p>
-                    {isAdmin && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="mt-6">
-                            <Link
-                                to="/admin/gallery"
-                                className="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-xl transition-colors shadow-lg shadow-accent/20"
-                            >
-                                Manage Gallery
-                            </Link>
-                        </motion.div>
-                    )}
-                </div>
-            </div>
+            <PageHeader
+                label="/GALLERY"
+                title="Event Gallery"
+                description="Relive the moments from our competitions, seminars, and legal events. Click any event to explore full details."
+                bgImage={bgGallery}
+                action={isAdmin && (
+                    <Link to="/admin/gallery" className="inline-flex items-center px-5 py-2.5 bg-white text-[#3d4f38] font-bold text-sm rounded-full hover:bg-white/90 transition-all">
+                        Manage Gallery
+                    </Link>
+                )}
+            />
 
             {/* Cards Grid */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20 pb-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
                 {loading ? (
                     <div className="flex justify-center py-24">
-                        <Loader className="animate-spin h-10 w-10 text-accent" />
+                        <Loader className="animate-spin h-10 w-10 text-[#2d3a2e]" />
                     </div>
                 ) : events.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {events.map(event => (
                             <EventCard
                                 key={event.id}
@@ -372,10 +352,10 @@ const Gallery = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-24 bg-slate-800/40 rounded-2xl border border-white/5">
-                        <ImageIcon className="h-14 w-14 text-slate-500 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold text-white mb-2">No Events Yet</h3>
-                        <p className="text-slate-400">Check back soon for event highlights and photos.</p>
+                    <div className="text-center py-24 bg-white rounded-2xl border border-[#e5e5e5]">
+                        <ImageIcon className="h-14 w-14 text-[#2d3a2e] mx-auto mb-4" />
+                        <h3 className="text-2xl font-bold text-[#1c1b1b] mb-2">No Events Yet</h3>
+                        <p className="text-[#474545]">Check back soon for event highlights and photos.</p>
                     </div>
                 )}
             </div>
