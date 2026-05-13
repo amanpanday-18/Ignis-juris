@@ -1,205 +1,315 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ChevronLeft, ChevronRight, Trophy, Image as ImageIcon,
-    Loader, Calendar, X
+    Loader, Calendar, X, Award, Users
 } from 'lucide-react';
 import { GalleryService } from '../services/gallery-service';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useAdmin } from '../hooks/useAdmin';
 
-/* ── Full-screen lightbox ── */
-const Lightbox = ({ images, startIdx, onClose }) => {
-    const [idx, setIdx] = useState(startIdx);
-    const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
-    const next = () => setIdx((i) => (i + 1) % images.length);
+/* ── Medal colours for position labels ── */
+const MEDAL = {
+    '1st': '#FFD700',
+    '2nd': '#C0C0C0',
+    '3rd': '#CD7F32',
+    'first': '#FFD700',
+    'second': '#C0C0C0',
+    'third': '#CD7F32',
+};
+const medalColor = (pos = '') => MEDAL[pos.toLowerCase()] || '#a78bfa';
+
+/* ═══════════════════════════════════════════════
+   Event Detail Modal
+   ═══════════════════════════════════════════════ */
+const EventModal = ({ event, onClose }) => {
+    const [imgIdx, setImgIdx] = useState(0);
+    const imgs = event.image_urls?.length
+        ? event.image_urls
+        : [event.image_url].filter(Boolean);
+
+    const winnersList = Array.isArray(event.winners_list) && event.winners_list.length
+        ? event.winners_list
+        : null;
+
+    const prev = useCallback(() => setImgIdx(i => (i - 1 + imgs.length) % imgs.length), [imgs.length]);
+    const next = useCallback(() => setImgIdx(i => (i + 1) % imgs.length), [imgs.length]);
 
     useEffect(() => {
-        const handler = (e) => {
+        const handler = e => {
             if (e.key === 'ArrowLeft') prev();
             if (e.key === 'ArrowRight') next();
             if (e.key === 'Escape') onClose();
         };
         window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, []);
+        document.body.style.overflow = 'hidden';
+        return () => {
+            window.removeEventListener('keydown', handler);
+            document.body.style.overflow = '';
+        };
+    }, [prev, next, onClose]);
 
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
+            style={{ background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(12px)' }}
             onClick={onClose}
         >
-            <button
-                onClick={onClose}
-                className="absolute top-5 right-5 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-            >
-                <X className="h-6 w-6" />
-            </button>
-
-            <button
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                className="absolute left-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-            >
-                <ChevronLeft className="h-6 w-6" />
-            </button>
-
-            <img
-                src={images[idx]}
-                alt={`Photo ${idx + 1}`}
-                className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-            />
-
-            <button
-                onClick={(e) => { e.stopPropagation(); next(); }}
-                className="absolute right-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-            >
-                <ChevronRight className="h-6 w-6" />
-            </button>
-
-            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
-                {images.map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={(e) => { e.stopPropagation(); setIdx(i); }}
-                        className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/30'}`}
-                    />
-                ))}
-            </div>
-        </motion.div>
-    );
-};
-
-/* ── Single event card ── */
-const EventCard = ({ event }) => {
-    const [imgIdx, setImgIdx] = useState(0);
-    const [lightbox, setLightbox] = useState(null); // index
-    const imgs = event.image_urls?.length ? event.image_urls : [event.image_url].filter(Boolean);
-    const winnersList = Array.isArray(event.winners_list) && event.winners_list.length
-        ? event.winners_list
-        : null;
-
-    return (
-        <>
+            {/* Panel */}
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-slate-800 rounded-2xl overflow-hidden border border-white/5 group shadow-xl flex flex-col"
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                onClick={e => e.stopPropagation()}
+                className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl"
+                style={{ 
+                    background: '#0f172a', 
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: 'rgba(255,255,255,0.2) transparent'
+                }}
             >
-                {/* Main image with carousel */}
-                <div className="h-56 relative overflow-hidden cursor-pointer" onClick={() => setLightbox(imgIdx)}>
-                    <img
-                        src={imgs[imgIdx]}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+                {/* Close Button - Sticky at top right */}
+                <button
+                    onClick={onClose}
+                    className="absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-all backdrop-blur-md border border-white/10"
+                >
+                    <X className="h-6 w-6" />
+                </button>
 
-                    {/* Carousel controls */}
+                {/* ── TOP: Full Width Image Viewer ── */}
+                <div className="w-full relative bg-black aspect-video lg:aspect-[16/9]">
+                    <AnimatePresence mode="wait">
+                        <motion.img
+                            key={imgIdx}
+                            src={imgs[imgIdx]}
+                            alt={event.title}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full h-full object-contain sm:object-cover"
+                        />
+                    </AnimatePresence>
+
+                    {/* Navigation Overlays */}
                     {imgs.length > 1 && (
                         <>
                             <button
-                                onClick={(e) => { e.stopPropagation(); setImgIdx((i) => (i - 1 + imgs.length) % imgs.length); }}
-                                className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                onClick={prev}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition-all"
                             >
-                                <ChevronLeft className="h-4 w-4" />
+                                <ChevronLeft className="h-6 w-6" />
                             </button>
                             <button
-                                onClick={(e) => { e.stopPropagation(); setImgIdx((i) => (i + 1) % imgs.length); }}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                onClick={next}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition-all"
                             >
-                                <ChevronRight className="h-4 w-4" />
+                                <ChevronRight className="h-6 w-6" />
                             </button>
-                            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+                            
+                            {/* Dots */}
+                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
                                 {imgs.map((_, i) => (
-                                    <button
+                                    <div
                                         key={i}
-                                        onClick={(e) => { e.stopPropagation(); setImgIdx(i); }}
-                                        className={`h-1 rounded-full transition-all ${i === imgIdx ? 'w-4 bg-white' : 'w-1.5 bg-white/40'}`}
+                                        className={`h-1.5 rounded-full transition-all ${i === imgIdx ? 'w-8 bg-white' : 'w-1.5 bg-white/40'}`}
                                     />
                                 ))}
                             </div>
                         </>
                     )}
-
-                    {/* Badges */}
-                    <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs font-bold text-white bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(event.event_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </div>
-                    {imgs.length > 1 && (
-                        <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1">
-                            <ImageIcon className="h-3 w-3" /> {imgs.length}
-                        </div>
-                    )}
                 </div>
 
-                {/* Thumbnail strip for multiple images */}
-                {imgs.length > 1 && (
-                    <div className="flex gap-1.5 px-4 py-2 bg-slate-900/50">
-                        {imgs.map((src, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setImgIdx(i)}
-                                className={`h-10 w-14 rounded-lg overflow-hidden shrink-0 border-2 transition-colors ${i === imgIdx ? 'border-accent' : 'border-transparent'}`}
-                            >
-                                <img src={src} alt="" className="w-full h-full object-cover" />
-                            </button>
-                        ))}
+                {/* ── BOTTOM: Content Sections ── */}
+                <div className="p-8 lg:p-12 space-y-10">
+                    
+                    {/* Header Info */}
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-indigo-400 font-bold tracking-wider text-sm uppercase">
+                            <Calendar className="h-4 w-4" />
+                            {new Date(event.event_date).toLocaleDateString('en-IN', {
+                                day: 'numeric', month: 'long', year: 'numeric'
+                            })}
+                        </div>
+                        <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight">
+                            {event.title}
+                        </h2>
                     </div>
-                )}
 
-                <div className="p-5 flex flex-col flex-grow">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{event.title}</h3>
-                    <p className="text-slate-400 text-sm mb-4 leading-relaxed">{event.description}</p>
+                    <div className="h-px bg-white/10 w-full" />
 
-                    {/* Winners */}
+                    {/* Description */}
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                            <ImageIcon className="h-5 w-5 text-indigo-500" />
+                            Event Highlights
+                        </h3>
+                        <p className="text-slate-300 text-lg leading-relaxed whitespace-pre-wrap">
+                            {event.description}
+                        </p>
+                    </div>
+
+                    {/* Winners Section */}
                     {(winnersList || event.winners) && (
-                        <div className="mt-auto pt-4 border-t border-white/10">
-                            <span className="text-xs text-accent font-bold uppercase flex items-center gap-1 mb-2">
-                                <Trophy className="h-3 w-3" /> Winners
-                            </span>
+                        <div className="space-y-6 pt-6">
+                            <h3 className="text-xl font-bold text-yellow-500 flex items-center gap-2">
+                                <Trophy className="h-6 w-6" />
+                                Winners & Achievements
+                            </h3>
+                            
                             {winnersList ? (
-                                <ul className="space-y-1">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {winnersList.map((w, i) => (
-                                        <li key={i} className="text-sm text-slate-300 flex gap-2">
-                                            {w.position && <span className="text-accent font-bold shrink-0">{w.position}</span>}
-                                            <span>{w.name}</span>
-                                        </li>
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: i * 0.1 }}
+                                            className="flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10"
+                                        >
+                                            <div 
+                                                className="h-12 w-12 rounded-full flex items-center justify-center shrink-0"
+                                                style={{ background: `${medalColor(w.position)}20`, color: medalColor(w.position) }}
+                                            >
+                                                <Award className="h-6 w-6" />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold uppercase tracking-tighter opacity-50" style={{ color: medalColor(w.position) }}>
+                                                    {w.position || 'Rank'}
+                                                </div>
+                                                <div className="text-white font-bold text-lg">{w.name}</div>
+                                                {w.institution && (
+                                                    <div className="text-slate-400 text-sm">{w.institution}</div>
+                                                )}
+                                            </div>
+                                        </motion.div>
                                     ))}
-                                </ul>
+                                </div>
                             ) : (
-                                <p className="text-sm text-slate-300 whitespace-pre-wrap">{event.winners}</p>
+                                <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-slate-300 whitespace-pre-wrap text-lg">
+                                    {event.winners}
+                                </div>
                             )}
                         </div>
                     )}
                 </div>
             </motion.div>
-
-            {/* Lightbox */}
-            <AnimatePresence>
-                {lightbox !== null && (
-                    <Lightbox images={imgs} startIdx={lightbox} onClose={() => setLightbox(null)} />
-                )}
-            </AnimatePresence>
-        </>
+        </motion.div>
     );
 };
 
-/* ── Main Gallery Page ── */
+/* ═══════════════════════════════════════════════
+   Single event card (grid thumbnail)
+   ═══════════════════════════════════════════════ */
+const EventCard = ({ event, onClick }) => {
+    const [imgIdx, setImgIdx] = useState(0);
+    const imgs = event.image_urls?.length ? event.image_urls : [event.image_url].filter(Boolean);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            onClick={onClick}
+            className="rounded-2xl overflow-hidden border group shadow-xl flex flex-col cursor-pointer"
+            style={{ background: '#1e293b', borderColor: 'rgba(255,255,255,0.06)' }}
+            id={`event-card-${event.id}`}
+        >
+            {/* Main image */}
+            <div className="h-56 relative overflow-hidden">
+                <img
+                    src={imgs[imgIdx]}
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+
+                {/* Carousel arrows (hover only) */}
+                {imgs.length > 1 && (
+                    <>
+                        <button
+                            onClick={e => { e.stopPropagation(); setImgIdx(i => (i - 1 + imgs.length) % imgs.length); }}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button
+                            onClick={e => { e.stopPropagation(); setImgIdx(i => (i + 1) % imgs.length); }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        >
+                            <ChevronRight className="h-4 w-4" />
+                        </button>
+                    </>
+                )}
+
+                {/* Date badge */}
+                <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs font-bold text-white bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <Calendar className="h-3 w-3" />
+                    {new Date(event.event_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </div>
+
+                {/* Photo count */}
+                {imgs.length > 1 && (
+                    <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1">
+                        <ImageIcon className="h-3 w-3" /> {imgs.length}
+                    </div>
+                )}
+
+                {/* "View Details" overlay on hover */}
+                <div
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: 'rgba(79,70,229,0.35)', backdropFilter: 'blur(2px)' }}
+                >
+                    <span className="text-white font-bold text-sm px-4 py-2 rounded-full border border-white/50">
+                        View Details
+                    </span>
+                </div>
+            </div>
+
+            {/* Card body */}
+            <div className="p-5 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-indigo-300 transition-colors line-clamp-2">
+                    {event.title}
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                    {event.description}
+                </p>
+
+                {/* Winners preview */}
+                {(Array.isArray(event.winners_list) && event.winners_list.length > 0 || event.winners) && (
+                    <div className="mt-auto pt-3 border-t border-white/10 flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#FFD700' }}>
+                        <Trophy className="h-3 w-3" />
+                        {Array.isArray(event.winners_list) && event.winners_list.length > 0
+                            ? `${event.winners_list.length} winner${event.winners_list.length > 1 ? 's' : ''} listed`
+                            : 'Winners listed'}
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+};
+
+/* ═══════════════════════════════════════════════
+   Main Gallery Page
+   ═══════════════════════════════════════════════ */
 const Gallery = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedEvent, setSelectedEvent] = useState(null);
     const { isAdmin } = useAdmin();
 
     useEffect(() => {
         GalleryService.getAll()
-            .then((data) => setEvents(data || []))
+            .then(data => setEvents(data || []))
             .catch(console.error)
             .finally(() => setLoading(false));
     }, []);
@@ -229,6 +339,8 @@ const Gallery = () => {
                         className="text-xl text-slate-300 max-w-2xl mx-auto"
                     >
                         Relive the moments from our competitions, seminars, and legal events.
+                        <br />
+                        <span className="text-sm text-slate-400">Click any event to explore full details.</span>
                     </motion.p>
                     {isAdmin && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="mt-6">
@@ -243,7 +355,7 @@ const Gallery = () => {
                 </div>
             </div>
 
-            {/* Cards */}
+            {/* Cards Grid */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20 pb-24">
                 {loading ? (
                     <div className="flex justify-center py-24">
@@ -251,8 +363,12 @@ const Gallery = () => {
                     </div>
                 ) : events.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {events.map((event) => (
-                            <EventCard key={event.id} event={event} />
+                        {events.map(event => (
+                            <EventCard
+                                key={event.id}
+                                event={event}
+                                onClick={() => setSelectedEvent(event)}
+                            />
                         ))}
                     </div>
                 ) : (
@@ -263,6 +379,16 @@ const Gallery = () => {
                     </div>
                 )}
             </div>
+
+            {/* Event Detail Modal */}
+            <AnimatePresence>
+                {selectedEvent && (
+                    <EventModal
+                        event={selectedEvent}
+                        onClose={() => setSelectedEvent(null)}
+                    />
+                )}
+            </AnimatePresence>
         </div>
     );
 };

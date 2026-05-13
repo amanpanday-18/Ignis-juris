@@ -19,21 +19,36 @@ CREATE POLICY "Public profiles are viewable by everyone."
 ON public.gallery_events FOR SELECT
 USING ( true );
 
+-- Allow authenticated users to insert gallery events
+CREATE POLICY "Authenticated users can insert gallery events"
+ON public.gallery_events FOR INSERT
+TO authenticated
+WITH CHECK ( true );
+
+-- Allow authenticated users to delete gallery events
+CREATE POLICY "Authenticated users can delete gallery events"
+ON public.gallery_events FOR DELETE
+TO authenticated
+USING ( true );
+
 -- Create a storage bucket for gallery images
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('gallery-images', 'gallery-images', true)
 ON CONFLICT (id) DO NOTHING;
-
--- Enable RLS for the storage bucket
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 
 -- Allow public read access to the gallery-images bucket
 CREATE POLICY "Public Access to gallery images"
 ON storage.objects FOR SELECT
 USING ( bucket_id = 'gallery-images' );
 
--- NOTE: To fully secure inserts/updates, you should add policies restricted to authenticated admin users.
--- For example: 
--- CREATE POLICY "Admin can insert gallery events" ON public.gallery_events FOR INSERT TO authenticated USING (auth.email() = 'ignisjuris@gmail.com');
--- However, we handle admin validation securely in the frontend logic for now.
--- It's highly recommended to apply these strict policies in production!
+-- Allow authenticated users to upload images to gallery-images bucket
+CREATE POLICY "Authenticated users can upload gallery images"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK ( bucket_id = 'gallery-images' );
+
+-- Allow authenticated users to delete images from gallery-images bucket
+CREATE POLICY "Authenticated users can delete gallery images"
+ON storage.objects FOR DELETE
+TO authenticated
+USING ( bucket_id = 'gallery-images' );
