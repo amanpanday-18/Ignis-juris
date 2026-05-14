@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User, Mail, Camera, Save, LogOut, Loader, CheckCircle, AlertCircle, Clock, Award, ChevronRight, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { QuizService } from '../services/quiz-service';
 import { Helmet } from 'react-helmet-async';
@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet-async';
 const Profile = () => {
     const { user, loading, logout } = useAuth();
     const [name, setName] = useState(user?.user_metadata?.name || '');
+    const [avatarUrl, setAvatarUrl] = useState(user?.user_metadata?.avatar_url || null);
     const [isUpdating, setIsUpdating] = useState(false);
     const [message, setMessage] = useState(null);
 
@@ -105,7 +106,7 @@ const Profile = () => {
     };
 
     return (
-        <div className="w-full py-12 text-slate-100">
+        <div className="w-full py-12" style={{ background: '#f0ede8', minHeight: '100vh' }}>
             <Helmet>
                 <title>Profile - IGNIS JURIS</title>
             </Helmet>
@@ -113,28 +114,28 @@ const Profile = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-slate-800 rounded-2xl shadow-xl border border-white/5 overflow-hidden"
+                    className="bg-white rounded-3xl shadow-xl border border-[#e5e5e5] overflow-hidden"
                 >
                     {/* Header / Cover */}
-                    <div className="h-40 bg-gradient-to-r from-slate-900 to-slate-800 relative border-b border-white/5">
-                        <div className="absolute inset-0 bg-black/30"></div>
+                    <div className="h-40 bg-[#2d3a2e] relative">
+                        <div className="absolute inset-0 bg-black/10"></div>
                     </div>
 
-                    <div className="px-8 pb-8 relative">
+                    <div className="px-8 pb-10 relative">
                         {/* Avatar Section */}
-                        <div className="flex flex-col items-center -mt-32 mb-8">
+                        <div className="flex flex-col items-center -mt-32 mb-10">
                             <div className="relative group">
-                                <div className="h-64 w-64 rounded-full border-4 border-slate-800 shadow-2xl bg-slate-700 flex items-center justify-center overflow-hidden">
+                                <div className="h-64 w-64 rounded-full border-8 border-white shadow-2xl bg-[#f9fafb] flex items-center justify-center overflow-hidden">
                                     {avatarUrl ? (
                                         <img src={avatarUrl} alt="Profile" className="h-full w-full object-cover" />
                                     ) : (
-                                        <div className="h-full w-full bg-slate-700 flex items-center justify-center text-6xl font-bold text-slate-500">
+                                        <div className="h-full w-full bg-[#f9fafb] flex items-center justify-center text-6xl font-black text-[#2d3a2e]/20">
                                             {userInitial}
                                         </div>
                                     )}
                                 </div>
 
-                                <label className="absolute bottom-4 right-4 p-3 bg-accent hover:bg-accent/90 text-white rounded-full shadow-lg transition-all transform hover:scale-105 cursor-pointer border border-white/10" title="Change Photo">
+                                <label className="absolute bottom-4 right-4 p-4 bg-[#2d3a2e] hover:bg-[#1c1b1b] text-white rounded-full shadow-2xl transition-all transform hover:scale-105 cursor-pointer border-4 border-white" title="Change Photo">
                                     {uploading ? <Loader className="animate-spin h-5 w-5" /> : <Camera className="h-5 w-5" />}
                                     <input
                                         type="file"
@@ -145,52 +146,52 @@ const Profile = () => {
                                     />
                                 </label>
                             </div>
-                            <h2 className="text-3xl font-bold text-white mt-4">{name || 'User'}</h2>
-                            <p className="text-slate-400 font-medium">{user.email}</p>
+                            <h2 className="text-3xl font-black text-[#1c1b1b] mt-6 tracking-tight">{name || 'User'}</h2>
+                            <p className="text-[#474545] font-black uppercase tracking-widest text-xs mt-1">{user.email}</p>
                         </div>
 
                         {/* Form Section */}
                         <form onSubmit={handleUpdateProfile} className="max-w-lg mx-auto space-y-6">
                             {message && (
-                                <div className={`p-4 rounded-lg flex items-center ${message.type === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
-                                    {message.type === 'success' ? <CheckCircle className="h-5 w-5 mr-2" /> : <AlertCircle className="h-5 w-5 mr-2" />}
+                                <div className={`p-4 rounded-xl flex items-center text-xs font-black uppercase tracking-widest ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                                    {message.type === 'success' ? <CheckCircle className="h-4 w-4 mr-2" /> : <AlertCircle className="h-4 w-4 mr-2" />}
                                     {message.text}
                                 </div>
                             )}
 
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300 ml-1">Full Name</label>
+                                <label className="text-[10px] font-black text-[#474545] uppercase tracking-widest ml-1">Full Name</label>
                                 <div className="relative">
-                                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[#474545]" />
                                     <input
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-3 rounded-lg bg-black/20 border border-white/10 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all outline-none text-white placeholder-slate-500"
+                                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#f9fafb] border border-[#e5e5e5] focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent transition-all outline-none text-[#1c1b1b] font-bold placeholder-gray-400"
                                         placeholder="Enter your full name"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300 ml-1">Email Address</label>
-                                <div className="relative opacity-70">
-                                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                                <label className="text-[10px] font-black text-[#474545] uppercase tracking-widest ml-1">Email Address</label>
+                                <div className="relative opacity-60">
+                                    <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[#474545]" />
                                     <input
                                         type="email"
                                         value={user.email}
                                         disabled
-                                        className="w-full pl-10 pr-4 py-3 rounded-lg bg-black/40 border border-white/5 cursor-not-allowed text-slate-400"
+                                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-100 border border-[#e5e5e5] cursor-not-allowed text-[#474545] font-bold"
                                     />
                                 </div>
-                                <p className="text-xs text-slate-500 ml-1">Email cannot be changed.</p>
+                                <p className="text-[10px] text-[#474545]/60 font-black uppercase tracking-widest ml-1">Email cannot be changed.</p>
                             </div>
 
-                            <div className="pt-4 flex flex-col gap-4">
+                            <div className="pt-6 flex flex-col gap-4">
                                 <button
                                     type="submit"
                                     disabled={isUpdating}
-                                    className="w-full flex items-center justify-center py-3.5 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
+                                    className="w-full flex items-center justify-center py-4 bg-[#2d3a2e] hover:bg-[#1c1b1b] text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl hover:shadow-2xl transition-all disabled:opacity-70"
                                 >
                                     {isUpdating ? (
                                         <Loader className="animate-spin h-5 w-5 mr-2" />
@@ -203,7 +204,7 @@ const Profile = () => {
                                 <button
                                     type="button"
                                     onClick={logout}
-                                    className="w-full flex items-center justify-center py-3.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold rounded-xl transition-colors border border-red-500/20"
+                                    className="w-full flex items-center justify-center py-4 bg-white text-red-600 font-black uppercase tracking-widest text-xs rounded-2xl border border-red-100 hover:bg-red-50 transition-all shadow-sm"
                                 >
                                     <LogOut className="h-5 w-5 mr-2" />
                                     Sign Out
@@ -218,41 +219,41 @@ const Profile = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="mt-8 bg-slate-800 rounded-2xl shadow-xl border border-white/5 p-8"
+                    className="mt-8 bg-white rounded-3xl shadow-xl border border-[#e5e5e5] p-10"
                 >
-                    <div className="flex items-center mb-6">
-                        <Award className="h-6 w-6 text-accent mr-3" />
-                        <h3 className="text-xl font-bold text-white">Quiz Submissions</h3>
+                    <div className="flex items-center mb-8">
+                        <Award className="h-8 w-8 text-[#2d3a2e] mr-4" />
+                        <h3 className="text-2xl font-black text-[#1c1b1b] tracking-tight">Quiz Submissions</h3>
                     </div>
 
                     {loadingSubmissions ? (
-                        <div className="flex justify-center py-8">
-                            <Loader className="animate-spin h-8 w-8 text-accent" />
+                        <div className="flex justify-center py-12">
+                            <Loader className="animate-spin h-10 w-10 text-[#2d3a2e]" />
                         </div>
                     ) : submissions.length > 0 ? (
                         <div className="space-y-4">
                             {submissions.map((sub) => (
                                 <div
                                     key={sub.id}
-                                    className="bg-slate-900/50 rounded-xl p-4 border border-white/5 hover:border-accent/30 transition-all flex items-center justify-between group"
+                                    className="bg-[#f9fafb] rounded-2xl p-6 border border-[#e5e5e5] hover:border-[#2d3a2e]/30 transition-all flex items-center justify-between group shadow-sm hover:shadow-md"
                                 >
                                     <div className="flex-1">
-                                        <h4 className="font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                                        <h4 className="text-lg font-black text-[#1c1b1b] mb-2 group-hover:text-[#2d3a2e] transition-colors">
                                             {sub.quiz?.title || 'Unknown Quiz'}
                                         </h4>
-                                        <div className="flex items-center text-xs text-slate-500 space-x-4">
+                                        <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-[#474545] space-x-6">
                                             <span className="flex items-center">
-                                                <Clock className="h-3 w-3 mr-1" />
+                                                <Clock className="h-3.5 w-3.5 mr-2 text-[#2d3a2e]" />
                                                 {new Date(sub.submitted_at).toLocaleDateString()}
                                             </span>
                                             {sub.quiz?.answers_published ? (
-                                                <span className="flex items-center text-green-400 font-bold">
-                                                    <Award className="h-3 w-3 mr-1" />
+                                                <span className="flex items-center text-green-700 bg-green-50 px-2 py-0.5 rounded">
+                                                    <Award className="h-3.5 w-3.5 mr-2" />
                                                     Score: {sub.total_score}
                                                 </span>
                                             ) : (
-                                                <span className="flex items-center text-yellow-400">
-                                                    <FileText className="h-3 w-3 mr-1" />
+                                                <span className="flex items-center text-amber-700 bg-amber-50 px-2 py-0.5 rounded">
+                                                    <FileText className="h-3.5 w-3.5 mr-2" />
                                                     Awaiting Grading
                                                 </span>
                                             )}
@@ -262,7 +263,7 @@ const Profile = () => {
                                     {sub.quiz?.answers_published && (
                                         <button
                                             onClick={() => navigate(`/quizzes/${sub.quiz_id}/results`)}
-                                            className="p-2 bg-slate-800 text-slate-400 rounded-full hover:bg-primary hover:text-white transition-all transform group-hover:translate-x-1"
+                                            className="p-3 bg-white text-[#474545] border border-[#e5e5e5] rounded-full hover:bg-[#2d3a2e] hover:text-white transition-all transform group-hover:translate-x-1 shadow-sm"
                                         >
                                             <ChevronRight className="h-5 w-5" />
                                         </button>
@@ -271,11 +272,11 @@ const Profile = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-8 bg-slate-900/50 rounded-xl border border-dashed border-white/10">
-                            <p className="text-slate-500">No quiz submissions found.</p>
+                        <div className="text-center py-16 bg-[#f9fafb] rounded-3xl border border-dashed border-[#e5e5e5]">
+                            <p className="text-[#474545] text-lg font-bold">No quiz submissions found.</p>
                             <button
                                 onClick={() => navigate('/quizzes')}
-                                className="mt-4 text-accent hover:underline font-medium text-sm"
+                                className="mt-4 text-[#2d3a2e] font-black uppercase tracking-widest text-xs hover:text-[#1c1b1b] underline"
                             >
                                 Take your first quiz
                             </button>
