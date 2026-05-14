@@ -25,7 +25,7 @@ const Layout = () => {
                             <Link to="/" className="flex items-center gap-3">
                                 <img src={logoFooter} alt="Logo" className="w-10 h-10 rounded-full object-cover border border-white/10" />
                                 <span className="font-black text-xl text-white tracking-tight" style={{ fontFamily: "'Source Sans Pro', sans-serif" }}>
-                                    /IGNIS JURIS
+                                    IGNIS JURIS
                                 </span>
                             </Link>
                             <p className="text-sm leading-relaxed max-w-xs text-[#888]">

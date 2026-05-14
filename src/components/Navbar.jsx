@@ -81,7 +81,7 @@ const Navbar = () => {
                                 className="font-black text-2xl md:text-3xl text-[#1c1b1b] tracking-tighter group-hover:text-[#474545] transition-colors"
                                 style={{ fontFamily: "'Source Sans Pro', sans-serif" }}
                             >
-                                /IGNIS JURIS
+                                IGNIS JURIS
                             </span>
                         </Link>
 
