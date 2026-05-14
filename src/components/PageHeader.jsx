@@ -52,12 +52,12 @@ const PageHeader = ({ label, title, description, action, bgImage }) => {
                 <div className="flex items-end justify-between gap-6">
                     <div>
                         {/* Left branding row */}
-                        <div className="flex items-center gap-3 mb-5">
+                        <div className="flex items-center gap-5 mb-5">
                             <img
                                 src={logo}
                                 alt="Ignis Juris"
-                                className="h-10 w-10 rounded-full object-cover border-2"
-                                style={{ borderColor: 'rgba(212,175,55,0.5)' }}
+                                className="h-20 w-20 rounded-full object-cover border-2 shadow-2xl"
+                                style={{ borderColor: 'rgba(212,175,55,0.7)' }}
                             />
                             <div>
                                 <p

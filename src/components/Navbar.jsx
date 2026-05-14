@@ -71,14 +71,14 @@ const Navbar = () => {
                     <div className="flex items-center justify-between h-16 md:h-[68px]">
 
                         {/* Logo */}
-                        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+                        <Link to="/" className="flex items-center gap-4 group shrink-0 py-1">
                             <img
                                 src={logo}
                                 alt="IGNIS JURIS"
-                                className="h-8 w-8 rounded-full object-cover border border-[#e5e5e5]"
+                                className="h-14 w-14 rounded-full object-cover border-2 border-[#e5e5e5] shadow-md"
                             />
                             <span
-                                className="font-black text-lg md:text-xl text-[#1c1b1b] tracking-tight group-hover:text-[#474545] transition-colors"
+                                className="font-black text-2xl md:text-3xl text-[#1c1b1b] tracking-tighter group-hover:text-[#474545] transition-colors"
                                 style={{ fontFamily: "'Source Sans Pro', sans-serif" }}
                             >
                                 /IGNIS JURIS

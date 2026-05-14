@@ -48,11 +48,11 @@ const FeatureCard = ({ item }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
 
             {/* ── Top-left: IGNIS JURIS branding ── */}
-            <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
+            <div className="absolute top-3 left-3 flex items-center gap-3 z-10">
                 <img
                     src={logo}
                     alt="Ignis Juris"
-                    className="h-7 w-7 rounded-full object-cover border border-white/20"
+                    className="h-12 w-12 rounded-full object-cover border border-white/20 shadow-lg"
                 />
                 <div>
                     <p

@@ -9,6 +9,8 @@ import AddProductModal from '../components/AddProductModal';
 import ProductDetailModal from '../components/ProductDetailModal';
 import ShoppingCart from '../components/ShoppingCart';
 import { Helmet } from 'react-helmet-async';
+import PageHeader from '../components/PageHeader';
+import bgStore from '../assets/more_legal_store.png';
 
 const Store = () => {
     const [products, setProducts] = useState([]);
@@ -72,53 +74,38 @@ const Store = () => {
                 <meta name="description" content="Premium legal templates, e-books, and study materials." />
             </Helmet>
 
-            {/* Header Section */}
-            <div className="bg-gradient-to-r from-indigo-900 to-black text-white pt-12 pb-20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/50 via-slate-900 to-black opacity-90"></div>
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row justify-between items-end">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                    >
-                        <div className="flex items-center space-x-2 mb-2 text-accent font-medium uppercase tracking-wider text-sm">
-                            <BookOpen className="h-4 w-4" />
-                            <span>Digital Marketplace</span>
-                        </div>
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white">Legal Resources Store</h1>
-                        <p className="text-lg text-slate-300 max-w-xl">
-                            Expertly curated e-books, templates, and study guides to elevate your legal practice and knowledge.
-                        </p>
-                    </motion.div>
-
-                    {/* Cart Button */}
+            <PageHeader
+                label="/MARKETPLACE"
+                title="Legal Resources Store"
+                description="Expertly curated e-books, templates, and study guides to elevate your legal practice and knowledge."
+                bgImage={bgStore}
+                action={
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setIsCartOpen(true)}
-                        className="relative p-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all shadow-xl mt-6 md:mt-0"
+                        className="relative p-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all shadow-xl"
                     >
                         <CartIcon className="h-6 w-6" />
                         {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-md animate-bounce">
+                            <span className="absolute -top-1 -right-1 bg-[#2d3a2e] text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md animate-bounce">
                                 {cartCount}
                             </span>
                         )}
                     </motion.button>
-                </div>
-            </div>
+                }
+            />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 pb-20">
                 {/* Category Filter */}
                 <div className="flex flex-wrap justify-center gap-3 mb-12">
                     <button
                         onClick={() => setSelectedCategory('all')}
-                        className={`px-6 py-3 rounded-xl font-medium transition-all shadow-lg ${selectedCategory === 'all'
-                            ? 'bg-accent text-white transform -translate-y-1'
-                            : 'bg-slate-800 text-slate-400 border border-white/5 hover:bg-white/10'
+                        className={`px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wider transition-all shadow-md border ${selectedCategory === 'all'
+                            ? 'bg-[#2d3a2e] text-white border-[#2d3a2e] shadow-lg'
+                            : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
                             }`}
                     >
                         All Resources
@@ -127,9 +114,9 @@ const Store = () => {
                         <button
                             key={category.id}
                             onClick={() => setSelectedCategory(category.id)}
-                            className={`px-6 py-3 rounded-xl font-medium transition-all shadow-lg ${selectedCategory === category.id
-                                ? 'bg-accent text-white transform -translate-y-1'
-                                : 'bg-slate-800 text-slate-400 border border-white/5 hover:bg-white/10'
+                            className={`px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wider transition-all shadow-md border ${selectedCategory === category.id
+                                ? 'bg-[#2d3a2e] text-white border-[#2d3a2e] shadow-lg'
+                                : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
                                 }`}
                         >
                             {category.name}
@@ -150,10 +137,9 @@ const Store = () => {
                     </div>
                 )}
 
-                {/* Products Grid */}
                 {loading ? (
                     <div className="flex justify-center py-20">
-                        <Loader className="animate-spin h-12 w-12 text-accent" />
+                        <Loader className="animate-spin h-10 w-10 text-[#2d3a2e]" />
                     </div>
                 ) : filteredProducts.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -194,14 +180,14 @@ const Store = () => {
                                     </div>
 
                                     {product.featured && (
-                                        <div className="absolute bottom-4 left-4 bg-accent/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                        <div className="absolute bottom-4 left-4 bg-[#2d3a2e]/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
                                             Featured
                                         </div>
                                     )}
                                 </div>
 
                                 <div className="p-6 flex-1 flex flex-col">
-                                    <div className="text-xs font-bold text-accent uppercase tracking-wider mb-2">
+                                    <div className="text-xs font-bold text-[#2d3a2e] uppercase tracking-wider mb-2">
                                         {productCategories.find(c => c.id === product.category)?.name || product.category}
                                     </div>
                                     <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
@@ -223,7 +209,7 @@ const Store = () => {
                                             disabled={product.stock === 0}
                                             className={`p-3 rounded-xl transition-all shadow-md flex items-center justify-center ${product.stock === 0
                                                 ? 'bg-white/5 text-slate-500 cursor-not-allowed'
-                                                : 'bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:-translate-y-1'
+                                                : 'bg-[#2d3a2e] text-white hover:bg-[#2d3a2e]/90 hover:shadow-lg hover:-translate-y-1'
                                                 }`}
                                         >
                                             <CartIcon className="h-5 w-5" />
@@ -239,14 +225,14 @@ const Store = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="flex flex-col items-center justify-center py-20 bg-slate-800 rounded-2xl border border-dashed border-white/10">
-                        <div className="bg-white/5 p-6 rounded-full mb-4">
-                            <Search className="h-10 w-10 text-slate-500" />
+                    <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-[#e5e5e5] shadow-sm">
+                        <div className="bg-[#f3f3f3] p-6 rounded-full mb-4 text-[#2d3a2e]">
+                            <Search className="h-10 w-10" />
                         </div>
-                        <p className="text-slate-400 text-lg font-medium">No products found in this category.</p>
+                        <p className="text-[#474545] text-lg font-bold">No products found in this category.</p>
                         <button
                             onClick={() => setSelectedCategory('all')}
-                            className="mt-4 text-accent hover:underline font-medium"
+                            className="mt-4 text-[#2d3a2e] hover:underline font-bold"
                         >
                             View all resources
                         </button>
