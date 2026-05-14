@@ -94,26 +94,35 @@ const Education = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filters */}
-                <div className="flex flex-col md:flex-row gap-4 mb-8">
-                    <select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-full focus:ring-2 focus:ring-[#1c1b1b] focus:outline-none text-[#1c1b1b] text-sm font-semibold"
-                    >
-                        {educationCategories.map(cat => (
-                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                <div className="flex flex-col gap-6 mb-10">
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {educationCategories.map((cat) => (
+                            <button
+                                key={cat.id}
+                                onClick={() => setSelectedCategory(cat.id)}
+                                className={`px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md border ${selectedCategory === cat.id
+                                    ? 'bg-[#2d3a2e] text-white border-[#2d3a2e] shadow-lg'
+                                    : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
+                                    }`}
+                            >
+                                {cat.name}
+                            </button>
                         ))}
-                    </select>
-
-                    <select
-                        value={selectedType}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                        className="px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-full focus:ring-2 focus:ring-[#1c1b1b] focus:outline-none text-[#1c1b1b] text-sm font-semibold"
-                    >
-                        {resourceTypes.map(type => (
-                            <option key={type.id} value={type.id}>{type.name}</option>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {resourceTypes.map((type) => (
+                            <button
+                                key={type.id}
+                                onClick={() => setSelectedType(type.id)}
+                                className={`px-5 py-1.5 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all shadow-sm border ${selectedType === type.id
+                                    ? 'bg-[#474545] text-white border-[#474545] shadow-md'
+                                    : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
+                                    }`}
+                            >
+                                {type.name}
+                            </button>
                         ))}
-                    </select>
+                    </div>
                 </div>
 
                 {/* Resources Grid */}

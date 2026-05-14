@@ -81,16 +81,19 @@ const Internships = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filter */}
-                <div className="flex mb-8">
-                    <select
-                        value={selectedType}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                        className="px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-full focus:ring-2 focus:ring-[#1c1b1b] focus:outline-none text-[#1c1b1b] text-sm font-semibold"
-                    >
-                        {internshipTypes.map(type => (
-                            <option key={type.id} value={type.id}>{type.name}</option>
-                        ))}
-                    </select>
+                <div className="flex flex-wrap justify-center gap-3 mb-10">
+                    {internshipTypes.map((type) => (
+                        <button
+                            key={type.id}
+                            onClick={() => setSelectedType(type.id)}
+                            className={`px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wider transition-all shadow-md border ${selectedType === type.id
+                                ? 'bg-[#2d3a2e] text-white border-[#2d3a2e] shadow-lg'
+                                : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
+                                }`}
+                        >
+                            {type.name}
+                        </button>
+                    ))}
                 </div>
 
                 {loading ? (
@@ -105,37 +108,37 @@ const Internships = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-white rounded-2xl shadow-card hover:shadow-card-hover border border-[#e5e5e5] p-6 transition-all duration-300 relative group hover:-translate-y-1"
+                                className="bg-white rounded-2xl shadow-sm border border-[#e5e5e5] p-8 hover:shadow-xl transition-all relative group hover:border-[#2d3a2e]/30"
                             >
                                 {/* Admin Delete Button */}
                                 {isAdmin && (
                                     <button
                                         onClick={() => handleDeleteInternship(internship.id)}
-                                        className="absolute top-4 right-4 p-2 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="absolute top-6 right-6 p-2 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-600 hover:text-white shadow-sm transition-all opacity-0 group-hover:opacity-100"
                                         title="Delete Listing"
                                     >
-                                        <Trash2 className="h-5 w-5" />
+                                        <Trash2 className="h-4 w-4" />
                                     </button>
                                 )}
 
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                     <div className="flex-1">
-                                        <div className="flex items-center mb-2">
-                                            <h3 className="text-xl font-bold text-[#1c1b1b] mr-3">{internship.title}</h3>
-                                            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border border-[#e5e5e5] text-[#474545] bg-[#f3f3f3]">
+                                        <div className="flex flex-wrap items-center gap-3 mb-4">
+                                            <h3 className="text-2xl font-black text-[#1c1b1b] tracking-tight">{internship.title}</h3>
+                                            <span className="px-3 py-1 bg-[#f9fafb] text-[#474545] border border-[#e5e5e5] rounded-full text-[10px] font-black uppercase tracking-widest">
                                                 {internship.type}
                                             </span>
                                         </div>
-                                        <p className="text-base text-[#1c1b1b] font-semibold mb-2">{internship.organization}</p>
+                                        <p className="text-lg text-[#1c1b1b] font-bold mb-4">{internship.organization}</p>
 
-                                        <div className="flex flex-wrap gap-4 text-sm text-[#474545] mb-4">
-                                            <div className="flex items-center"><MapPin className="h-4 w-4 mr-1" />{internship.location}</div>
-                                            <div className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{internship.stipend || 'Unpaid'}</div>
-                                            <div className="flex items-center"><Clock className="h-4 w-4 mr-1" />{internship.duration}</div>
-                                            <div className="flex items-center"><Calendar className="h-4 w-4 mr-1 text-[#2d3a2e]" />Deadline: <span className="text-[#1c1b1b] ml-1 font-semibold">{formatDate(internship.deadline)}</span></div>
+                                        <div className="flex flex-wrap gap-6 text-xs font-bold text-[#474545] mb-6">
+                                            <div className="flex items-center"><MapPin className="h-4 w-4 mr-1.5 text-[#2d3a2e]" />{internship.location.toUpperCase()}</div>
+                                            <div className="flex items-center"><IndianRupee className="h-4 w-4 mr-1.5 text-[#2d3a2e]" />{internship.stipend ? internship.stipend.toUpperCase() : 'UNPAID'}</div>
+                                            <div className="flex items-center"><Clock className="h-4 w-4 mr-1.5 text-[#2d3a2e]" />{internship.duration.toUpperCase()}</div>
+                                            <div className="flex items-center"><Calendar className="h-4 w-4 mr-1.5 text-[#2d3a2e]" />DEADLINE: <span className="text-red-600 ml-1.5 font-black uppercase tracking-widest">{formatDate(internship.deadline)}</span></div>
                                         </div>
 
-                                        <p className="text-[#474545] text-sm line-clamp-2 mb-4 md:mb-0">
+                                        <p className="text-[#474545] text-sm line-clamp-2 leading-relaxed mb-6 md:mb-0">
                                             {internship.description}
                                         </p>
                                     </div>
@@ -145,7 +148,7 @@ const Internships = () => {
                                             href={internship.apply_link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center w-full md:w-auto px-6 py-2.5 bg-[#1c1b1b] text-white font-bold rounded-full hover:bg-[#474545] transition-all text-sm"
+                                            className="flex items-center justify-center w-full md:w-auto px-8 py-4 bg-[#2d3a2e] text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-[#1c1b1b] transition-all shadow-lg"
                                         >
                                             Apply Now
                                             <ExternalLink className="h-4 w-4 ml-2" />
@@ -156,11 +159,12 @@ const Internships = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-2xl border border-[#e5e5e5]">
-                        <Briefcase className="h-12 w-12 text-[#474545] mx-auto mb-3" />
-                        <p className="text-[#474545] text-lg">No internships found matching your criteria.</p>
+                    <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#e5e5e5] shadow-sm">
+                        <Briefcase className="h-16 w-16 text-[#2d3a2e]/20 mx-auto mb-6" />
+                        <p className="text-[#1c1b1b] text-xl font-black uppercase tracking-tighter mb-2">No internships found</p>
+                        <p className="text-[#474545] text-sm">New opportunities are added weekly. Check back soon.</p>
                         {isAdmin && (
-                            <button onClick={() => setIsAddModalOpen(true)} className="mt-4 text-[#1c1b1b] font-bold hover:text-[#474545] underline">
+                            <button onClick={() => setIsAddModalOpen(true)} className="mt-6 text-[#2d3a2e] font-black uppercase tracking-widest text-xs hover:text-[#1c1b1b] underline">
                                 Post the first internship
                             </button>
                         )}

@@ -58,25 +58,25 @@ const AddNewsModal = ({ isOpen, onClose, onAdd }) => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-slate-900 rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden my-8 border border-white/10"
+                    className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden my-8 border border-[#e5e5e5]"
                 >
-                    <div className="flex justify-between items-center p-6 border-b border-white/10">
-                        <h2 className="text-xl font-bold text-white">Add News Article</h2>
-                        <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
-                            <X className="h-6 w-6" />
+                    <div className="flex justify-between items-center p-6 border-b border-[#e5e5e5]">
+                        <h2 className="text-xl font-black text-[#1c1b1b] tracking-tight">Add News Article</h2>
+                        <button onClick={onClose} className="p-2 rounded-full bg-[#f9fafb] text-[#474545] hover:text-[#1c1b1b] border border-[#e5e5e5] transition-all">
+                            <X className="h-5 w-5" />
                         </button>
                     </div>
 
                     <form onSubmit={handleSubmit} className="p-6 space-y-4">
                         {/* Image Upload */}
                         <div className="flex justify-center mb-6">
-                            <div className="relative w-full h-48 bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden border-2 border-dashed border-white/10 hover:border-accent transition-colors">
+                            <div className="relative w-full h-48 bg-[#f9fafb] rounded-2xl flex items-center justify-center overflow-hidden border-2 border-dashed border-[#e5e5e5] hover:border-[#2d3a2e] transition-all">
                                 {imageFile ? (
                                     <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="text-center text-slate-500">
-                                        <Upload className="h-10 w-10 mx-auto mb-2 text-slate-400" />
-                                        <span className="text-sm">Upload Header Image</span>
+                                    <div className="text-center text-[#474545]">
+                                        <Upload className="h-10 w-10 mx-auto mb-2 text-[#474545]" />
+                                        <span className="text-xs font-black uppercase tracking-widest">Upload Header Image</span>
                                     </div>
                                 )}
                                 <input
@@ -89,26 +89,26 @@ const AddNewsModal = ({ isOpen, onClose, onAdd }) => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-1">Title</label>
+                            <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Title</label>
                             <input
                                 type="text"
                                 name="title"
                                 required
                                 value={formData.title}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-slate-500"
+                                className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                 placeholder="Article Headline"
                             />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-300 mb-1">Category</label>
+                                <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Category</label>
                                 <select
                                     name="category"
                                     value={formData.category}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
+                                    className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] font-medium"
                                 >
                                     {newsCategories.filter(c => c.id !== 'all').map(category => (
                                         <option key={category.id} value={category.id}>{category.name}</option>
@@ -116,57 +116,57 @@ const AddNewsModal = ({ isOpen, onClose, onAdd }) => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-300 mb-1">Author</label>
+                                <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Author</label>
                                 <input
                                     type="text"
                                     name="author"
                                     required
                                     value={formData.author}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-slate-500"
+                                    className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                     placeholder="Author Name"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-1">Excerpt (Short Summary)</label>
+                            <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Excerpt (Short Summary)</label>
                             <textarea
                                 name="excerpt"
                                 required
                                 rows="2"
                                 value={formData.excerpt}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-slate-500"
+                                className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium resize-none"
                                 placeholder="Brief summary for the card view..."
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-1">Full Content</label>
+                            <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Full Content</label>
                             <textarea
                                 name="content"
                                 required
                                 rows="8"
                                 value={formData.content}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-slate-500"
+                                className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium resize-none"
                                 placeholder="Full article content..."
                             />
                         </div>
 
-                        <div className="pt-4 flex space-x-4">
+                        <div className="pt-6 flex gap-4">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg transition-colors border border-white/10"
+                                className="flex-1 py-3 bg-white text-[#474545] font-bold rounded-xl hover:bg-[#f9fafb] transition-all border border-[#e5e5e5] shadow-sm"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex-1 flex items-center justify-center py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                                className="flex-1 flex items-center justify-center py-3 bg-[#2d3a2e] hover:bg-[#1c1b1b] text-white font-black rounded-xl transition-all shadow-lg disabled:opacity-50"
                             >
                                 {loading ? (
                                     <>

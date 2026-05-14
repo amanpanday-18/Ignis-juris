@@ -91,46 +91,46 @@ const Scholarships = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-slate-800 rounded-xl shadow-md border border-white/5 p-6 hover:shadow-lg transition-all relative group flex flex-col hover:border-accent/30"
+                                className="bg-white rounded-2xl shadow-sm border border-[#e5e5e5] p-8 hover:shadow-xl transition-all relative group flex flex-col hover:border-[#2d3a2e]/30"
                             >
                                 {/* Admin Delete Button */}
                                 {isAdmin && (
                                     <button
                                         onClick={() => handleDeleteScholarship(scholarship.id)}
-                                        className="absolute top-4 right-4 p-2 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="absolute top-6 right-6 p-2 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-600 hover:text-white shadow-sm transition-all opacity-0 group-hover:opacity-100"
                                         title="Delete Scholarship"
                                     >
-                                        <Trash2 className="h-5 w-5" />
+                                        <Trash2 className="h-4 w-4" />
                                     </button>
                                 )}
 
-                                <div className="flex items-start justify-between mb-4">
-                                    <div>
-                                        <span className="text-xs font-bold text-accent uppercase tracking-wider">
+                                <div className="flex items-start justify-between gap-4 mb-6">
+                                    <div className="flex-1">
+                                        <span className="text-[10px] font-black text-[#2d3a2e] uppercase tracking-widest bg-[#2d3a2e]/5 px-2 py-0.5 rounded">
                                             {scholarship.provider}
                                         </span>
-                                        <h3 className="text-xl font-bold text-white mt-1">{scholarship.title}</h3>
+                                        <h3 className="text-2xl font-black text-[#1c1b1b] mt-2 leading-tight tracking-tight">{scholarship.title}</h3>
                                     </div>
-                                    <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-lg text-sm font-bold flex items-center">
-                                        <IndianRupee className="h-4 w-4 mr-1" />
+                                    <div className="bg-green-50 text-green-700 border border-green-100 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest flex items-center shadow-sm">
+                                        <IndianRupee className="h-3.5 w-3.5 mr-1" />
                                         {scholarship.amount}
                                     </div>
                                 </div>
 
-                                <div className="space-y-3 mb-6 text-sm text-slate-400">
-                                    <div className="flex items-center">
-                                        <Calendar className="h-4 w-4 mr-2 text-[#2d3a2e]" />
-                                        Deadline: <span className="text-red-500 ml-1 font-medium">{formatDate(scholarship.deadline)}</span>
+                                <div className="space-y-4 mb-6">
+                                    <div className="flex items-center text-xs font-bold text-[#474545]">
+                                        <Calendar className="h-4 w-4 mr-2.5 text-[#2d3a2e]" />
+                                        DEADLINE: <span className="text-red-600 ml-1.5 font-black uppercase tracking-widest">{formatDate(scholarship.deadline)}</span>
                                     </div>
                                     {scholarship.eligibility && (
-                                        <div className="flex items-start">
-                                            <UserCheck className="h-4 w-4 mr-2 text-slate-500 mt-0.5" />
-                                            <span>Eligibility: {scholarship.eligibility}</span>
+                                        <div className="flex items-start text-xs font-bold text-[#474545]">
+                                            <UserCheck className="h-4 w-4 mr-2.5 text-[#2d3a2e] mt-0.5" />
+                                            <span>ELIGIBILITY: {scholarship.eligibility.toUpperCase()}</span>
                                         </div>
                                     )}
                                 </div>
 
-                                <p className="text-slate-400 text-sm mb-6 line-clamp-3 flex-1">
+                                <p className="text-[#474545] text-sm mb-8 line-clamp-3 flex-1 leading-relaxed">
                                     {scholarship.description}
                                 </p>
 
@@ -138,7 +138,7 @@ const Scholarships = () => {
                                     href={scholarship.apply_link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center justify-center w-full px-4 py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors mt-auto"
+                                    className="flex items-center justify-center w-full px-8 py-4 bg-[#2d3a2e] text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-[#1c1b1b] transition-all shadow-lg mt-auto"
                                 >
                                     Apply Now
                                     <ExternalLink className="h-4 w-4 ml-2" />
@@ -147,9 +147,10 @@ const Scholarships = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
-                        <GraduationCap className="h-12 w-12 text-[#2d3a2e] mx-auto mb-3" />
-                        <p className="text-slate-400 text-lg">No active scholarships found.</p>
+                    <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#e5e5e5] shadow-sm">
+                        <GraduationCap className="h-16 w-16 text-[#2d3a2e]/20 mx-auto mb-6" />
+                        <p className="text-[#1c1b1b] text-xl font-black uppercase tracking-tighter mb-2">No active scholarships found</p>
+                        <p className="text-[#474545] text-sm">New opportunities are added weekly. Check back soon.</p>
                         {isAdmin && (
                             <button
                                 onClick={() => setIsAddModalOpen(true)}

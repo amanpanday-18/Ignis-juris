@@ -98,10 +98,10 @@ const Quizzes = () => {
 
     const getDifficultyColor = (difficulty) => {
         switch (difficulty) {
-            case 'easy': return 'bg-green-500/20 text-green-400';
-            case 'medium': return 'bg-yellow-500/20 text-yellow-400';
-            case 'hard': return 'bg-red-500/20 text-red-400';
-            default: return 'bg-slate-100/10 text-slate-300';
+            case 'easy': return 'bg-green-100 text-green-700 border border-green-200';
+            case 'medium': return 'bg-amber-100 text-amber-700 border border-amber-200';
+            case 'hard': return 'bg-red-100 text-red-700 border border-red-200';
+            default: return 'bg-gray-100 text-gray-700 border border-gray-200';
         }
     };
 
@@ -129,32 +129,34 @@ const Quizzes = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Filters */}
-                <div className="bg-slate-800 rounded-xl shadow-lg p-6 mb-8 border border-white/5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-2">Filter by Category</label>
-                            <select
-                                value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white"
+                <div className="flex flex-col gap-6 mb-12">
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {quizCategories.map((cat) => (
+                            <button
+                                key={cat.id}
+                                onClick={() => setSelectedCategory(cat.id)}
+                                className={`px-6 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md border ${selectedCategory === cat.id
+                                    ? 'bg-[#2d3a2e] text-white border-[#2d3a2e] shadow-lg'
+                                    : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
+                                    }`}
                             >
-                                {quizCategories.map(cat => (
-                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-2">Filter by Difficulty</label>
-                            <select
-                                value={selectedDifficulty}
-                                onChange={(e) => setSelectedDifficulty(e.target.value)}
-                                className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent text-white"
+                                {cat.name}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {difficultyLevels.map((diff) => (
+                            <button
+                                key={diff.id}
+                                onClick={() => setSelectedDifficulty(diff.id)}
+                                className={`px-5 py-1.5 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all shadow-sm border ${selectedDifficulty === diff.id
+                                    ? 'bg-[#474545] text-white border-[#474545] shadow-md'
+                                    : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
+                                    }`}
                             >
-                                {difficultyLevels.map(diff => (
-                                    <option key={diff.id} value={diff.id}>{diff.name}</option>
-                                ))}
-                            </select>
-                        </div>
+                                {diff.name}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
@@ -171,7 +173,7 @@ const Quizzes = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="bg-slate-800 rounded-xl shadow-lg border border-white/5 overflow-hidden hover:shadow-xl transition-all relative group hover:border-accent/30"
+                                className="bg-white rounded-2xl shadow-sm border border-[#e5e5e5] overflow-hidden hover:shadow-xl transition-all relative group hover:border-[#2d3a2e]/30"
                             >
                                 {/* Admin Controls */}
                                 {isAdmin && (
@@ -181,7 +183,7 @@ const Quizzes = () => {
                                                 e.stopPropagation();
                                                 handleViewSubmissions(quiz.id);
                                             }}
-                                            className="p-2 bg-primary-light/80 text-white rounded-full hover:bg-primary"
+                                            className="p-2 bg-[#f9fafb] text-[#474545] border border-[#e5e5e5] rounded-full hover:text-[#1c1b1b] shadow-sm transition-all"
                                             title="View Submissions"
                                         >
                                             <Users className="h-4 w-4" />
@@ -191,7 +193,7 @@ const Quizzes = () => {
                                                 e.stopPropagation();
                                                 handleDeleteQuiz(quiz.id);
                                             }}
-                                            className="p-2 bg-red-500/80 text-white rounded-full hover:bg-red-600"
+                                            className="p-2 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-600 hover:text-white shadow-sm transition-all"
                                             title="Delete Quiz"
                                         >
                                             <Trash2 className="h-4 w-4" />
@@ -201,27 +203,27 @@ const Quizzes = () => {
 
                                 <div className="p-6">
                                     <div className="flex justify-between items-start mb-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${getDifficultyColor(quiz.difficulty)}`}>
+                                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${getDifficultyColor(quiz.difficulty)}`}>
                                             {quiz.difficulty}
                                         </span>
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                        <span className="text-[10px] font-black text-[#474545] uppercase tracking-widest">
                                             {quizCategories.find(c => c.id === quiz.category)?.name || quiz.category}
                                         </span>
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{quiz.title}</h3>
-                                    <p className="text-slate-400 text-sm mb-4 line-clamp-2">{quiz.description}</p>
+                                    <h3 className="text-xl font-black text-[#1c1b1b] mb-2 group-hover:text-[#2d3a2e] transition-colors">{quiz.title}</h3>
+                                    <p className="text-[#474545] text-sm mb-4 line-clamp-2 leading-relaxed">{quiz.description}</p>
 
                                     {/* Admin: Answers Published Status */}
                                     {isAdmin && (
                                         <div className="mb-3">
                                             {quiz.answers_published ? (
-                                                <span className="inline-flex items-center px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs font-bold">
+                                                <span className="inline-flex items-center px-2 py-1 bg-green-50 text-green-700 border border-green-100 rounded text-[10px] font-black uppercase tracking-widest">
                                                     <Eye className="h-3 w-3 mr-1" />
                                                     Answers Published
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs font-bold">
+                                                <span className="inline-flex items-center px-2 py-1 bg-amber-50 text-amber-700 border border-amber-100 rounded text-[10px] font-black uppercase tracking-widest">
                                                     <EyeOff className="h-3 w-3 mr-1" />
                                                     Answers Hidden
                                                 </span>
@@ -229,14 +231,14 @@ const Quizzes = () => {
                                         </div>
                                     )}
 
-                                    <div className="flex items-center justify-between text-sm text-slate-500 mb-6">
+                                    <div className="flex items-center justify-between text-xs font-bold text-[#474545] mb-6">
                                         <div className="flex items-center">
-                                            <Clock className="h-4 w-4 mr-1 text-[#2d3a2e]" />
-                                            {quiz.time_limit} mins
+                                            <Clock className="h-4 w-4 mr-1.5 text-[#2d3a2e]" />
+                                            {quiz.time_limit} MINS
                                         </div>
                                         <div className="flex items-center">
-                                            <BookOpen className="h-4 w-4 mr-1 text-[#2d3a2e]" />
-                                            Pass: {quiz.passing_score}%
+                                            <BookOpen className="h-4 w-4 mr-1.5 text-[#2d3a2e]" />
+                                            PASS: {quiz.passing_score}%
                                         </div>
                                     </div>
 
@@ -267,9 +269,9 @@ const Quizzes = () => {
                                             )}
                                             <button
                                                 onClick={() => navigate(`/quizzes/${quiz.id}`)}
-                                                className="w-full flex items-center justify-center py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors"
+                                                className="w-full flex items-center justify-center py-3 bg-[#2d3a2e] text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-[#1c1b1b] transition-all shadow-md"
                                             >
-                                                <PlayCircle className="h-5 w-5 mr-2" />
+                                                <PlayCircle className="h-4 w-4 mr-2" />
                                                 Preview Quiz
                                             </button>
                                         </div>
@@ -299,7 +301,7 @@ const Quizzes = () => {
                                             return (
                                                 <button
                                                     onClick={() => navigate(`/quizzes/${quiz.id}`)}
-                                                    className="w-full flex items-center justify-center py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg"
+                                                    className="w-full flex items-center justify-center py-4 bg-[#2d3a2e] text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-[#1c1b1b] transition-all shadow-lg"
                                                 >
                                                     <PlayCircle className="h-5 w-5 mr-2" />
                                                     Start Quiz
@@ -312,8 +314,9 @@ const Quizzes = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-slate-800 rounded-xl border border-dashed border-white/10">
-                        <p className="text-slate-500 text-lg">No quizzes found matching your criteria.</p>
+                    <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#e5e5e5] shadow-sm">
+                        <p className="text-[#474545] text-lg font-bold">No quizzes found matching your criteria.</p>
+                        <p className="text-[#474545]/60 text-sm mt-1">Try adjusting your filters or check back later.</p>
                     </div>
                 )}
             </div>

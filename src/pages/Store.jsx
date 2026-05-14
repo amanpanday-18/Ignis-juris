@@ -101,15 +101,6 @@ const Store = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 pb-20">
                 {/* Category Filter */}
                 <div className="flex flex-wrap justify-center gap-3 mb-12">
-                    <button
-                        onClick={() => setSelectedCategory('all')}
-                        className={`px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wider transition-all shadow-md border ${selectedCategory === 'all'
-                            ? 'bg-[#2d3a2e] text-white border-[#2d3a2e] shadow-lg'
-                            : 'bg-white text-[#474545] border-[#e5e5e5] hover:bg-[#f3f3f3]'
-                            }`}
-                    >
-                        All Resources
-                    </button>
                     {productCategories.map((category) => (
                         <button
                             key={category.id}

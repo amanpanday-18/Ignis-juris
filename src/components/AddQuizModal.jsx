@@ -118,14 +118,14 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-slate-900 rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden my-8 flex flex-col max-h-[90vh] border border-white/10"
+                className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden my-8 flex flex-col max-h-[90vh] border border-[#e5e5e5]"
             >
-                <div className="flex justify-between items-center p-6 border-b border-white/10">
-                    <h2 className="text-xl font-bold text-white">
+                <div className="flex justify-between items-center p-6 border-b border-[#e5e5e5]">
+                    <h2 className="text-xl font-black text-[#1c1b1b] tracking-tight">
                         {step === 1 ? 'Create New Quiz' : 'Add Questions'}
                     </h2>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white">
-                        <X className="h-6 w-6" />
+                    <button onClick={onClose} className="p-2 rounded-full bg-[#f9fafb] text-[#474545] hover:text-[#1c1b1b] border border-[#e5e5e5] transition-all">
+                        <X className="h-5 w-5" />
                     </button>
                 </div>
 
@@ -133,38 +133,38 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                     {step === 1 ? (
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-1">Quiz Title *</label>
+                                <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Quiz Title *</label>
                                 <input
                                     type="text"
                                     name="title"
                                     required
                                     value={quizData.title}
                                     onChange={handleQuizChange}
-                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                    className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                     placeholder="e.g., Constitutional Law Basics"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                                <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Description</label>
                                 <textarea
                                     name="description"
                                     rows="3"
                                     value={quizData.description}
                                     onChange={handleQuizChange}
-                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                    className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium resize-none"
                                     placeholder="Brief description of the quiz..."
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Category *</label>
+                                    <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Category *</label>
                                     <select
                                         name="category"
                                         value={quizData.category}
                                         onChange={handleQuizChange}
-                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
+                                        className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] font-medium"
                                     >
                                         {quizCategories.filter(c => c.id !== 'all').map(cat => (
                                             <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -172,12 +172,12 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Difficulty *</label>
+                                    <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Difficulty *</label>
                                     <select
                                         name="difficulty"
                                         value={quizData.difficulty}
                                         onChange={handleQuizChange}
-                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
+                                        className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] font-medium"
                                     >
                                         {difficultyLevels.filter(d => d.id !== 'all').map(diff => (
                                             <option key={diff.id} value={diff.id}>{diff.name}</option>
@@ -188,18 +188,18 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Time Limit (minutes)</label>
+                                    <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Time Limit (min)</label>
                                     <input
                                         type="number"
                                         name="timeLimit"
                                         min="1"
                                         value={quizData.timeLimit}
                                         onChange={handleQuizChange}
-                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                        className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Passing Score (%)</label>
+                                    <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Passing Score (%)</label>
                                     <input
                                         type="number"
                                         name="passingScore"
@@ -207,21 +207,21 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                         max="100"
                                         value={quizData.passingScore}
                                         onChange={handleQuizChange}
-                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                        className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-1">Submission Deadline (Optional)</label>
+                                <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Submission Deadline (Optional)</label>
                                 <input
                                     type="datetime-local"
                                     name="submissionDeadline"
                                     value={quizData.submissionDeadline || ''}
                                     onChange={handleQuizChange}
-                                    className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                    className="w-full px-4 py-2.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                 />
-                                <p className="text-xs text-gray-400 mt-1">Students won't be able to submit after this time</p>
+                                <p className="text-[10px] text-[#474545] font-black uppercase tracking-widest mt-2">Students won't be able to submit after this time</p>
                             </div>
 
                             <div className="flex items-center">
@@ -231,9 +231,9 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                     id="published"
                                     checked={quizData.published}
                                     onChange={handleQuizChange}
-                                    className="h-4 w-4 text-accent focus:ring-accent border-gray-600 rounded bg-slate-800"
+                                    className="h-4 w-4 text-[#2d3a2e] focus:ring-[#2d3a2e] border-[#e5e5e5] rounded bg-[#f9fafb]"
                                 />
-                                <label htmlFor="published" className="ml-2 text-sm text-gray-300">
+                                <label htmlFor="published" className="ml-2 text-xs font-black text-[#474545] uppercase tracking-widest">
                                     Publish immediately
                                 </label>
                             </div>
@@ -243,12 +243,12 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                             {/* Added Questions List */}
                             {questions.length > 0 && (
                                 <div className="mb-6">
-                                    <h3 className="text-sm font-bold text-gray-300 mb-2">Added Questions ({questions.length})</h3>
-                                    <div className="space-y-2 max-h-40 overflow-y-auto border border-white/10 rounded-lg p-2 custom-scrollbar">
+                                    <h3 className="text-[10px] font-black text-[#474545] uppercase tracking-widest mb-4">Added Questions ({questions.length})</h3>
+                                    <div className="space-y-2 max-h-40 overflow-y-auto border border-[#e5e5e5] rounded-xl p-3 bg-[#f9fafb]">
                                         {questions.map((q, idx) => (
-                                            <div key={idx} className="flex justify-between items-center bg-slate-800 p-2 rounded text-sm text-gray-200">
-                                                <span className="truncate flex-1 font-medium">{idx + 1}. {q.questionText}</span>
-                                                <button onClick={() => removeQuestion(idx)} className="text-red-500 hover:text-red-400 ml-2">
+                                            <div key={idx} className="flex justify-between items-center bg-white border border-[#e5e5e5] p-3 rounded-lg text-sm text-[#1c1b1b] shadow-sm">
+                                                <span className="truncate flex-1 font-bold">{idx + 1}. {q.questionText}</span>
+                                                <button onClick={() => removeQuestion(idx)} className="text-red-500 hover:text-red-600 ml-2 p-1 rounded-full hover:bg-red-50 transition-all">
                                                     <Trash2 className="h-4 w-4" />
                                                 </button>
                                             </div>
@@ -258,29 +258,29 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                             )}
 
                             {/* Add New Question Form */}
-                            <div className="bg-slate-800/50 p-4 rounded-lg border border-white/10">
-                                <h3 className="text-md font-bold text-white mb-4">Add New Question</h3>
+                            <div className="bg-[#f9fafb] p-6 rounded-2xl border border-[#e5e5e5] shadow-sm">
+                                <h3 className="text-sm font-black text-[#1c1b1b] uppercase tracking-widest mb-6">Add New Question</h3>
 
-                                <div className="mb-3">
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Question Text</label>
+                                <div className="mb-4">
+                                    <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Question Text</label>
                                     <textarea
                                         name="questionText"
                                         rows="2"
                                         value={currentQuestion.questionText}
                                         onChange={handleQuestionChange}
-                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                        className="w-full px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium resize-none"
                                         placeholder="Enter question..."
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 mb-3">
+                                <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-1">Type</label>
+                                        <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Type</label>
                                         <select
                                             name="questionType"
                                             value={currentQuestion.questionType}
                                             onChange={handleQuestionChange}
-                                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white"
+                                            className="w-full px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] font-medium"
                                         >
                                             <option value="mcq-single">MCQ - Single Choice</option>
                                             <option value="mcq-multiple">MCQ - Multiple Choice</option>
@@ -290,33 +290,33 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-1">Points</label>
+                                        <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Points</label>
                                         <input
                                             type="number"
                                             name="points"
                                             min="1"
                                             value={currentQuestion.points}
                                             onChange={handleQuestionChange}
-                                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                            className="w-full px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Options - Dynamic based on question type */}
                                 {(currentQuestion.questionType === 'mcq-single' || currentQuestion.questionType === 'mcq-multiple') && (
-                                    <div className="mb-3">
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Options {currentQuestion.questionType === 'mcq-multiple' && <span className="text-xs text-yellow-400">(Multiple answers allowed)</span>}
+                                    <div className="mb-4">
+                                        <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-3">
+                                            Options {currentQuestion.questionType === 'mcq-multiple' && <span className="text-[10px] text-amber-600">(Multi-answer)</span>}
                                         </label>
-                                        <div className="space-y-2">
+                                        <div className="space-y-3">
                                             {currentQuestion.options.map((option, idx) => (
-                                                <div key={idx} className="flex items-center">
-                                                    <span className="w-6 text-sm text-gray-400">{String.fromCharCode(65 + idx)}.</span>
+                                                <div key={idx} className="flex items-center gap-3">
+                                                    <span className="w-6 text-xs font-black text-[#474545]">{String.fromCharCode(65 + idx)}</span>
                                                     <input
                                                         type="text"
                                                         value={option}
                                                         onChange={(e) => handleOptionChange(idx, e.target.value)}
-                                                        className="flex-1 px-3 py-1 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                                        className="flex-1 px-4 py-2 bg-white border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium"
                                                         placeholder={`Option ${idx + 1}`}
                                                     />
                                                     {currentQuestion.questionType === 'mcq-single' ? (
@@ -325,7 +325,7 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                                             name="correctAnswer"
                                                             checked={currentQuestion.correctAnswer === option && option !== ''}
                                                             onChange={() => setCurrentQuestion({ ...currentQuestion, correctAnswer: option })}
-                                                            className="ml-2 h-4 w-4 text-accent focus:ring-accent bg-slate-800 border-gray-600"
+                                                            className="h-5 w-5 text-[#2d3a2e] focus:ring-[#2d3a2e] bg-white border-[#e5e5e5]"
                                                             disabled={option === ''}
                                                         />
                                                     ) : (
@@ -342,7 +342,7 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                                                 }
                                                                 setCurrentQuestion({ ...currentQuestion, correctAnswer: answers });
                                                             }}
-                                                            className="ml-2 h-4 w-4 text-accent focus:ring-accent bg-slate-800 border-gray-600 rounded"
+                                                            className="h-5 w-5 text-[#2d3a2e] focus:ring-[#2d3a2e] bg-white border-[#e5e5e5] rounded"
                                                             disabled={option === ''}
                                                         />
                                                     )}
@@ -353,17 +353,17 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                 )}
 
                                 {currentQuestion.questionType === 'true-false' && (
-                                    <div className="mb-3">
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">Correct Answer</label>
-                                        <div className="flex space-x-4">
+                                    <div className="mb-4">
+                                        <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-3">Correct Answer</label>
+                                        <div className="flex gap-6">
                                             {['True', 'False'].map((option) => (
-                                                <label key={option} className="flex items-center space-x-2 cursor-pointer text-gray-300">
+                                                <label key={option} className="flex items-center gap-3 cursor-pointer text-[#1c1b1b] font-bold">
                                                     <input
                                                         type="radio"
                                                         name="correctAnswer"
                                                         checked={currentQuestion.correctAnswer === option}
                                                         onChange={() => setCurrentQuestion({ ...currentQuestion, correctAnswer: option })}
-                                                        className="h-4 w-4 text-accent focus:ring-accent bg-slate-800 border-gray-600"
+                                                        className="h-5 w-5 text-[#2d3a2e] focus:ring-[#2d3a2e] bg-white border-[#e5e5e5]"
                                                     />
                                                     <span>{option}</span>
                                                 </label>
@@ -373,39 +373,39 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                 )}
 
                                 {(currentQuestion.questionType === 'short-answer' || currentQuestion.questionType === 'long-answer') && (
-                                    <div className="mb-3">
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    <div className="mb-4">
+                                        <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-3">
                                             Sample/Expected Answer (Optional)
                                         </label>
                                         <textarea
                                             value={currentQuestion.correctAnswer}
                                             onChange={(e) => setCurrentQuestion({ ...currentQuestion, correctAnswer: e.target.value })}
                                             rows="3"
-                                            className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
-                                            placeholder="Enter a sample answer for reference (will be shown to grader)..."
+                                            className="w-full px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium resize-none"
+                                            placeholder="Enter a sample answer for reference..."
                                         />
                                         {currentQuestion.questionType === 'short-answer' && (
-                                            <div className="mt-2">
-                                                <label className="block text-xs text-gray-400 mb-1">Character Limit (optional)</label>
+                                            <div className="mt-4">
+                                                <label className="block text-[10px] font-black text-[#474545] uppercase tracking-widest mb-2">Char Limit (optional)</label>
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     value={currentQuestion.charLimit || ''}
                                                     onChange={(e) => setCurrentQuestion({ ...currentQuestion, charLimit: e.target.value ? parseInt(e.target.value) : null })}
-                                                    className="w-32 px-3 py-1 bg-slate-800 border border-white/10 rounded-lg text-white text-sm"
+                                                    className="w-32 px-4 py-2 bg-white border border-[#e5e5e5] rounded-xl text-[#1c1b1b] text-sm font-bold"
                                                     placeholder="500"
                                                 />
                                             </div>
                                         )}
                                         {currentQuestion.questionType === 'long-answer' && (
-                                            <div className="mt-2">
-                                                <label className="block text-xs text-gray-400 mb-1">Word Limit (optional)</label>
+                                            <div className="mt-4">
+                                                <label className="block text-[10px] font-black text-[#474545] uppercase tracking-widest mb-2">Word Limit (optional)</label>
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     value={currentQuestion.maxWords || ''}
                                                     onChange={(e) => setCurrentQuestion({ ...currentQuestion, maxWords: e.target.value ? parseInt(e.target.value) : null })}
-                                                    className="w-32 px-3 py-1 bg-slate-800 border border-white/10 rounded-lg text-white text-sm"
+                                                    className="w-32 px-4 py-2 bg-white border border-[#e5e5e5] rounded-xl text-[#1c1b1b] text-sm font-bold"
                                                     placeholder="1000"
                                                 />
                                             </div>
@@ -413,21 +413,21 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                     </div>
                                 )}
 
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Explanation (Optional)</label>
+                                <div className="mb-6">
+                                    <label className="block text-xs font-black text-[#474545] uppercase tracking-widest mb-2">Explanation (Optional)</label>
                                     <textarea
                                         name="explanation"
                                         rows="2"
                                         value={currentQuestion.explanation}
                                         onChange={handleQuestionChange}
-                                        className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-white placeholder-gray-500"
+                                        className="w-full px-4 py-2.5 bg-white border border-[#e5e5e5] rounded-xl focus:ring-2 focus:ring-[#2d3a2e] focus:border-transparent text-[#1c1b1b] placeholder-gray-400 font-medium resize-none"
                                         placeholder="Explain why the answer is correct..."
                                     />
                                 </div>
 
                                 <button
                                     onClick={addQuestion}
-                                    className="w-full py-2 bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-600 transition-colors flex items-center justify-center border border-white/10"
+                                    className="w-full py-4 bg-white text-[#1c1b1b] font-black uppercase tracking-widest text-xs rounded-xl hover:bg-[#f9fafb] transition-all flex items-center justify-center border border-[#e5e5e5] shadow-sm"
                                 >
                                     <Plus className="h-4 w-4 mr-2" />
                                     Add Question to Quiz
@@ -437,18 +437,18 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                     )}
                 </div>
 
-                <div className="p-6 border-t border-white/10 bg-slate-800/30 flex justify-between">
+                <div className="p-6 border-t border-[#e5e5e5] bg-[#f9fafb]/50 flex justify-between">
                     {step === 2 ? (
                         <button
                             onClick={() => setStep(1)}
-                            className="px-6 py-2 text-gray-400 hover:text-white font-medium"
+                            className="px-6 py-2 text-[#474545] hover:text-[#1c1b1b] font-black uppercase tracking-widest text-xs"
                         >
                             Back
                         </button>
                     ) : (
                         <button
                             onClick={onClose}
-                            className="px-6 py-2 text-gray-400 hover:text-white font-medium"
+                            className="px-6 py-2 text-[#474545] hover:text-[#1c1b1b] font-black uppercase tracking-widest text-xs"
                         >
                             Cancel
                         </button>
@@ -460,7 +460,7 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                                 if (quizData.title) setStep(2);
                                 else alert('Please enter a quiz title');
                             }}
-                            className="px-6 py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary-light transition-colors"
+                            className="px-6 py-2 bg-[#2d3a2e] text-white font-black rounded-xl hover:bg-[#1c1b1b] transition-all shadow-lg"
                         >
                             Next: Add Questions
                         </button>
@@ -468,7 +468,7 @@ const AddQuizModal = ({ isOpen, onClose, onAdd }) => {
                         <button
                             onClick={handleSubmit}
                             disabled={loading || questions.length === 0}
-                            className="px-6 py-2 bg-accent text-white font-bold rounded-lg hover:bg-accent-hover transition-colors disabled:opacity-50 flex items-center"
+                            className="px-6 py-2 bg-[#2d3a2e] text-white font-black rounded-xl hover:bg-[#1c1b1b] transition-all shadow-lg disabled:opacity-50 flex items-center"
                         >
                             {loading ? (
                                 <>

@@ -163,22 +163,22 @@ const AdminGallery = () => {
     if (!isAdmin) return <Navigate to="/" />;
 
     return (
-        <div className="w-full py-12">
+        <div className="w-full py-12 min-h-screen" style={{ background: '#f0ede8' }}>
             <Helmet>
                 <title>Manage Gallery - Admin</title>
             </Helmet>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center mb-8">
-                    <ShieldAlert className="h-8 w-8 text-accent mr-3" />
-                    <h1 className="text-3xl font-bold text-white">Manage Event Gallery</h1>
+                    <ShieldAlert className="h-8 w-8 text-[#2d3a2e] mr-3" />
+                    <h1 className="text-3xl font-black text-[#1c1b1b] tracking-tight">Manage Event Gallery</h1>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* ── Form ── */}
                     <div className="lg:col-span-1">
-                        <div className="bg-slate-800 rounded-2xl p-6 border border-white/5 shadow-xl sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto">
-                            <h2 className="text-xl font-bold text-white mb-6 flex items-center">
-                                <Plus className="h-5 w-5 mr-2 text-accent" /> Add New Event
+                        <div className="bg-white rounded-2xl p-6 border border-[#e5e5e5] shadow-xl sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto">
+                            <h2 className="text-xl font-black text-[#1c1b1b] mb-6 flex items-center">
+                                <Plus className="h-5 w-5 mr-2 text-[#2d3a2e]" /> Add New Event
                             </h2>
 
                             {error && (
@@ -190,12 +190,12 @@ const AdminGallery = () => {
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 {/* title */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-300 mb-1">Event Title *</label>
+                                    <label className="block text-sm font-bold text-[#474545] mb-1">Event Title *</label>
                                     <input
                                         type="text"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
-                                        className="w-full px-4 py-2 bg-slate-900 border border-white/10 rounded-lg text-white focus:outline-none focus:border-accent"
+                                        className="w-full px-4 py-2 bg-[#f9fafb] border border-[#e5e5e5] rounded-lg text-[#1c1b1b] focus:outline-none focus:border-[#2d3a2e]"
                                         placeholder="e.g. National Moot Court 2026"
                                         required
                                     />
@@ -203,23 +203,23 @@ const AdminGallery = () => {
 
                                 {/* date */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-300 mb-1">Event Date *</label>
+                                    <label className="block text-sm font-bold text-[#474545] mb-1">Event Date *</label>
                                     <input
                                         type="date"
                                         value={eventDate}
                                         onChange={(e) => setEventDate(e.target.value)}
-                                        className="w-full px-4 py-2 bg-slate-900 border border-white/10 rounded-lg text-white focus:outline-none focus:border-accent"
+                                        className="w-full px-4 py-2 bg-[#f9fafb] border border-[#e5e5e5] rounded-lg text-[#1c1b1b] focus:outline-none focus:border-[#2d3a2e]"
                                         required
                                     />
                                 </div>
 
                                 {/* description */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-300 mb-1">Description *</label>
+                                    <label className="block text-sm font-bold text-[#474545] mb-1">Description *</label>
                                     <textarea
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
-                                        className="w-full px-4 py-2 bg-slate-900 border border-white/10 rounded-lg text-white focus:outline-none focus:border-accent"
+                                        className="w-full px-4 py-2 bg-[#f9fafb] border border-[#e5e5e5] rounded-lg text-[#1c1b1b] focus:outline-none focus:border-[#2d3a2e]"
                                         rows="3"
                                         required
                                     />
@@ -227,8 +227,8 @@ const AdminGallery = () => {
 
                                 {/* ── multiple images ── */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                                        Event Photos * <span className="text-slate-500 font-normal">(select multiple)</span>
+                                    <label className="block text-sm font-bold text-[#474545] mb-2">
+                                        Event Photos * <span className="text-slate-400 font-normal">(select multiple)</span>
                                     </label>
 
                                     {/* preview grid */}
@@ -260,10 +260,10 @@ const AdminGallery = () => {
                                     <button
                                         type="button"
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="w-full h-20 border-2 border-dashed border-white/20 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-accent/60 transition-colors bg-slate-900 text-slate-400 hover:text-accent gap-1"
+                                        className="w-full h-20 border-2 border-dashed border-[#e5e5e5] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[#2d3a2e]/60 transition-colors bg-[#f9fafb] text-[#474545] hover:text-[#2d3a2e] gap-1"
                                     >
                                         <ImageIcon className="h-6 w-6" />
-                                        <span className="text-xs font-medium">
+                                        <span className="text-xs font-bold">
                                             {imagePreviews.length ? `Add more photos (${imagePreviews.length} selected)` : 'Click to add photos'}
                                         </span>
                                     </button>
@@ -280,13 +280,13 @@ const AdminGallery = () => {
                                 {/* ── winners ── */}
                                 <div>
                                     <div className="flex items-center justify-between mb-2">
-                                        <label className="text-sm font-medium text-slate-300">
-                                            Winners <span className="text-slate-500 font-normal">(optional)</span>
+                                        <label className="text-sm font-bold text-[#474545]">
+                                            Winners <span className="text-slate-400 font-normal">(optional)</span>
                                         </label>
                                         <button
                                             type="button"
                                             onClick={addWinner}
-                                            className="flex items-center gap-1 text-xs font-bold text-accent hover:text-accent-hover transition-colors"
+                                            className="flex items-center gap-1 text-xs font-black text-[#2d3a2e] hover:text-[#1c1b1b] transition-colors"
                                         >
                                             <UserPlus className="h-3.5 w-3.5" /> Add Winner
                                         </button>
@@ -306,15 +306,15 @@ const AdminGallery = () => {
                                                         type="text"
                                                         value={w.position}
                                                         onChange={(e) => updateWinner(i, 'position', e.target.value)}
-                                                        placeholder="Position (e.g. 1st)"
-                                                        className="w-24 shrink-0 px-2 py-1.5 bg-slate-900 border border-white/10 rounded-lg text-white text-xs focus:outline-none focus:border-accent"
+                                                        placeholder="Pos (e.g. 1st)"
+                                                        className="w-24 shrink-0 px-2 py-1.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-lg text-[#1c1b1b] text-xs focus:outline-none focus:border-[#2d3a2e]"
                                                     />
                                                     <input
                                                         type="text"
                                                         value={w.name}
                                                         onChange={(e) => updateWinner(i, 'name', e.target.value)}
                                                         placeholder="Winner's name"
-                                                        className="flex-1 px-2 py-1.5 bg-slate-900 border border-white/10 rounded-lg text-white text-xs focus:outline-none focus:border-accent"
+                                                        className="flex-1 px-2 py-1.5 bg-[#f9fafb] border border-[#e5e5e5] rounded-lg text-[#1c1b1b] text-xs focus:outline-none focus:border-[#2d3a2e]"
                                                     />
                                                     {winners.length > 1 && (
                                                         <button
@@ -334,7 +334,7 @@ const AdminGallery = () => {
                                 <button
                                     type="submit"
                                     disabled={submitting}
-                                    className="w-full py-3 bg-accent hover:bg-accent-hover text-white rounded-lg font-bold transition-colors flex justify-center items-center gap-2"
+                                    className="w-full py-3 bg-[#2d3a2e] hover:bg-[#1c1b1b] text-white rounded-lg font-black transition-colors flex justify-center items-center gap-2 shadow-lg"
                                 >
                                     {submitting ? (
                                         <>
@@ -352,7 +352,7 @@ const AdminGallery = () => {
                     <div className="lg:col-span-2">
                         {loading ? (
                             <div className="flex justify-center py-20">
-                                <Loader className="animate-spin h-8 w-8 text-accent" />
+                                <Loader className="animate-spin h-8 w-8 text-[#2d3a2e]" />
                             </div>
                         ) : events.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -370,7 +370,7 @@ const AdminGallery = () => {
                                             key={event.id}
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="bg-slate-800 rounded-xl overflow-hidden border border-white/5 flex flex-col"
+                                            className="bg-white rounded-2xl overflow-hidden border border-[#e5e5e5] flex flex-col shadow-md hover:shadow-xl transition-shadow"
                                         >
                                             <ImageCarousel images={imgs} />
 
@@ -384,24 +384,24 @@ const AdminGallery = () => {
 
                                             <div className="p-5 flex-grow flex flex-col">
                                                 <div className="flex items-start justify-between mb-1">
-                                                    <h3 className="text-xl font-bold text-white">{event.title}</h3>
-                                                    <span className="text-xs text-slate-500 shrink-0 ml-2">
+                                                    <h3 className="text-xl font-black text-[#1c1b1b] tracking-tight">{event.title}</h3>
+                                                    <span className="text-xs text-[#474545] font-bold shrink-0 ml-2">
                                                         {new Date(event.event_date).toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <p className="text-slate-400 text-sm mb-4 line-clamp-3">{event.description}</p>
+                                                <p className="text-[#474545] text-sm mb-4 line-clamp-3 leading-relaxed">{event.description}</p>
 
                                                 {/* winners */}
                                                 {winnersList ? (
-                                                    <div className="bg-slate-900/50 p-3 rounded-lg border border-white/5 mb-4">
-                                                        <span className="text-xs text-accent font-bold uppercase flex items-center gap-1 mb-2">
+                                                    <div className="bg-[#f9fafb] p-3 rounded-lg border border-[#e5e5e5] mb-4">
+                                                        <span className="text-xs text-[#2d3a2e] font-black uppercase flex items-center gap-1 mb-2">
                                                             <Trophy className="h-3 w-3" /> Winners
                                                         </span>
                                                         <ul className="space-y-1">
                                                             {winnersList.map((w, i) => (
-                                                                <li key={i} className="text-sm text-slate-300 flex gap-2">
+                                                                <li key={i} className="text-sm text-[#474545] flex gap-2 font-medium">
                                                                     {w.position && (
-                                                                        <span className="text-accent font-bold shrink-0">{w.position}</span>
+                                                                        <span className="text-[#2d3a2e] font-black shrink-0">{w.position}</span>
                                                                     )}
                                                                     <span>{w.name}</span>
                                                                 </li>
@@ -409,9 +409,9 @@ const AdminGallery = () => {
                                                         </ul>
                                                     </div>
                                                 ) : event.winners ? (
-                                                    <div className="bg-slate-900/50 p-3 rounded-lg border border-white/5 mb-4">
-                                                        <span className="text-xs text-accent font-bold uppercase block mb-1">Winners</span>
-                                                        <p className="text-sm text-slate-300 whitespace-pre-wrap">{event.winners}</p>
+                                                    <div className="bg-[#f9fafb] p-3 rounded-lg border border-[#e5e5e5] mb-4">
+                                                        <span className="text-xs text-[#2d3a2e] font-black uppercase block mb-1">Winners</span>
+                                                        <p className="text-sm text-[#474545] whitespace-pre-wrap font-medium">{event.winners}</p>
                                                     </div>
                                                 ) : null}
 
@@ -428,11 +428,11 @@ const AdminGallery = () => {
                                     );
                                 })}
                             </div>
-                        ) : (
-                            <div className="text-center py-20 bg-slate-800/30 rounded-2xl border border-white/5 h-full flex flex-col items-center justify-center">
-                                <ImageIcon className="h-12 w-12 text-slate-500 mb-4" />
-                                <h3 className="text-xl font-bold text-white mb-2">No Gallery Events</h3>
-                                <p className="text-slate-400">Add your first event using the form to showcase it on the home page.</p>
+                         ) : (
+                            <div className="text-center py-20 bg-white rounded-2xl border border-[#e5e5e5] h-full flex flex-col items-center justify-center shadow-sm">
+                                <ImageIcon className="h-12 w-12 text-[#e5e5e5] mb-4" />
+                                <h3 className="text-xl font-black text-[#1c1b1b] mb-2">No Gallery Events</h3>
+                                <p className="text-[#474545]">Add your first event using the form to showcase it on the home page.</p>
                             </div>
                         )}
                     </div>
